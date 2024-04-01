@@ -44,7 +44,7 @@ const Header = () => {
         <nav className={header.nav}>
               <ul className={header.menu}>
                 <li><Link to="/">PROJECTS<i className={header.mark}><Star/></i><i className={header.count}>(23)</i></Link></li>
-                <li><Link to="/service/">SERVICE DUMMY 静的ぺーじ</Link></li>
+                <li><Link to="/service/">SERVICE</Link></li>
                 <li><Link to="/about/">ABOUT</Link></li>
 
               </ul>
