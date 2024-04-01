@@ -6,18 +6,18 @@ import { GatsbyImage } from "gatsby-plugin-image"
 
 
 
-const AboutPage = ({ data, location }) => {
+const ServicePage = ({ data, location }) => {
  return (
   <>
      <Layout>
        <Seo
-         pagetitle="アバウト"
-         pagedesc="Paaについて"
+         pagetitle="さーびす"
+         pagedesc="Paa service"
          pagepath={location.pathname}
        />
 
 
-       <h1>ABOUT : PAGE</h1>
+       <h1>SERVICE : PAGE</h1>
        <figure className="hero">
 
          <GatsbyImage
@@ -32,7 +32,7 @@ const AboutPage = ({ data, location }) => {
  )
 }
 
-export default AboutPage
+export default ServicePage
 
 
 

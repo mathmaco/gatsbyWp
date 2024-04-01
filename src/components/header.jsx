@@ -43,10 +43,10 @@ const Header = () => {
         <div className={header.logo}><Link to="/"><Logo/></Link></div>
         <nav className={header.nav}>
               <ul className={header.menu}>
-                <li><Link to="/blog/">PROJECTS<i className={header.mark}><Star/></i><i className={header.count}>(23)</i></Link></li>
-                <li><Link to="/page/">PAGE</Link></li>
-                <li><Link to="/">CONTACT</Link></li>
+                <li><Link to="/">PROJECTS<i className={header.mark}><Star/></i><i className={header.count}>(23)</i></Link></li>
+                <li><Link to="/service/">SERVICE DUMMY 静的ぺーじ</Link></li>
                 <li><Link to="/about/">ABOUT</Link></li>
+
               </ul>
         </nav>
       <div className={header.layoutNav}>
