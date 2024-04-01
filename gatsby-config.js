@@ -13,6 +13,15 @@ module.exports = {
    * Gatsby has a rich ecosystem of plugins.
    * If you need any more you can search here: https://www.gatsbyjs.com/plugins/
    */
+  siteMetadata: {
+    title: `Paa website`,
+    description: `そのPさんのウェブサイト`,
+    lang: `ja`,
+    //siteUrl: `https://paa.ac`,
+    siteUrl: `http://paa.local`,
+    locale: `ja_JP`,
+    fbappid: `XXXXXXXXXXXXXXXXXXXXX`,
+  },
   plugins: [
     {
       /**
