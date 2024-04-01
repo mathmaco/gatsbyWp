@@ -1,0 +1,81 @@
+@import './global.scss';
+
+.header {
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ z-index: 11;
+ .inner {
+  padding: 0 10px;
+ }
+ .content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+ }
+ .logo {
+  width: 136px;
+ }
+ .nav {
+  display: flex;
+ }
+ .menu {
+  display: flex;
+  li {
+   position: relative;
+   &:not(:first-child) {
+    margin-left: 30px;
+    &:before {
+     content: '';
+     position: absolute;
+     top: 0;
+     left: -18px;
+     bottom: 0;
+     margin: auto;
+     width: 5px;
+     height: 5px;
+     border-radius: 50%;
+     background-color: $clr-red;
+    }
+   }
+   a {
+    display: inline-block;
+    font-size: 32px;
+    @include en;
+    color: $clr-red;
+    .mark {
+     position: absolute;
+     top: 0;
+     right: 10px;
+     display: flex;
+     align-items: flex-start;
+     width: 10px;
+     height: 10px;
+    }
+    .count {
+     font-size: 10px;
+    }
+   }
+  }
+ }
+ .layoutNav {
+  display: flex;
+  .layoutNavList {
+   display: flex;
+   margin-right: 10px;
+
+   li {
+    &:not(:last-child) {
+     margin-right: 7px;
+    }
+    span {
+     cursor: pointer;
+    }
+   }
+  }
+  .layoutNavPaa {
+   cursor: pointer;
+  }
+ }
+}

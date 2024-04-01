@@ -1,0 +1,141 @@
+@import './components/global.scss';
+
+html {
+ font-size: 100%;
+ -webkit-font-smoothing: antialiased;
+ font-smoothing: antialiased;
+ -webkit-tap-highlight-color: transparent;
+}
+
+body {
+ background: $clr-wht;
+ -webkit-text-size-adjust: 100%;
+ background: transparent;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+ color: $clr-main;
+ font-size: 1rem;
+ line-height: 1;
+ letter-spacing: 0.001rem;
+ font-weight: 400;
+ @include site;
+}
+
+::selection {
+ color: $clr-wht;
+ background: $clr-red;
+}
+
+::-moz-selection {
+ color: $clr-wht;
+ background-color: $clr-red;
+}
+
+input::selection,
+textarea::selection {
+ color: $clr-wht;
+ background: $clr-red;
+}
+
+*,
+*:after,
+*:before {
+ box-sizing: border-box;
+
+ &:focus,
+ &:focus-visible {
+  outline: none;
+ }
+}
+
+img {
+ height: auto;
+ max-width: 100%;
+ vertical-align: middle;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+ margin: 0;
+ padding: 0;
+ font-weight: 400;
+ font-size: inherit;
+}
+
+p {
+ margin: 0;
+ padding: 0;
+}
+
+figure {
+ margin: 0;
+}
+
+ol,
+ul {
+ list-style-type: none;
+}
+
+dd,
+dl,
+dt,
+li,
+p,
+ul {
+ margin: 0;
+ padding: 0;
+}
+
+i {
+ font-style: normal;
+}
+
+main {
+ position: relative;
+ display: block;
+ -webkit-overflow-scrolling: touch;
+}
+//Links
+
+a,
+a:visited {
+ color: $clr-main;
+ text-decoration: none;
+}
+
+a:hover {
+ color: $clr-main;
+ text-decoration: none;
+}
+
+a:active,
+a:focus {
+ text-decoration: none;
+}
+
+a:focus {
+ outline: none;
+}
+
+a:active,
+a:hover {
+ outline: 0;
+}
+//
+//@media #{$tablet} {
+//}
+.selected {
+ padding: 1px;
+ border: 1px solid $clr-red;
+}
