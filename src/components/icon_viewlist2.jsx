@@ -1,0 +1,22 @@
+import React from "react";
+
+const List2 = () => {
+ return (
+<svg width={43} height={17} viewBox="0 0 43 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width={10} height={5} fill="#C9171E" />
+  <rect x={11} width={10} height={5} fill="#C9171E" />
+  <rect x={22} width={10} height={5} fill="#C9171E" />
+  <rect x={33} width={10} height={5} fill="#C9171E" />
+  <rect y={6} width={10} height={5} fill="#C9171E" />
+  <rect y={12} width={10} height={5} fill="#C9171E" />
+  <rect x={11} y={12} width={10} height={5} fill="#C9171E" />
+  <rect x={11} y={6} width={10} height={5} fill="#C9171E" />
+  <rect x={22} y={12} width={10} height={5} fill="#C9171E" />
+  <rect x={22} y={6} width={10} height={5} fill="#C9171E" />
+  <rect x={33} y={12} width={10} height={5} fill="#C9171E" />
+  <rect x={33} y={6} width={10} height={5} fill="#C9171E" />
+</svg>
+  )
+};
+
+export default List2;
