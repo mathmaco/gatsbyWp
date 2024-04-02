@@ -26,7 +26,7 @@ const GalleryMarquee = ({ media, speed }) => {
                 width={'100%'}
                 height={'100%'}
                 frameborder="0"
-                allow="autoplay; fullscreen"
+                allow="autoplay fullscreen"
                 allowfullscreen
                 title='vimeo'
                 loading="lazy"
@@ -76,7 +76,6 @@ const Projects = ({ selectedValue }) => {
           projects {
             projectsGallerySpeed
             projectsMedia {
-              oembed
               videoid
               photo {
                 node {

@@ -38,14 +38,6 @@ module.exports = {
         url:
           process.env.WPGRAPHQL_URL ||
           `http://cms.mathi.jp/paa/graphql`,
-        schema: {
-          //Prefixes all WP Types with "Wp" so "Post and allPost" become "WpPost and allWpPost".
-          typePrefix: `Wp`,
-        },
-        develop: {
-          //caches media files outside of Gatsby's default cache an thus allows them to persist through a cache reset.
-          hardCacheMediaFiles: true,
-        },
       },
     },
 
