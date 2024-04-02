@@ -21,7 +21,7 @@ const GalleryMarquee = ({ media, speed }) => {
 {item.videoid && (
           <>
   <div className={p.video}>
-    <iframe src={`https://player.vimeo.com/video/${item.videoid}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`} width="100%" height="100%" frameborder="0" allow="autoplay fullscreen" allowfullscreen></iframe>
+    <iframe src={`https://player.vimeo.com/video/${item.videoid}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`} width={'100%'} height={'100%'} frameborder="0" allow="autoplay fullscreen" allowfullscreen></iframe>
   </div></>
 )}
       </div>
@@ -65,16 +65,6 @@ const Projects = ({ selectedValue }) => {
             }
           }
           projects {
-            projectsGallery {
-              nodes {
-                altText
-                localFile {
-                  childImageSharp {
-                    gatsbyImageData(quality: 100, layout: CONSTRAINED, placeholder: DOMINANT_COLOR,)
-                  }
-                }
-              }
-            }
             projectsGallerySpeed
             projectsMedia {
               oembed
