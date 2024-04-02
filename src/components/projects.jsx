@@ -5,7 +5,7 @@ import parse from 'html-react-parser';
 import * as p from '../css/components/project.module.scss';
 import Marquee from 'react-fast-marquee';
 
-const GalleryMarquee = ({ media, speed, dir }) => {
+const GalleryMarquee = ({ media, speed, direction }) => {
   const [content, setContent] = useState([]);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const GalleryMarquee = ({ media, speed, dir }) => {
 
   return (
     <>
-      <Marquee ref={marqueeRef} speed={speed} direction={dir} autoFill={true}>{content}</Marquee>
+      <Marquee ref={marqueeRef} speed={speed} direction={direction} autoFill={true}>{content}</Marquee>
     </>
   );
 };
@@ -146,7 +146,7 @@ const Projects = ({ selectedValue }) => {
         const tag = post.tags.nodes;
         //const galleries = post.projects.projectsGallery.nodes;
         const speed = post.projects.projectsGallerySpeed;
-        const dir = post.projects.projectsGalleryDirection;
+        const direction = post.projects.projectsGalleryDirection;
         const media = post.projects.projectsMedia;
         //const photo = post.projects.projectsMedia.photo.node;
         //const video = post.projects.projectsMedia.oembed;
@@ -172,7 +172,7 @@ const Projects = ({ selectedValue }) => {
                 <small>{post.date}</small>
               </header>
               <div className={p.gallery}>
-                {media && (<GalleryMarquee media={media} speed={speed} direction={dir} />
+                {media && (<GalleryMarquee media={media} speed={speed} direction={direction} />
                 )}
               </div>
               <section itemProp="description">{parse(post.excerpt)}</section>
