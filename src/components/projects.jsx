@@ -5,7 +5,7 @@ import parse from 'html-react-parser';
 import * as p from '../css/components/project.module.scss';
 import Marquee from 'react-fast-marquee';
 
-const GalleryMarquee = ({ media, speed, direction }) => {
+const GalleryMarquee = ({ media, speed, postIndex }) => {
   const [content, setContent] = useState([]);
 
   useEffect(() => {
@@ -38,7 +38,8 @@ const GalleryMarquee = ({ media, speed, direction }) => {
   }, [media]);
 
   const marqueeRef = useRef(null);
-
+  const direction = postIndex % 2 === 0 ? 'left' : 'right';
+  console.log(direction);
   return (
     <>
       <Marquee ref={marqueeRef} speed={speed} direction={direction} autoFill={true}>{content}</Marquee>
@@ -75,7 +76,6 @@ const Projects = ({ selectedValue }) => {
           }
           projects {
             projectsGallerySpeed
-            projectsGalleryDirection
             projectsMedia {
               videoid
               photo {
@@ -146,7 +146,6 @@ const Projects = ({ selectedValue }) => {
         const tag = post.tags.nodes;
         //const galleries = post.projects.projectsGallery.nodes;
         const speed = post.projects.projectsGallerySpeed;
-        const direction = post.projects.projectsGalleryDirection;
         const media = post.projects.projectsMedia;
         //const photo = post.projects.projectsMedia.photo.node;
         //const video = post.projects.projectsMedia.oembed;
@@ -172,7 +171,7 @@ const Projects = ({ selectedValue }) => {
                 <small>{post.date}</small>
               </header>
               <div className={p.gallery}>
-                {media && (<GalleryMarquee media={media} speed={speed} direction={direction} />
+                {media && (<GalleryMarquee media={media} speed={speed} postIndex={postIndex + 1} />
                 )}
               </div>
               <section itemProp="description">{parse(post.excerpt)}</section>
