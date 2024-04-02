@@ -24,7 +24,7 @@ const GalleryMarquee = ({ galleries, speed }) => {
 
   return (
     <>
-      <Marquee ref={marqueeRef} speed={speed} direction="right" autoFill={true}>{content}</Marquee>
+      <Marquee ref={marqueeRef} speed={speed} direction="left" autoFill={true}>{content}</Marquee>
     </>
   );
 };
