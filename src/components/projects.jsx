@@ -5,20 +5,25 @@ import parse from 'html-react-parser';
 import * as p from '../css/components/project.module.scss';
 import Marquee from 'react-fast-marquee';
 
-const GalleryMarquee = ({ galleries, speed }) => {
+const GalleryMarquee = ({ media, speed }) => {
   const [content, setContent] = useState([]);
 
   useEffect(() => {
-    setContent(galleries.map((gallery, index) => (
+    setContent(media.map((item, index) => (
       <div className={p.item} key={index}>
-        <GatsbyImage
-          image={gallery.localFile.childImageSharp.gatsbyImageData}
-          style={{ height: '100%' }}
-          alt=""
-        />
+        {item.photo && (
+          <GatsbyImage
+            image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
+            style={{ height: '100%' }}
+            alt=""
+          />
+        )}
+{item.oembed && (
+  <>{parse(item.oembed)}</>
+)}
       </div>
     )));
-  }, [galleries]);
+  }, [media]);
 
   const marqueeRef = useRef(null);
 
@@ -68,6 +73,19 @@ const Projects = ({ selectedValue }) => {
               }
             }
             projectsGallerySpeed
+            projectsMedia {
+              oembed
+              photo {
+                node {
+                  altText
+                  localFile {
+                    childImageSharp {
+                      gatsbyImageData(placeholder: DOMINANT_COLOR, quality: 100, layout: CONSTRAINED)
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -123,8 +141,11 @@ const Projects = ({ selectedValue }) => {
         const title = post.title;
         const category = post.categories.nodes;
         const tag = post.tags.nodes;
-        const galleries = post.projects.projectsGallery.nodes;
+        //const galleries = post.projects.projectsGallery.nodes;
         const speed = post.projects.projectsGallerySpeed;
+        const media = post.projects.projectsMedia;
+        //const photo = post.projects.projectsMedia.photo.node;
+        //const video = post.projects.projectsMedia.oembed;
         return (
           <li key={post.uri} className={p.listItem}>
             <article className="post-list-item" itemScope itemType="http://schema.org/Article">
@@ -147,7 +168,8 @@ const Projects = ({ selectedValue }) => {
                 <small>{post.date}</small>
               </header>
               <div className={p.gallery}>
-                <GalleryMarquee galleries={galleries} speed={speed} />
+                {media && (<GalleryMarquee media={media} speed={speed} />
+                )}
               </div>
               <section itemProp="description">{parse(post.excerpt)}</section>
             </article>
