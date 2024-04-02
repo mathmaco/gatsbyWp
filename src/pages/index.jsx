@@ -52,17 +52,6 @@ export const pageQuery = graphql`
         #    altText
         #  }
         #}
-        projects {
-          projectsGallery {
-            nodes {
-            localFile {
-              childImageSharp {
-                gatsbyImageData(quality: 100, layout: CONSTRAINED, placeholder: DOMINANT_COLOR)
-              }
-            }
-            }
-          }
-  }
       }
     }
   }
