@@ -51,9 +51,9 @@ const Header = () => {
         </nav>
       <div className={header.layoutNav}>
       <ul className={header.layoutNavList}>
-        <li><span data-value="list1"　onClick={() => handleClick("list1")} className={selectedValue === "list1" ? "selected" : ""}><List1/></span> </li>
-        <li><span data-value="list2" onClick={() => handleClick("list2")} className={selectedValue === "list2" ? "selected" : ""}><List2/></span></li>
-        <li><span data-value="list3" onClick={() => handleClick("list3")} className={selectedValue === "list3" ? "selected" : ""}><List3/></span></li>
+        <li><button type="button" data-value="list1" onClick={() => handleClick("list1")}onKeyDown={(event) => {if (event.key === 'Enter' || event.key === ' ') {handleClick("list1");}}} className={selectedValue === "list1" ? "selected" : ""}><List1 /><span style={{ visibility: 'hidden',display:'none' }}>レイアウト</span></button></li>
+        <li><button type="button" data-value="list2" onClick={() => handleClick("list1")}onKeyDown={(event) => {if (event.key === 'Enter' || event.key === ' ') {handleClick("list2");}}} className={selectedValue === "list2" ? "selected" : ""}><List2/><span style={{ visibility: 'hidden',display:'none' }}>レイアウト</span></button></li>
+        <li><button type="button" data-value="list3" onClick={() => handleClick("list3")}onKeyDown={(event) => {if (event.key === 'Enter' || event.key === ' ') {handleClick("list3");}}} className={selectedValue === "list3" ? "selected" : ""}><List3/><span style={{ visibility: 'hidden',display:'none' }}>レイアウト</span></button></li>
       </ul>
       <div className={header.layoutNavPaa}><Paa/></div>
         </div>

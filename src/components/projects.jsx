@@ -25,9 +25,7 @@ const GalleryMarquee = ({ media, speed, postIndex }) => {
                 src={`https://player.vimeo.com/video/${item.videoid}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`}
                 width={'100%'}
                 height={'100%'}
-                frameborder="0"
-                allow="autoplay fullscreen"
-                allowfullscreen
+                frameBorder="0"
                 title='vimeo'
                 loading="lazy"
               />
@@ -39,7 +37,6 @@ const GalleryMarquee = ({ media, speed, postIndex }) => {
 
   const marqueeRef = useRef(null);
   const direction = postIndex % 2 === 0 ? 'left' : 'right';
-  console.log(direction);
   return (
     <>
       <Marquee ref={marqueeRef} speed={speed} direction={direction} autoFill={true}>{content}</Marquee>
@@ -108,34 +105,34 @@ const Projects = ({ selectedValue }) => {
     }
   }
 
-  useEffect(() => {
-    var options = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 1.0,
-    }
-    const observer = new IntersectionObserver(handleObserver, options)
-    if (loadRef.current) {
-      observer.observe(loadRef.current)
-    }
-  }, []);
+ useEffect(() => {
+  var options = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 1.0,
+  }
+  const observer = new IntersectionObserver(handleObserver, options)
+  if (loadRef.current) {
+    observer.observe(loadRef.current)
+  }
+}, [allNews, loadRef]); // 'allNews'と'loadRef'を依存関係の配列に追加する
 
-  useEffect(() => {
-    if (loadMore && hasMore) {
-      const currentLength = list.length
-      const isMore = currentLength < allNews.length
-      const nextResults = isMore
-        ? allNews.slice(currentLength, currentLength + 1)
-        : []
-      setList([...list, ...nextResults])
-      setLoadMore(false)
-    }
-  }, [loadMore, hasMore]);
+useEffect(() => {
+  if (loadMore && hasMore) {
+    const currentLength = list.length
+    const isMore = currentLength < allNews.length
+    const nextResults = isMore
+      ? allNews.slice(currentLength, currentLength + 1)
+      : []
+    setList(prevList => [...prevList, ...nextResults]); // 関数形式の更新を使用してlistを更新する
+    setLoadMore(false)
+  }
+}, [loadMore, hasMore, list, allNews]); // 'allNews'を依存関係の配列に追加する
 
-  useEffect(() => {
-    const isMore = list.length < allNews.length
-    setHasMore(isMore)
-  }, [list]);
+useEffect(() => {
+  const isMore = list.length < allNews.length
+  setHasMore(isMore)
+}, [list, allNews]); // 'allNews'を依存関係の配列に追加する
 
   return (
     <>
