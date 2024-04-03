@@ -4,8 +4,16 @@ import { GatsbyImage } from 'gatsby-plugin-image';
 import parse from 'html-react-parser';
 import * as p from '../css/components/project.module.scss';
 import Marquee from 'react-fast-marquee';
+import "../css/components/react-marquee-styles.scss"
 
-const GalleryMarquee = ({ media, speed, postIndex }) => {
+
+// Projectsコンポーネント内で
+const customStyle = {
+  // カスタムスタイルをここで定義
+
+};
+
+const GalleryMarquee = ({ media, speed, postIndex, customStyle }) => {
   const [content, setContent] = useState([]);
 
   useEffect(() => {
@@ -39,7 +47,7 @@ const GalleryMarquee = ({ media, speed, postIndex }) => {
   const direction = postIndex % 2 === 0 ? 'left' : 'right';
   return (
     <>
-      <Marquee ref={marqueeRef} speed={speed} direction={direction} autoFill={true}>{content}</Marquee>
+      <Marquee ref={marqueeRef} speed={speed} direction={direction} autoFill={true} style={customStyle}>{content}</Marquee>
     </>
   );
 };
@@ -168,7 +176,8 @@ useEffect(() => {
                 <small>{post.date}</small>
               </header>
               <div className={p.gallery}>
-                {media && (<GalleryMarquee media={media} speed={speed} postIndex={postIndex + 1} />
+
+                {media && (<GalleryMarquee media={media} speed={speed} postIndex={postIndex + 1}customStyle={customStyle}  />
                 )}
               </div>
               <section itemProp="description">{parse(post.excerpt)}</section>
