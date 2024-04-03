@@ -1,8 +1,9 @@
-import React from "react"
-import { Link, graphql } from "gatsby"
+import React, { useEffect } from "react"
+import { Link, graphql, navigate } from "gatsby"
+
 import { GatsbyImage } from "gatsby-plugin-image"
 import parse from "html-react-parser"
-
+import Scrollbar from '../components/Scrollbar';
 // We're using Gutenberg so we need the block styles
 // these are copied into this project due to a conflict in the postCSS
 // version used by the Gatsby and @wordpress packages that causes build
@@ -11,11 +12,24 @@ import parse from "html-react-parser"
 import "../css/@wordpress/block-library/build-style/style.css"
 import "../css/@wordpress/block-library/build-style/theme.css"
 import * as projectSingle from '../css/components/project-single.module.scss';
-import Bio from "../components/bio"
+import IconClose from "../components/icon_close"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 
+import "../css/components/scrollbar.scss"
+
+
 const BlogPostTemplate = ({ data: { previous, next, post } }) => {
+  // .modal-close をクリックしたときに前のページに戻る関数
+  const handleModalClose = () => {
+    navigate(-1); // -1 は前のページに戻ることを示す
+  };
+
+  // .modal-close が unmount (画面から消える) 場合に、リスナーをクリアする
+  useEffect(() => {
+    return () => { };
+  }, []);
+
   const featuredImage = {
     data: post.featuredImage?.node?.localFile?.childImageSharp?.gatsbyImageData,
     alt: post.featuredImage?.node?.alt || ``,
@@ -39,70 +53,75 @@ const BlogPostTemplate = ({ data: { previous, next, post } }) => {
     <Layout>
       <Seo title={post.title} description={post.excerpt} />
 
-      <div className="modal scrollbar">
-        <div className="modal-cont">
-          <article
-            className={projectSingle.post}
-            itemScope
-            itemType="http://schema.org/Article"
-          >
-            <div className={projectSingle.postCont}>
-              <div className={projectSingle.postContLeft}>
-                <div className={projectSingle.item}>
-                  <ul>{media.map((item, index) => (
-                    <li key={index}>
-                      {item.photo && (
+      <div className="modal">
+        <div className="modal-inner">
+          <Scrollbar>
+            <div className="modal-cont">
+              <article
+                className={projectSingle.post}
+                itemScope
+                itemType="http://schema.org/Article"
+              >
+                <div className={projectSingle.postCont}>
+                  <div className={projectSingle.postContLeft}>
+                    <div className={projectSingle.item}>
+                      <ul>{media.map((item, index) => (
+                        <li key={index}>
+                          {item.photo && (
+                            <GatsbyImage
+                              image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
+                              style={{ width: '100%', height: '100%' }}
+                              alt={item.altText}
+                            />
+                          )}
+                          {item.videoid && (
+                            <div className={projectSingle.video}>
+                              <iframe
+                                src={`https://player.vimeo.com/video/${item.videoid}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`}
+                                width={'100%'}
+                                height={'100%'}
+                                frameBorder={'0'}
+                                title='vimeo'
+                                loading="lazy"
+                              />
+                            </div>
+                          )}
+                        </li>
+                      ))}
+                      </ul>
+                    </div>
+                  </div>
+                  <div className={projectSingle.postContRight}>
+                    <header>
+                      <h1 itemProp="headline">{parse(post.title)}</h1>
+                      <div className={projectSingle.subTtlJa}>{subTtlJa}</div>
+                      <p>{post.date}</p>
+
+                      {/* if we have a featured image for this post let's display it */}
+                      {featuredImage?.data && (
                         <GatsbyImage
-                          image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-                          style={{ width: '100%', height: '100%' }}
-                          alt={item.altText}
+                          image={featuredImage.data}
+                          alt={featuredImage.alt}
+                          style={{ marginBottom: 50 }}
                         />
                       )}
-                      {item.videoid && (
-                        <div className={projectSingle.video}>
-                          <iframe
-                            src={`https://player.vimeo.com/video/${item.videoid}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`}
-                            width={'100%'}
-                            height={'100%'}
-                            frameBorder={'0'}
-                            title='vimeo'
-                            loading="lazy"
-                          />
-                        </div>
-                      )}
-                    </li>
-                  ))}
-                  </ul>
+                    </header>
+
+                    {!!post.content && (
+                      <section itemProp="articleBody">{parse(post.content)}</section>
+                    )}
+
+                    <hr />
+
+                    <footer>
+                    </footer>
+                  </div>
                 </div>
-              </div>
-              <div className={projectSingle.postContRight}>
-                <header>
-                  <h1 itemProp="headline">{parse(post.title)}</h1>
-                  <div className={projectSingle.subTtlJa}>{subTtlJa}</div>
-                  <p>{post.date}</p>
-
-                  {/* if we have a featured image for this post let's display it */}
-                  {featuredImage?.data && (
-                    <GatsbyImage
-                      image={featuredImage.data}
-                      alt={featuredImage.alt}
-                      style={{ marginBottom: 50 }}
-                    />
-                  )}
-                </header>
-
-                {!!post.content && (
-                  <section itemProp="articleBody">{parse(post.content)}</section>
-                )}
-
-                <hr />
-
-                <footer>
-                  <Bio />
-                </footer>
-              </div>
+              </article>
             </div>
-          </article>
+          </Scrollbar>
+          <div className="modal-close" onClick={handleModalClose}><IconClose /></div>
+
         </div>
       </div>
     </Layout >

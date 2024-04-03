@@ -1,7 +1,7 @@
 @use 'sass:math';
 
 // モニタサイズ1366pxを起点にしたvwのサイズ指定
-@function vwpc($size, $viewport: 1366) {
+@function vwpc($size, $viewport: 1440) {
  $rate: math.div(100, $viewport);
  @return $rate * $size * 1vw;
 }

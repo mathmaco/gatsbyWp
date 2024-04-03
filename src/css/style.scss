@@ -142,31 +142,31 @@ a:hover {
 
 .modal {
  position: fixed;
- top: 50px;
- left: 0;
- right: 0;
+ top: vwpc(20);
+ left: vwpc(20);
+ right: vwpc(20);
  margin: auto;
- width: 90vw;
- height: 100%;
+ width: calc(100% - vwpc(40));
+ height: calc(100% - vwpc(120));
  background-color: $clr-wht;
- border: 1px solid $clr-main;
- z-index: 10;
+ border: 1px solid $clr-blk;
+ z-index: 101;
+ .modal-inner {
+  position: relative;
+  display: flex;
+  .modal-close {
+   position: absolute;
+   top: 0;
+   right: 0;
+   width: vwpc(24);
+  }
+  .modal-cont {
+   width: calc(100% - vwpc(24));
+   height: calc(100% - vwpc(120));
+  }
+ }
 }
 
 .scrollbar {
  overflow: scroll;
- &::-webkit-scrollbar-track {
-  background-color: #f1f1f1; /* スクロールバーの背景色 */
- }
-
- /* スクロールバーのハンドル */
- &::-webkit-scrollbar-thumb {
-  background-color: #888; /* スクロールバーのハンドルの色 */
-  border-radius: 10px; /* スクロールバーのハンドルの角丸 */
- }
-
- /* スクロールバーのコーナー */
- &::-webkit-scrollbar-corner {
-  background-color: transparent; /* スクロールバーのコーナーの背景色 */
- }
 }
