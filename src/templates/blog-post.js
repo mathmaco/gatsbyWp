@@ -3,7 +3,7 @@ import { Link, graphql, navigate } from "gatsby"
 
 import { GatsbyImage } from "gatsby-plugin-image"
 import parse from "html-react-parser"
-import Scrollbar from '../components/Scrollbar';
+import Scrollbar from '../components/scrollbar';
 // We're using Gutenberg so we need the block styles
 // these are copied into this project due to a conflict in the postCSS
 // version used by the Gatsby and @wordpress packages that causes build
