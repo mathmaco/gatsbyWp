@@ -134,8 +134,6 @@ export default BlogPostTemplate
 export const pageQuery = graphql`
   query BlogPostById(
     $id: String!
-    $previousPostId: String
-    $nextPostId: String
   ) {
     post: wpPost(id: {eq: $id}) {
       id
