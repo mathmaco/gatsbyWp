@@ -33,7 +33,7 @@ const GalleryMarquee = ({ media, speed, postIndex, customStyle }) => {
                 src={`https://player.vimeo.com/video/${item.videoid}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`}
                 width={'100%'}
                 height={'100%'}
-                frameBorder="0"
+                frameBorder={'0'}
                 title='vimeo'
                 loading="lazy"
               />
@@ -81,6 +81,13 @@ const Projects = ({ selectedValue }) => {
           }
           projects {
             projectsGallerySpeed
+            projectsCredit
+            projectsMediaCount
+            projectsMediaPower
+            projectsSubtitleEn
+            projectsSubtitleJa
+            projectsTitleEn
+            projectsUrl
             projectsMedia {
               videoid
               photo {
@@ -154,33 +161,53 @@ useEffect(() => {
         const media = post.projects.projectsMedia;
         //const photo = post.projects.projectsMedia.photo.node;
         //const video = post.projects.projectsMedia.oembed;
+
+        const credit = post.projects.projectsCredit
+        const count = post.projects.projectsMediaCount
+        const power = post.projects.projectsMediaPower
+        const subTtlEn = post.projects.projectsSubtitleEn
+        const subTtlJa = post.projects.projectsSubtitleJa
+        const ttlEn = post.projects.projectsTitleEn
+        const url = post.projects.projectsUrl
+
         return (
           <li key={post.uri} className={p.listItem}>
-            <article className="post-list-item" itemScope itemType="http://schema.org/Article">
-              <header>
-                {category.map((cat, index) => (
-                  <ul key={index}>
-                    <li>{cat.name}</li>
-                  </ul>
-                ))}
-                {tag.map((tags, index) => (
-                  <ul key={index}>
-                    <li>{tags.name}</li>
-                  </ul>
-                ))}
-                <h2 style={{ fontSize: '18px', fontWeight: '600', textAlign: 'left' }}>
+            <article className={p.post} itemScope itemType="http://schema.org/Article">
+              <header className={p.meta}>
+                <div className={p.metaList}>
+                  <div>{ttlEn}</div>
+                  <div>{subTtlEn}</div>
+                  <div>
+                    {category && (
+                      <ul className={p.catList}>
+                        {category.map((cat, index) => (
+                          <li key={index}>{cat.name}</li>
+                        ))}
+                      </ul>
+                    )}
+                </div>
+                  <div>
+                    {tag && (
+                      <ul className={p.tagList}>
+                        {tag.map((tags, index) => (
+                          <li key={index}>{tags.name}</li>
+                          ))}
+                      </ul>
+                    )}
+                </div>
+                  <div>{post.date}</div>
+                </div>
+                <h2>
                   <Link to={post.uri} itemProp="url">
                     <span itemProp="headline">{parse(title)}</span>
                   </Link>
                 </h2>
-                <small>{post.date}</small>
               </header>
               <div className={p.gallery}>
 
                 {media && (<GalleryMarquee media={media} speed={speed} postIndex={postIndex + 1}customStyle={customStyle}  />
                 )}
               </div>
-              <section itemProp="description">{parse(post.excerpt)}</section>
             </article>
           </li>
         );

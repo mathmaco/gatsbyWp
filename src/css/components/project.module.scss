@@ -97,3 +97,28 @@
   }
  }
 }
+
+.post {
+ position: relative;
+ .meta {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: 2;
+  .metaList {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   color: $clr-red;
+
+   .catList {
+    display: flex;
+   }
+   .tagList {
+    display: flex;
+   }
+  }
+ }
+}
