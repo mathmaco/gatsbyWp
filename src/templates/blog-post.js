@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { Link, graphql, navigate } from "gatsby"
 import { GatsbyImage } from "gatsby-plugin-image"
 import parse from "html-react-parser"
@@ -18,17 +18,18 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
   };
 
   const featuredImage = post.featuredImage?.node?.localFile?.childImageSharp?.gatsbyImageData
-  const category = post.categories.nodes
-  const tag = post.tags.nodes
-  const speed = post.projects.projectsGallerySpeed
+  //const category = post.categories.nodes
+  //const tag = post.tags.nodes
+  //const speed = post.projects.projectsGallerySpeed
   const media = post.projects.projectsMedia
-  const credit = post.projects.projectsCredit
-  const count = post.projects.projectsMediaCount
-  const power = post.projects.projectsMediaPower
-  const subTtlEn = post.projects.projectsSubtitleEn
+  //const video = post.projects.projectsMedia.videoid
+  //const credit = post.projects.projectsCredit
+  //const count = post.projects.projectsMediaCount
+  //const power = post.projects.projectsMediaPower
+  //const subTtlEn = post.projects.projectsSubtitleEn
   const subTtlJa = post.projects.projectsSubtitleJa
-  const ttlEn = post.projects.projectsTitleEn
-  const url = post.projects.projectsUrl
+  //const ttlEn = post.projects.projectsTitleEn
+  //const url = post.projects.projectsUrl
 
   return (
     <Layout>
@@ -45,7 +46,7 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
               >
                 <div className={projectSingle.postCont}>
                   <div className={projectSingle.postContLeft}>
-                    <div className={projectSingle.item}>
+                    <div>
                       <ul>
                         {media.map((item, index) => (
                           <li key={index}>
@@ -57,7 +58,7 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
                               />
                             )}
                             {item.videoid && (
-                              <div className={projectSingle.video}>
+                              <div>
                                 <iframe
                                   src={`https://player.vimeo.com/video/${item.videoid}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`}
                                   width={'100%'}
@@ -76,7 +77,7 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
                   <div className={projectSingle.postContRight}>
                     <header>
                       <h1 itemProp="headline">{parse(post.title)}</h1>
-                      <div className={projectSingle.subTtlJa}>{subTtlJa}</div>
+                      <div>{subTtlJa}</div>
                       <p>{post.date}</p>
 
                       {featuredImage && (
