@@ -1,0 +1,13 @@
+@import './global.scss';
+
+.post {
+ .postCont {
+  display: flex;
+  .postContLeft {
+   width: 50%;
+  }
+  .postContRight {
+   width: 50%;
+  }
+ }
+}

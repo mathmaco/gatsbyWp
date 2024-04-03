@@ -139,3 +139,16 @@ a:hover {
  padding: 1px;
  border: 1px solid $clr-red !important;
 }
+
+.modal {
+ position: fixed;
+ top: 50px;
+ left: 0;
+ right: 0;
+ margin: auto;
+ width: 90vw;
+ height: 100%;
+ background-color: $clr-wht;
+ border: 1px solid $clr-main;
+ z-index: 10;
+}

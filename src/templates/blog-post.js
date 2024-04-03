@@ -10,7 +10,7 @@ import parse from "html-react-parser"
 // @todo update this once @wordpress upgrades their postcss version
 import "../css/@wordpress/block-library/build-style/style.css"
 import "../css/@wordpress/block-library/build-style/theme.css"
-
+import * as projectSingle from '../css/components/project-single.module.scss';
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
@@ -25,64 +25,46 @@ const BlogPostTemplate = ({ data: { previous, next, post } }) => {
     <Layout>
       <Seo title={post.title} description={post.excerpt} />
 
-      <article
-        className="blog-post"
-        itemScope
-        itemType="http://schema.org/Article"
-      >
-        <header>
-          <h1 itemProp="headline">{parse(post.title)}</h1>
-
-          <p>{post.date}</p>
-
-          {/* if we have a featured image for this post let's display it */}
-          {featuredImage?.data && (
-            <GatsbyImage
-              image={featuredImage.data}
-              alt={featuredImage.alt}
-              style={{ marginBottom: 50 }}
-            />
-          )}
-        </header>
-
-        {!!post.content && (
-          <section itemProp="articleBody">{parse(post.content)}</section>
-        )}
-
-        <hr />
-
-        <footer>
-          <Bio />
-        </footer>
-      </article>
-
-      <nav className="blog-post-nav">
-        <ul
-          style={{
-            display: `flex`,
-            flexWrap: `wrap`,
-            justifyContent: `space-between`,
-            listStyle: `none`,
-            padding: 0,
-          }}
+      <div className="modal">
+        <article
+          className={projectSingle.post}
+          itemScope
+          itemType="http://schema.org/Article"
         >
-          <li>
-            {previous && (
-              <Link to={previous.uri} rel="prev">
-                ← {parse(previous.title)}
-              </Link>
-            )}
-          </li>
+          <div className={projectSingle.postCont}>
+            <div className={projectSingle.postContLeft}>
+              aaaaaaaaaaa
+            </div>
+            <div className={projectSingle.postContLeft}>
+              <header>
+                <h1 itemProp="headline">{parse(post.title)}</h1>
 
-          <li>
-            {next && (
-              <Link to={next.uri} rel="next">
-                {parse(next.title)} →
-              </Link>
-            )}
-          </li>
-        </ul>
-      </nav>
+                <p>{post.date}</p>
+
+                {/* if we have a featured image for this post let's display it */}
+                {featuredImage?.data && (
+                  <GatsbyImage
+                    image={featuredImage.data}
+                    alt={featuredImage.alt}
+                    style={{ marginBottom: 50 }}
+                  />
+                )}
+              </header>
+
+              {!!post.content && (
+                <section itemProp="articleBody">{parse(post.content)}</section>
+              )}
+
+              <hr />
+
+              <footer>
+                <Bio />
+              </footer>
+            </div>
+          </div>
+        </article>
+      </div>
+
     </Layout>
   )
 }
@@ -100,6 +82,43 @@ export const pageQuery = graphql`
       excerpt
       content
       title
+      categories {
+            nodes {
+              name
+              slug
+              id
+            }
+          }
+          tags {
+            nodes {
+              name
+              id
+              slug
+            }
+          }
+          projects {
+            projectsGallerySpeed
+            projectsCredit
+            projectsMediaCount
+            projectsMediaPower
+            projectsSubtitleEn
+            projectsSubtitleJa
+            projectsTitleEn
+            projectsUrl
+            projectsMedia {
+              videoid
+              photo {
+                node {
+                  altText
+                  localFile {
+                    childImageSharp {
+                      gatsbyImageData(placeholder: DOMINANT_COLOR, quality: 100, layout: CONSTRAINED)
+                    }
+                  }
+                }
+              }
+            }
+          }
       date(formatString: "MMMM DD, YYYY")
       featuredImage {
         node {
