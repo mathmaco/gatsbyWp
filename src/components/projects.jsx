@@ -22,7 +22,7 @@ const GalleryMarquee = ({ media, speed, postIndex, customStyle }) => {
         {item.photo && (
           <GatsbyImage
             image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-            style={{ height: '100%' }}
+            style={{ width:'100%',height: '100%' }}
             alt=""
           />
         )}
