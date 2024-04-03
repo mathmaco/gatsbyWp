@@ -1,46 +1,27 @@
 import React, { useEffect } from "react"
 import { Link, graphql, navigate } from "gatsby"
-
 import { GatsbyImage } from "gatsby-plugin-image"
 import parse from "html-react-parser"
-
-// We're using Gutenberg so we need the block styles
-// these are copied into this project due to a conflict in the postCSS
-// version used by the Gatsby and @wordpress packages that causes build
-// failures.
-// @todo update this once @wordpress upgrades their postcss version
-import "../css/@wordpress/block-library/build-style/style.css"
-import "../css/@wordpress/block-library/build-style/theme.css"
-import * as projectSingle from '../css/components/project-single.module.scss';
-
 import Layout from "../components/layout"
 import Seo from "../components/seo"
-
-import Scrollbar from '../components/scrollbar';
-import "../css/components/scrollbar.scss"
+import Scrollbar from '../components/scrollbar'
 import IconClose from "../components/icon_close"
+import * as projectSingle from '../css/components/project-single.module.scss'
 
-const BlogPostTemplate = ({ data: { previous, next, post } }) => {
+const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
   const handleModalClose = () => {
-    // Check if it's the first page
-    if (typeof window !== 'undefined' && window.location.pathname === '/') {
+    if (location.pathname === '/') {
       navigate('/');
     } else {
       window.history.back();
     }
   };
 
-  const featuredImage = {
-    data: post.featuredImage?.node?.localFile?.childImageSharp?.gatsbyImageData,
-    alt: post.featuredImage?.node?.alt || ``,
-  }
-  const category = post.categories.nodes;
-  const tag = post.tags.nodes;
-  //const galleries = post.projects.projectsGallery.nodes;
-  const speed = post.projects.projectsGallerySpeed;
-  const media = post.projects.projectsMedia;
-
-
+  const featuredImage = post.featuredImage?.node?.localFile?.childImageSharp?.gatsbyImageData
+  const category = post.categories.nodes
+  const tag = post.tags.nodes
+  const speed = post.projects.projectsGallerySpeed
+  const media = post.projects.projectsMedia
   const credit = post.projects.projectsCredit
   const count = post.projects.projectsMediaCount
   const power = post.projects.projectsMediaPower
@@ -65,29 +46,30 @@ const BlogPostTemplate = ({ data: { previous, next, post } }) => {
                 <div className={projectSingle.postCont}>
                   <div className={projectSingle.postContLeft}>
                     <div className={projectSingle.item}>
-                      <ul>{media.map((item, index) => (
-                        <li key={index}>
-                          {item.photo && (
-                            <GatsbyImage
-                              image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-                              style={{ width: '100%', height: '100%' }}
-                              alt={item.altText}
-                            />
-                          )}
-                          {item.videoid && (
-                            <div className={projectSingle.video}>
-                              <iframe
-                                src={`https://player.vimeo.com/video/${item.videoid}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`}
-                                width={'100%'}
-                                height={'100%'}
-                                frameBorder={'0'}
-                                title='vimeo'
-                                loading="lazy"
+                      <ul>
+                        {media.map((item, index) => (
+                          <li key={index}>
+                            {item.photo && (
+                              <GatsbyImage
+                                image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
+                                style={{ width: '100%', height: '100%' }}
+                                alt={item.altText}
                               />
-                            </div>
-                          )}
-                        </li>
-                      ))}
+                            )}
+                            {item.videoid && (
+                              <div className={projectSingle.video}>
+                                <iframe
+                                  src={`https://player.vimeo.com/video/${item.videoid}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`}
+                                  width={'100%'}
+                                  height={'100%'}
+                                  frameBorder={'0'}
+                                  title='vimeo'
+                                  loading="lazy"
+                                />
+                              </div>
+                            )}
+                          </li>
+                        ))}
                       </ul>
                     </div>
                   </div>
@@ -97,11 +79,10 @@ const BlogPostTemplate = ({ data: { previous, next, post } }) => {
                       <div className={projectSingle.subTtlJa}>{subTtlJa}</div>
                       <p>{post.date}</p>
 
-                      {/* if we have a featured image for this post let's display it */}
-                      {featuredImage?.data && (
+                      {featuredImage && (
                         <GatsbyImage
-                          image={featuredImage.data}
-                          alt={featuredImage.alt}
+                          image={featuredImage}
+                          alt={post.featuredImage.node.altText}
                           style={{ marginBottom: 50 }}
                         />
                       )}
@@ -120,8 +101,7 @@ const BlogPostTemplate = ({ data: { previous, next, post } }) => {
               </article>
             </div>
           </Scrollbar>
-          {window.location.pathname === '/' ? (
-
+          {location.pathname === '/' ? (
             <div
               role="button"
               tabIndex={0}
@@ -136,7 +116,6 @@ const BlogPostTemplate = ({ data: { previous, next, post } }) => {
             >
               <IconClose />
             </div>
-
           ) : (
             <Link to="/">
               <div>
@@ -144,41 +123,40 @@ const BlogPostTemplate = ({ data: { previous, next, post } }) => {
               </div>
             </Link>
           )}
-
         </div>
       </div>
-    </Layout >
+    </Layout>
   )
 }
 
 export default BlogPostTemplate
 
 export const pageQuery = graphql`
-        query BlogPostById(
-        $id: String!
-        $previousPostId: String
-        $nextPostId: String
-        ) {
-          post: wpPost(id: {eq: $id }) {
-          id
+  query BlogPostById(
+    $id: String!
+    $previousPostId: String
+    $nextPostId: String
+  ) {
+    post: wpPost(id: {eq: $id}) {
+      id
       excerpt
-        content
-        title
-        categories {
-          nodes {
+      content
+      title
+      categories {
+        nodes {
           name
-              slug
-        id
-            }
-          }
-        tags {
-          nodes {
+          slug
+          id
+        }
+      }
+      tags {
+        nodes {
           name
-              id
-        slug
-            }
-          }
-        projects {
+          id
+          slug
+        }
+      }
+      projects {
         projectsGallerySpeed
         projectsCredit
         projectsMediaCount
@@ -190,40 +168,32 @@ export const pageQuery = graphql`
         projectsMedia {
           videoid
           photo {
-          node {
-          altText
-          localFile {
-          childImageSharp {
+            node {
+              altText
+              localFile {
+                childImageSharp {
                   gatsbyImageData(placeholder: DOMINANT_COLOR, quality: 100, layout: CONSTRAINED)
-                    }
-                  }
                 }
               }
             }
           }
-        date(formatString: "MMMM DD, YYYY")
-        featuredImage {
-          node {
+        }
+      }
+      date(formatString: "MMMM DD, YYYY")
+      featuredImage {
+        node {
           altText
           localFile {
-          childImageSharp {
-          gatsbyImageData(
-            quality: 100
-        placeholder: TRACED_SVG
-        layout: FULL_WIDTH
-        )
+            childImageSharp {
+              gatsbyImageData(
+                quality: 100
+                placeholder: TRACED_SVG
+                layout: FULL_WIDTH
+              )
             }
           }
         }
       }
     }
-        previous: wpPost(id: {eq: $previousPostId }) {
-          uri
-      title
-    }
-        next: wpPost(id: {eq: $nextPostId }) {
-          uri
-      title
-    }
   }
-        `
+`
