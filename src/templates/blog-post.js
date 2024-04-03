@@ -10,13 +10,13 @@ import * as projectSingle from '../css/components/project-single.module.scss'
 
 const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
   const handleModalClose = () => {
+    // Check if it's the first page
     if (location.pathname === '/') {
       navigate('/');
     } else {
       window.history.back();
     }
   };
-
   const featuredImage = post.featuredImage?.node?.localFile?.childImageSharp?.gatsbyImageData
   //const category = post.categories.nodes
   //const tag = post.tags.nodes
@@ -102,28 +102,30 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
               </article>
             </div>
           </Scrollbar>
-          {location.pathname === '/' ? (
-            <div
-              role="button"
-              tabIndex={0}
-              className="modal-close"
-              onClick={handleModalClose}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  handleModalClose();
-                }
-              }}
-              aria-label="Close modal"
-            >
-              <IconClose />
-            </div>
-          ) : (
-            <Link to="/">
-              <div>
+          {
+            location.pathname === '/' ? (
+              <div
+                role="button"
+                tabIndex={0}
+                className="modal-close"
+                onClick={handleModalClose}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    handleModalClose();
+                  }
+                }}
+                aria-label="Close modal"
+              >
                 <IconClose />
               </div>
-            </Link>
-          )}
+            ) : (
+              <Link to="/">
+                <div>
+                  <IconClose />
+                </div>
+              </Link>
+            )
+          }
         </div>
       </div>
     </Layout>
