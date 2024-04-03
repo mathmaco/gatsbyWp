@@ -8,6 +8,7 @@ import { GatsbyImage } from "gatsby-plugin-image"
 import Scrollbar from '../components/scrollbar';
 import "../css/components/scrollbar.scss"
 import IconClose from "../components/icon_close"
+import * as page from '../css/components/page.module.scss'
 
 const Page = ({ data: { node }, location }) => {
 
@@ -37,22 +38,29 @@ const Page = ({ data: { node }, location }) => {
       <div className="modal">
         <div className="modal-inner">
           <Scrollbar>
-            <article className="myContainer">
-              <h1>{node.title}</h1>
-              {!!node.content && (
-                <section>{parse(node.content)}</section>
-              )}
-
-              {featuredImage && (
-                <GatsbyImage
-                  image={featuredImage.gatsbyImage}
-                  alt={featuredImage.altText}
-                  style={{ height: "100%", marginBottom: 50 }}
-                  layout="fullWidth"
-                  quality={100}
-                  placeholder="dominantColor"
-                />
-              )}
+            <article
+              className={page.page}
+            >
+              <div className={page.pageCont}>
+                <div className={page.pageContLeft}>
+                  <h1>{node.title}</h1>
+                  {!!node.content && (
+                    <section>{parse(node.content)}</section>
+                  )}
+                </div>
+                <div className={page.pageContRight}>
+                  {featuredImage && (
+                    <GatsbyImage
+                      image={featuredImage.gatsbyImage}
+                      alt={featuredImage.altText}
+                      style={{ height: "100%", marginBottom: 50 }}
+                      layout="fullWidth"
+                      quality={100}
+                      placeholder="dominantColor"
+                    />
+                  )}
+                </div>
+              </div>
             </article>
           </Scrollbar>
 

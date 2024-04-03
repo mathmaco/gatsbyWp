@@ -38,69 +38,67 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
       <div className="modal">
         <div className="modal-inner">
           <Scrollbar>
-            <div className="modal-cont">
-              <article
-                className={projectSingle.post}
-                itemScope
-                itemType="http://schema.org/Article"
-              >
-                <div className={projectSingle.postCont}>
-                  <div className={projectSingle.postContLeft}>
-                    <div>
-                      <ul>
-                        {media.map((item, index) => (
-                          <li key={index}>
-                            {item.photo && (
-                              <GatsbyImage
-                                image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-                                style={{ width: '100%', height: '100%' }}
-                                alt={item.altText}
+            <article
+              className={projectSingle.post}
+              itemScope
+              itemType="http://schema.org/Article"
+            >
+              <div className={projectSingle.postCont}>
+                <div className={projectSingle.postContLeft}>
+                  <div>
+                    <ul>
+                      {media.map((item, index) => (
+                        <li key={index}>
+                          {item.photo && (
+                            <GatsbyImage
+                              image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
+                              style={{ width: '100%', height: '100%' }}
+                              alt={item.altText}
+                            />
+                          )}
+                          {item.videoid && (
+                            <div>
+                              <iframe
+                                src={`https://player.vimeo.com/video/${item.videoid}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`}
+                                width={'100%'}
+                                height={'100%'}
+                                frameBorder={'0'}
+                                title='vimeo'
+                                loading="lazy"
                               />
-                            )}
-                            {item.videoid && (
-                              <div>
-                                <iframe
-                                  src={`https://player.vimeo.com/video/${item.videoid}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`}
-                                  width={'100%'}
-                                  height={'100%'}
-                                  frameBorder={'0'}
-                                  title='vimeo'
-                                  loading="lazy"
-                                />
-                              </div>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                  <div className={projectSingle.postContRight}>
-                    <header>
-                      <h1 itemProp="headline">{parse(post.title)}</h1>
-                      <div>{subTtlJa}</div>
-                      <p>{post.date}</p>
-
-                      {featuredImage && (
-                        <GatsbyImage
-                          image={featuredImage}
-                          alt={post.featuredImage.node.altText}
-                          style={{ marginBottom: 50 }}
-                        />
-                      )}
-                    </header>
-
-                    {!!post.content && (
-                      <section itemProp="articleBody">{parse(post.content)}</section>
-                    )}
-
-                    <hr />
-
-                    <footer>
-                    </footer>
+                            </div>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
-              </article>
-            </div>
+                <div className={projectSingle.postContRight}>
+                  <header>
+                    <h1 itemProp="headline">{parse(post.title)}</h1>
+                    <div>{subTtlJa}</div>
+                    <p>{post.date}</p>
+
+                    {featuredImage && (
+                      <GatsbyImage
+                        image={featuredImage}
+                        alt={post.featuredImage.node.altText}
+                        style={{ marginBottom: 50 }}
+                      />
+                    )}
+                  </header>
+
+                  {!!post.content && (
+                    <section itemProp="articleBody">{parse(post.content)}</section>
+                  )}
+
+                  <hr />
+
+                  <footer>
+                  </footer>
+                </div>
+              </div>
+            </article>
           </Scrollbar>
           {
             location.pathname === '/' ? (

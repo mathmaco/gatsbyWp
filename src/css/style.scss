@@ -145,6 +145,7 @@ a:hover {
  top: vwpc(20);
  left: vwpc(20);
  right: vwpc(20);
+ display: flex;
  margin: auto;
  width: calc(100% - vwpc(40));
  height: calc(100% - vwpc(40));
