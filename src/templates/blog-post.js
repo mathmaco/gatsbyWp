@@ -20,128 +20,168 @@ const BlogPostTemplate = ({ data: { previous, next, post } }) => {
     data: post.featuredImage?.node?.localFile?.childImageSharp?.gatsbyImageData,
     alt: post.featuredImage?.node?.alt || ``,
   }
+  const category = post.categories.nodes;
+  const tag = post.tags.nodes;
+  //const galleries = post.projects.projectsGallery.nodes;
+  const speed = post.projects.projectsGallerySpeed;
+  const media = post.projects.projectsMedia;
+
+
+  const credit = post.projects.projectsCredit
+  const count = post.projects.projectsMediaCount
+  const power = post.projects.projectsMediaPower
+  const subTtlEn = post.projects.projectsSubtitleEn
+  const subTtlJa = post.projects.projectsSubtitleJa
+  const ttlEn = post.projects.projectsTitleEn
+  const url = post.projects.projectsUrl
 
   return (
     <Layout>
       <Seo title={post.title} description={post.excerpt} />
 
-      <div className="modal">
-        <article
-          className={projectSingle.post}
-          itemScope
-          itemType="http://schema.org/Article"
-        >
-          <div className={projectSingle.postCont}>
-            <div className={projectSingle.postContLeft}>
-              aaaaaaaaaaa
-            </div>
-            <div className={projectSingle.postContLeft}>
-              <header>
-                <h1 itemProp="headline">{parse(post.title)}</h1>
+      <div className="modal scrollbar">
+        <div className="modal-cont">
+          <article
+            className={projectSingle.post}
+            itemScope
+            itemType="http://schema.org/Article"
+          >
+            <div className={projectSingle.postCont}>
+              <div className={projectSingle.postContLeft}>
+                <div className={projectSingle.item}>
+                  <ul>{media.map((item, index) => (
+                    <li key={index}>
+                      {item.photo && (
+                        <GatsbyImage
+                          image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
+                          style={{ width: '100%', height: '100%' }}
+                          alt={item.altText}
+                        />
+                      )}
+                      {item.videoid && (
+                        <div className={projectSingle.video}>
+                          <iframe
+                            src={`https://player.vimeo.com/video/${item.videoid}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`}
+                            width={'100%'}
+                            height={'100%'}
+                            frameBorder={'0'}
+                            title='vimeo'
+                            loading="lazy"
+                          />
+                        </div>
+                      )}
+                    </li>
+                  ))}
+                  </ul>
+                </div>
+              </div>
+              <div className={projectSingle.postContRight}>
+                <header>
+                  <h1 itemProp="headline">{parse(post.title)}</h1>
+                  <div className={projectSingle.subTtlJa}>{subTtlJa}</div>
+                  <p>{post.date}</p>
 
-                <p>{post.date}</p>
+                  {/* if we have a featured image for this post let's display it */}
+                  {featuredImage?.data && (
+                    <GatsbyImage
+                      image={featuredImage.data}
+                      alt={featuredImage.alt}
+                      style={{ marginBottom: 50 }}
+                    />
+                  )}
+                </header>
 
-                {/* if we have a featured image for this post let's display it */}
-                {featuredImage?.data && (
-                  <GatsbyImage
-                    image={featuredImage.data}
-                    alt={featuredImage.alt}
-                    style={{ marginBottom: 50 }}
-                  />
+                {!!post.content && (
+                  <section itemProp="articleBody">{parse(post.content)}</section>
                 )}
-              </header>
 
-              {!!post.content && (
-                <section itemProp="articleBody">{parse(post.content)}</section>
-              )}
+                <hr />
 
-              <hr />
-
-              <footer>
-                <Bio />
-              </footer>
+                <footer>
+                  <Bio />
+                </footer>
+              </div>
             </div>
-          </div>
-        </article>
+          </article>
+        </div>
       </div>
-
-    </Layout>
+    </Layout >
   )
 }
 
 export default BlogPostTemplate
 
 export const pageQuery = graphql`
-  query BlogPostById(
-    $id: String!
-    $previousPostId: String
-    $nextPostId: String
-  ) {
-    post: wpPost(id: { eq: $id }) {
-      id
+        query BlogPostById(
+        $id: String!
+        $previousPostId: String
+        $nextPostId: String
+        ) {
+          post: wpPost(id: {eq: $id }) {
+          id
       excerpt
-      content
-      title
-      categories {
-            nodes {
-              name
+        content
+        title
+        categories {
+          nodes {
+          name
               slug
-              id
+        id
             }
           }
-          tags {
-            nodes {
-              name
+        tags {
+          nodes {
+          name
               id
-              slug
+        slug
             }
           }
-          projects {
-            projectsGallerySpeed
-            projectsCredit
-            projectsMediaCount
-            projectsMediaPower
-            projectsSubtitleEn
-            projectsSubtitleJa
-            projectsTitleEn
-            projectsUrl
-            projectsMedia {
-              videoid
-              photo {
-                node {
-                  altText
-                  localFile {
-                    childImageSharp {
-                      gatsbyImageData(placeholder: DOMINANT_COLOR, quality: 100, layout: CONSTRAINED)
+        projects {
+        projectsGallerySpeed
+        projectsCredit
+        projectsMediaCount
+        projectsMediaPower
+        projectsSubtitleEn
+        projectsSubtitleJa
+        projectsTitleEn
+        projectsUrl
+        projectsMedia {
+          videoid
+          photo {
+          node {
+          altText
+          localFile {
+          childImageSharp {
+                  gatsbyImageData(placeholder: DOMINANT_COLOR, quality: 100, layout: CONSTRAINED)
                     }
                   }
                 }
               }
             }
           }
-      date(formatString: "MMMM DD, YYYY")
-      featuredImage {
-        node {
+        date(formatString: "MMMM DD, YYYY")
+        featuredImage {
+          node {
           altText
           localFile {
-            childImageSharp {
-              gatsbyImageData(
-                quality: 100
-                placeholder: TRACED_SVG
-                layout: FULL_WIDTH
-              )
+          childImageSharp {
+          gatsbyImageData(
+            quality: 100
+        placeholder: TRACED_SVG
+        layout: FULL_WIDTH
+        )
             }
           }
         }
       }
     }
-    previous: wpPost(id: { eq: $previousPostId }) {
-      uri
+        previous: wpPost(id: {eq: $previousPostId }) {
+          uri
       title
     }
-    next: wpPost(id: { eq: $nextPostId }) {
-      uri
+        next: wpPost(id: {eq: $nextPostId }) {
+          uri
       title
     }
   }
-`
+        `

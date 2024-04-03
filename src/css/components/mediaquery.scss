@@ -1,0 +1,10 @@
+$desktop: '(max-width: 1365px) and (min-width: 768px)';
+$singlesammarypc: '(max-width: 1190px)';
+$tablet: '(max-width: 767px)';
+$sp: '(max-width: 580px)';
+
+@media #{$tablet} {
+ html {
+  -webkit-text-size-adjust: 100%;
+ }
+}

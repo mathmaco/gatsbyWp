@@ -1,0 +1,21 @@
+@use 'sass:math';
+
+// モニタサイズ1366pxを起点にしたvwのサイズ指定
+@function vwpc($size, $viewport: 1366) {
+ $rate: math.div(100, $viewport);
+ @return $rate * $size * 1vw;
+}
+// モニタサイズ750pxを起点にしたvwのサイズ指定
+@function vw($size, $viewport: 750) {
+ $rate: math.div(100, $viewport);
+ @return $rate * $size * 1vw;
+}
+// 上記のvwを利用したフォントサイズの指定
+@mixin fzpc($font_size: 10) {
+ //font-size: $font_size * 1px;
+ font-size: vwpc($font_size);
+}
+@mixin fz($font_size: 10) {
+ //font-size: $font_size * 1px;
+ font-size: vw($font_size);
+}
