@@ -21,13 +21,13 @@ const Scrollbar = ({
     setThumbHeight(Math.max((clientHeight / scrollHeight) * trackSize, 20));
   }
 
-  function handleScrollButton(direction) {
-    const { current } = contentRef;
-    if (current) {
-      const scrollAmount = direction === 'down' ? 200 : -200;
-      current.scrollBy({ top: scrollAmount, behavior: 'smooth' });
-    }
-  }
+  //function handleScrollButton(direction) {
+  //  const { current } = contentRef;
+  //  if (current) {
+  //    const scrollAmount = direction === 'down' ? 200 : -200;
+  //    current.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+  //  }
+  //}
 
   const handleTrackClick = useCallback(
     (e) => {
