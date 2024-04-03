@@ -18,14 +18,52 @@
        width: 100%;
        min-width: 433px;
        height: 500px;
-       iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-       }
       }
+     }
+    }
+   }
+  }
+ }
+ &[data-view='list2'] {
+  .listItem {
+   margin-bottom: 50px;
+
+   &:nth-child(3n + 1) {
+    .gallery {
+     .item {
+      min-width: 433px;
+      height: 250px;
+      img {
+       height: 250px;
+      }
+      .video {
+       position: relative;
+       width: 100%;
+       min-width: 433px;
+       height: 250px;
+      }
+     }
+    }
+   }
+  }
+ }
+ &[data-view='list3'] {
+  .listItem {
+   margin-bottom: 50px;
+
+   .gallery {
+    .item {
+     min-width: 700px;
+     height: 700px;
+     img {
+      width: 100%;
+      height: 700px;
+     }
+     .video {
+      position: relative;
+      width: 100%;
+      min-width: 700px;
+      height: 700px;
      }
     }
    }
