@@ -1,11 +1,24 @@
 import React from "react"
-import { graphql } from "gatsby"
+import { graphql, Link, navigate } from "gatsby"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 import parse from "html-react-parser"
 import { GatsbyImage } from "gatsby-plugin-image"
 
+import Scrollbar from '../components/scrollbar';
+import "../css/components/scrollbar.scss"
+import IconClose from "../components/icon_close"
+
 const Page = ({ data: { node }, location }) => {
+  const handleModalClose = () => {
+    // Check if it's the first page
+    if (typeof window !== 'undefined' && window.location.pathname === '/') {
+      navigate('/');
+    } else {
+      window.history.back();
+    }
+  };
+
 
   const featuredImage = node.featuredImage?.node
   const originalImages = node.featuredImage?.node.localFile.childImageSharp.original
@@ -19,28 +32,58 @@ const Page = ({ data: { node }, location }) => {
         imgh={originalImages.height}
         pagepath={location.pathname}
       />
-      <article className="myContainer">
-        <h1>{node.title}</h1>
-        {!!node.content && (
-          <section>{parse(node.content)}</section>
-        )}
+      <div className="modal">
+        <div className="modal-inner">
+          <Scrollbar>
+            <article className="myContainer">
+              <h1>{node.title}</h1>
+              {!!node.content && (
+                <section>{parse(node.content)}</section>
+              )}
 
-        {featuredImage && (
-          <GatsbyImage
-            image={featuredImage.gatsbyImage}
-            alt={featuredImage.altText}
-            style={{ height: "100%", marginBottom: 50 }}
-            layout="fullWidth"
-            quality={100}
-            placeholder="dominantColor"
-          />
-        )}
+              {featuredImage && (
+                <GatsbyImage
+                  image={featuredImage.gatsbyImage}
+                  alt={featuredImage.altText}
+                  style={{ height: "100%", marginBottom: 50 }}
+                  layout="fullWidth"
+                  quality={100}
+                  placeholder="dominantColor"
+                />
+              )}
+            </article>
+          </Scrollbar>
 
 
+          {window.location.pathname === '/' ? (
 
-      </article>
+            <div
+              role="button"
+              tabIndex={0}
+              className="modal-close"
+              onClick={handleModalClose}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleModalClose();
+                }
+              }}
+              aria-label="Close modal"
+            >
+              <IconClose />
+            </div>
 
-    </Layout>
+          ) : (
+            <Link to="/">
+              <div>
+                <IconClose />
+              </div>
+            </Link>
+          )}
+
+        </div>
+      </div>
+
+    </Layout >
   )
 }
 

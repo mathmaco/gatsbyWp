@@ -18,7 +18,7 @@ module.exports = {
     description: `そのPさんのウェブサイト`,
     lang: `ja`,
     //siteUrl: `https://paa.ac`,
-    siteUrl: `http://paa.local`,
+    siteUrl: `http://cms.mathi.jp/paa`,
     locale: `ja_JP`,
     fbappid: `XXXXXXXXXXXXXXXXXXXXX`,
   },

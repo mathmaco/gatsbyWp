@@ -3,7 +3,7 @@ import { Link, graphql, navigate } from "gatsby"
 
 import { GatsbyImage } from "gatsby-plugin-image"
 import parse from "html-react-parser"
-import Scrollbar from '../components/scrollbar';
+
 // We're using Gutenberg so we need the block styles
 // these are copied into this project due to a conflict in the postCSS
 // version used by the Gatsby and @wordpress packages that causes build
@@ -12,23 +12,23 @@ import Scrollbar from '../components/scrollbar';
 import "../css/@wordpress/block-library/build-style/style.css"
 import "../css/@wordpress/block-library/build-style/theme.css"
 import * as projectSingle from '../css/components/project-single.module.scss';
-import IconClose from "../components/icon_close"
+
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 
+import Scrollbar from '../components/scrollbar';
 import "../css/components/scrollbar.scss"
-
+import IconClose from "../components/icon_close"
 
 const BlogPostTemplate = ({ data: { previous, next, post } }) => {
-  // .modal-close をクリックしたときに前のページに戻る関数
   const handleModalClose = () => {
-    navigate(-1); // -1 は前のページに戻ることを示す
+    // Check if it's the first page
+    if (typeof window !== 'undefined' && window.location.pathname === '/') {
+      navigate('/');
+    } else {
+      window.history.back();
+    }
   };
-
-  // .modal-close が unmount (画面から消える) 場合に、リスナーをクリアする
-  useEffect(() => {
-    return () => { };
-  }, []);
 
   const featuredImage = {
     data: post.featuredImage?.node?.localFile?.childImageSharp?.gatsbyImageData,
@@ -120,7 +120,30 @@ const BlogPostTemplate = ({ data: { previous, next, post } }) => {
               </article>
             </div>
           </Scrollbar>
-          <div className="modal-close" onClick={handleModalClose}><IconClose /></div>
+          {window.location.pathname === '/' ? (
+
+            <div
+              role="button"
+              tabIndex={0}
+              className="modal-close"
+              onClick={handleModalClose}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleModalClose();
+                }
+              }}
+              aria-label="Close modal"
+            >
+              <IconClose />
+            </div>
+
+          ) : (
+            <Link to="/">
+              <div>
+                <IconClose />
+              </div>
+            </Link>
+          )}
 
         </div>
       </div>
