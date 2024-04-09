@@ -22,7 +22,7 @@ const Page = ({ data: { node }, location }) => {
   };
 
 
-
+  const pageName = node.slug;
   const featuredImage = node.featuredImage?.node
   const originalImages = node.featuredImage?.node.localFile.childImageSharp.original
   return (
@@ -39,7 +39,7 @@ const Page = ({ data: { node }, location }) => {
         <div className="modal-inner">
           <Scrollbar>
             <article
-              className={page.page}
+              className={`${page.page}`}
             >
               <div className={page.pageCont}>
                 <div className={page.pageContLeft}>
@@ -106,6 +106,7 @@ export const query = graphql`
     node: wpPage(id: { eq: $id }) {
       id
       title
+      slug
       content
       featuredImage {
         node {
