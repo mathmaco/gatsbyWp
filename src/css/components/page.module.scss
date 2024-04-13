@@ -3,11 +3,14 @@
 .page {
  .pageCont {
   display: flex;
+  height: inherit;
   .pageContLeft {
    width: 50%;
+   height: inherit;
   }
   .pageContRight {
    width: 50%;
+   height: inherit;
   }
   .pageThumb {
   }
