@@ -1,7 +1,7 @@
-import React from "react"
+import React, { useContext } from "react"
 import { graphql, Link, navigate } from "gatsby"
 
-import JSTTimeDisplay from '../components/JSTTimeDisplay'; // コンポーネントのインポート
+import { TimeContext } from '../contexts/TimeContext';
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
@@ -16,6 +16,8 @@ import * as page from '../css/components/page.module.scss'
 import "../css/components/about.scss"
 
 const Page = ({ data: { node }, location }) => {
+
+  const currentTime = useContext(TimeContext);
 
   const handleModalClose = () => {
     // Check if it's the first page
@@ -55,7 +57,7 @@ const Page = ({ data: { node }, location }) => {
                       <li><a href="" target="_blank">X</a></li>
                     </ul>
                     <h1>{node.title}</h1>
-                    <JSTTimeDisplay /> {/* コンポーネントの使用 */}
+                    現在の日本時間: {currentTime}
                   </div>
                 </div>
                 <div className={page.pageContRight}>

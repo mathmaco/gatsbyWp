@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { useStaticQuery, graphql, Link } from 'gatsby';
-import { GatsbyImage } from 'gatsby-plugin-image';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import parse from 'html-react-parser';
 import * as p from '../css/components/project.module.scss';
 import Marquee from 'react-fast-marquee';
 import "../css/components/react-marquee-styles.scss"
 
-
-// Projectsコンポーネント内で
+import { useSelectedValue } from '../contexts/SelectedValueContext';
+import { ProjectsContext } from '../contexts/ProjectsContext';
 const customStyle = {
   // カスタムスタイルをここで定義
 
@@ -51,62 +51,13 @@ const GalleryMarquee = ({ media, speed, postIndex, customStyle }) => {
   );
 };
 
-const Projects = ({ selectedValue }) => {
-  const data = useStaticQuery(graphql`
-    query {
-      allWpPost(
-        sort: { fields: [date], order: DESC }
-        limit: 1000
-        skip: 0
-      ) {
-        nodes {
-          excerpt
-          uri
-          date(formatString: "MMMM DD, YYYY")
-          title
-          categories {
-            nodes {
-              name
-              slug
-              id
-            }
-          }
-          tags {
-            nodes {
-              name
-              id
-              slug
-            }
-          }
-          projects {
-            projectsGallerySpeed
-            projectsCredit
-            projectsMediaCount
-            projectsMediaPower
-            projectsSubtitleEn
-            projectsSubtitleJa
-            projectsTitleEn
-            projectsUrl
-            projectsMedia {
-              videoid
-              photo {
-                node {
-                  altText
-                  localFile {
-                    childImageSharp {
-                      gatsbyImageData(placeholder: DOMINANT_COLOR, quality: 100, layout: CONSTRAINED)
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `);
+const Projects = () => {
 
-  const allNews = data.allWpPost.nodes;
+  const posts = useContext(ProjectsContext);
+  const { selectedValue } = useSelectedValue();
+
+
+  const allNews = useContext(ProjectsContext);
   const [list, setList] = useState([...allNews.slice(0, 1)]);
   const [loadMore, setLoadMore] = useState(false);
   const [hasMore, setHasMore] = useState(allNews.length > 1);
@@ -147,6 +98,7 @@ useEffect(() => {
   const isMore = list.length < allNews.length
   setHasMore(isMore)
 }, [list, allNews]); // 'allNews'を依存関係の配列に追加する
+
 
   return (
     <>
@@ -212,7 +164,7 @@ useEffect(() => {
         );
       })}
       </ul>
-      <div ref={loadRef}>
+      <div ref={loadRef} >
         {hasMore ? <p>Loading...</p> : <p>No more results</p>}
       </div>
     </>

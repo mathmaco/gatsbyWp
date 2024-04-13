@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet"
 
 import Footer from "./footer";
 import Header from "./header";
-//import Projects from "./projects";
+import Projects from "./projects";
 
 
 
@@ -40,7 +40,7 @@ const Layout = ({ isHomePage, children }) => {
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
       </Helmet>
       <Header />
-      {/*<Projects />*/}
+
         <div className="global-wrapper" data-is-root-path={isHomePage}>
           <header className="global-header">
             {/*{isHomePage ? (
@@ -54,7 +54,9 @@ const Layout = ({ isHomePage, children }) => {
             )}*/}
           </header>
 
-          <main>{children}</main>
+        <main>
+          <Projects />
+          {children}</main>
 
           <Footer />
         </div>

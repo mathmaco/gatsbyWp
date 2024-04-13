@@ -2,7 +2,7 @@ import React from "react"
 import { graphql } from "gatsby"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
-import { GatsbyImage } from "gatsby-plugin-image"
+//import { GatsbyImage } from "gatsby-plugin-image"
 
 
 
@@ -18,14 +18,14 @@ const ServicePage = ({ data, location }) => {
 
 
        <h1>SERVICE : PAGE</h1>
-       <figure className="hero">
+       {/*<figure className="hero">
 
          <GatsbyImage
           image={data.hero.childImageSharp.gatsbyImageData}
           alt=""
           style={{ height: "100%" }}
          />
-       </figure>
+       </figure>*/}
     <p>You just hit a route that doesn&#39;t exist... the sadness.</p>
    </Layout>
   </>

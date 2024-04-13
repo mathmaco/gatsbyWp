@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import { Link } from "gatsby";
 //import { StaticImage } from "gatsby-plugin-image"
 
-import Projects from "./projects";
+import { useSelectedValue } from '../contexts/SelectedValueContext';
 
 import Logo from "./logo";
 import Paa from "./paa";
@@ -18,22 +18,19 @@ import * as header from "../css/components/header.module.scss"
 
 
 const Header = () => {
-  const [selectedValue, setSelectedValue] = useState(null);
-
+ const { selectedValue, setSelectedValue } = useSelectedValue();
+// 以前のローカルストレージのロジックもここに含めることができます
   useEffect(() => {
-    // ページが読み込まれた際にローカルストレージから値を取得する
     const savedValue = localStorage.getItem('selectedValue');
     if (savedValue) {
       setSelectedValue(savedValue);
     }
-  }, []); // 空の配列を渡すことで、このeffectはマウント時にのみ実行されます
+  }, [setSelectedValue]);
 
   const handleClick = (value) => {
     setSelectedValue(value);
-    // 値をローカルストレージに保存する
     localStorage.setItem('selectedValue', value);
   };
-
 
   return (
     <>
@@ -60,7 +57,7 @@ const Header = () => {
       </div>
     </div>
     </header>
-      <Projects selectedValue={selectedValue} />
+
     </>
 
   );
