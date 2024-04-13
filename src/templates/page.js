@@ -10,6 +10,8 @@ import "../css/components/scrollbar.scss"
 import IconClose from "../components/icon_close"
 import * as page from '../css/components/page.module.scss'
 
+import "../css/components/about.scss"
+
 const Page = ({ data: { node }, location }) => {
 
   const handleModalClose = () => {
@@ -21,8 +23,7 @@ const Page = ({ data: { node }, location }) => {
     }
   };
 
-
-  const pageName = node.slug;
+  const safeClassName = node.slug.replace(/\s+/g, '-').toLowerCase();
   const featuredImage = node.featuredImage?.node
   const originalImages = node.featuredImage?.node.localFile.childImageSharp.original
   return (
@@ -35,7 +36,7 @@ const Page = ({ data: { node }, location }) => {
         imgh={originalImages.height}
         pagepath={location.pathname}
       />
-      <div className="modal">
+      <div className={`modal ${safeClassName}-page`}>
         <div className="modal-inner">
           <Scrollbar>
             <article
@@ -44,21 +45,25 @@ const Page = ({ data: { node }, location }) => {
               <div className={page.pageCont}>
                 <div className={page.pageContLeft}>
                   <h1>{node.title}</h1>
-                  {!!node.content && (
-                    <section>{parse(node.content)}</section>
-                  )}
                 </div>
                 <div className={page.pageContRight}>
-                  {featuredImage && (
-                    <GatsbyImage
-                      image={featuredImage.gatsbyImage}
-                      alt={featuredImage.altText}
-                      style={{ height: "100%", marginBottom: 50 }}
-                      layout="fullWidth"
-                      quality={100}
-                      placeholder="dominantColor"
-                    />
-                  )}
+                  <div className="about-textarea">
+                    {!!node.content && (
+                      <div>{parse(node.content)}</div>
+                    )}
+                  </div>
+                  <div className={page.pageThumb}>
+                    {featuredImage && (
+                      <GatsbyImage
+                        image={featuredImage.gatsbyImage}
+                        alt={featuredImage.altText}
+                        style={{ height: "100%", marginBottom: 50 }}
+                        layout="fullWidth"
+                        quality={100}
+                        placeholder="dominantColor"
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             </article>

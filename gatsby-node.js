@@ -183,32 +183,20 @@ async function getPosts({ graphql, reporter }) {
  */
 const createIndividualPages = async ({ pages, gatsbyUtilities }) =>
   Promise.all(
-    pages.map(({ node }) => // ページデータは node オブジェクトの中にあります
-      // createPage is an action passed to createPages
-      // See https://www.gatsbyjs.com/docs/actions#createPage for more info
-      gatsbyUtilities.actions.createPage({
-        // Use the WordPress uri as the Gatsby page path
-        // This is a good idea so that internal links and menus work 👍
+    pages.map(({ node }) => {
+      const componentPath = node.uri === '/about/' ?
+        './src/templates/about-page.js' : // aboutページ専用のテンプレート
+        './src/templates/page.js';        // その他の一般的なページ用のテンプレート
+
+      return gatsbyUtilities.actions.createPage({
         path: node.uri,
-
-        // use the blog post template as the page component
-        component: path.resolve(`./src/templates/page.js`),
-
-        // `context` is available in the template as a prop and
-        // as a variable in GraphQL.
+        component: path.resolve(componentPath),
         context: {
-          // we need to add the post id here
-          // so our blog post template knows which blog post
-          // the current page is (when you open it in a browser)
           id: node.id,
-
-          // We also use the next and previous id's to query them and add links!
-          //previousPostId: previous ? previous.id : null,
-          //nextPostId: next ? next.id : null,
         },
-      })
-    )
-  )
+      });
+    })
+  );
 
 async function getPages({ graphql, reporter }) {
   const graphqlResultPages = await graphql(/* GraphQL */ `

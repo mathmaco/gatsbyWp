@@ -33,7 +33,6 @@ const GalleryMarquee = ({ media, speed, postIndex, customStyle }) => {
                 src={`https://player.vimeo.com/video/${item.videoid}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`}
                 width={'100%'}
                 height={'100%'}
-                frameBorder={'0'}
                 title='vimeo'
                 loading="lazy"
               />
