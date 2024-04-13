@@ -1,5 +1,5 @@
 import React from "react"
-import { Link, useStaticQuery, graphql } from "gatsby"
+import { useStaticQuery, graphql } from "gatsby"
 import parse from "html-react-parser"
 
 import { Helmet } from "react-helmet"
@@ -43,7 +43,7 @@ const Layout = ({ isHomePage, children }) => {
       {/*<Projects />*/}
         <div className="global-wrapper" data-is-root-path={isHomePage}>
           <header className="global-header">
-            {isHomePage ? (
+            {/*{isHomePage ? (
               <h1 className="main-heading">
                 <Link to="/">{parse(title)}</Link>
               </h1>
@@ -51,7 +51,7 @@ const Layout = ({ isHomePage, children }) => {
               <Link className="header-link-home" to="/">
                 {title}
               </Link>
-            )}
+            )}*/}
           </header>
 
           <main>{children}</main>

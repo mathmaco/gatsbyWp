@@ -12,7 +12,7 @@ const IndexPage = ({ data, location }) => {
 
      <Layout location={location} title={siteTitle}>
        <Seo title="INDEXPAGE" description="TOPページです" />
-        <h1>INDEX: PAGE</h1>
+       <h1 style={{ display: 'none'}}>INDEX: PAGE</h1>
      </Layout>
   </>
  )
