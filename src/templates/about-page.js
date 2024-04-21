@@ -57,14 +57,20 @@ const Page = ({ data: { node }, location }) => {
                       <li><a href="" target="_blank">X</a></li>
                     </ul>
                     <div className="current-time">{currentTime}</div>
+                    <div className="about-info">
+                      {node.title}
+                    </div>
                   </div>
                 </div>
                 <div className={page.pageContRight}>
                   <div className="about-content-right">
-                    <div className="about-textarea">
-                      <h1 style={{ display: 'none' }}>{node.title}</h1>
+                    <div className="about-greeting">
+                      <h1 className="about-block1">{node.about.aboutBlock1}</h1>
+                      <h2 className="about-block2">{node.about.aboutBlock2}</h2>
+                      <p className="about-block3">{node.about.aboutBlock3}</p>
+                      <p className="about-block4">{node.about.aboutBlock4}</p>
                       {!!node.content && (
-                        <div>{parse(node.content)}</div>
+                        <div className="about-profile">{parse(node.content)}</div>
                       )}
                     </div>
                     {/*{featuredImage && (
@@ -127,6 +133,12 @@ export const query = graphql`
       title
       slug
       content
+      about {
+          aboutBlock1
+          aboutBlock2
+          aboutBlock3
+          aboutBlock4
+      }
       featuredImage {
         node {
           altText

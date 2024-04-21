@@ -5,4 +5,27 @@
   min-height: 100%;
   background-color: $clr-red;
  }
+ .about-content-right {
+  .about-greeting {
+   padding: 15px 0;
+   .about-block1 {
+    margin-bottom: 25px;
+    font-size: 20px;
+   }
+   .about-block2 {
+    margin-bottom: 25px;
+    font-size: 24px;
+   }
+   .about-block3 {
+    margin-bottom: 25px;
+    font-size: 32px;
+   }
+   .about-block4 {
+    font-size: 16px;
+   }
+   .about-profile {
+    font-size: 11px;
+   }
+  }
+ }
 }
