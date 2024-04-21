@@ -173,3 +173,16 @@ a:hover {
 .scrollbar {
  overflow: scroll;
 }
+.sns-list {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ li {
+  &:not(:last-child) {
+   margin-right: 10px;
+  }
+  a {
+   font-size: 13px;
+  }
+ }
+}

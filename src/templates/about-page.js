@@ -51,18 +51,18 @@ const Page = ({ data: { node }, location }) => {
               <div className={page.pageCont}>
                 <div className={page.pageContLeft}>
                   <div className="about-content-left">
-                    <ul className="snsList">
+                    <ul className="sns-list">
                       <li><a href="" target="_blank">Instagram</a></li>
                       <li><a href="" target="_blank">Vimeo</a></li>
                       <li><a href="" target="_blank">X</a></li>
                     </ul>
-                    <h1>{node.title}</h1>
-                    現在の日本時間: {currentTime}
+                    <div className="current-time">{currentTime}</div>
                   </div>
                 </div>
                 <div className={page.pageContRight}>
                   <div className="about-content-right">
                     <div className="about-textarea">
+                      <h1 style={{ display: 'none' }}>{node.title}</h1>
                       {!!node.content && (
                         <div>{parse(node.content)}</div>
                       )}
