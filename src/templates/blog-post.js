@@ -8,7 +8,7 @@ import Scrollbar from '../components/scrollbar'
 import IconClose from "../components/icon_close"
 import * as single from '../css/components/project-single.module.scss'
 import Star from "../components/star";
-
+import IconArrow from "../components/icon_arrow";
 
 const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
   const handleModalClose = () => {
@@ -141,7 +141,7 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
                   {!!credit && (
                     <footer className={single.footer}>
                       <div className={single.credit}>{parse(credit)}</div>
-                      <div className={single.url}><a href="{url}" target="_blank">{url}</a></div>
+                      <div className={single.url}><a href="{url}" target="_blank">{url}<i className={single.linkArrow}><IconArrow fill={fillColor} /></i></a></div>
                     </footer>
                   )}
 
