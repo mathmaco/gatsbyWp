@@ -37,7 +37,7 @@ export const ProjectsProvider = ({ children }) => {
                         projectsTitleEn
                         projectsUrl
                         projectsMedia {
-                            videoid
+                            video
                             photo {
                                 node {
                                     altText

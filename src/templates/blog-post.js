@@ -1,7 +1,7 @@
 import React from "react"
 import { Link, graphql, navigate } from "gatsby"
 import { GatsbyImage } from "gatsby-plugin-image"
-import parse, { domToReact } from 'html-react-parser'
+import parse from 'html-react-parser'
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 import Scrollbar from '../components/scrollbar'
@@ -24,7 +24,7 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
   const tag = post.tags.nodes
   //const speed = post.projects.projectsGallerySpeed
   const media = post.projects.projectsMedia
-  //const video = post.projects.projectsMedia.videoid
+  const video = post.projects.projectsMedia.video
   const credit = post.projects.projectsCredit
   const count = post.projects.projectsMediaCount
   const power = post.projects.projectsMediaPower
@@ -72,10 +72,10 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
                               alt={item.altText}
                             />
                           )}
-                          {item.videoid && (
+                          {item.video && (
                             <div>
                               <iframe
-                                src={`https://player.vimeo.com/video/${item.videoid}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`}
+                                src={`https://player.vimeo.com/video/${item.video}?autoplay=0&loop=0&title=0&byline=0&portrait=0&controls=1&mute=0&autopause=0`}
                                 width={'100%'}
                                 height={'100%'}
                                 frameBorder={'0'}
@@ -214,7 +214,7 @@ export const pageQuery = graphql`
         projectsTitleEn
         projectsUrl
         projectsMedia {
-          videoid
+          video
           photo {
             node {
               altText
