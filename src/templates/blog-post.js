@@ -19,13 +19,13 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
       window.history.back();
     }
   };
-  const featuredImage = post.featuredImage?.node?.localFile?.childImageSharp?.gatsbyImageData
+  //const featuredImage = post.featuredImage?.node?.localFile?.childImageSharp?.gatsbyImageData
   const category = post.categories.nodes
   const tag = post.tags.nodes
   //const speed = post.projects.projectsGallerySpeed
-  const mediaCheck = post.projects.projectsMedia.mediaCheck
+  //const mediaCheck = post.projects.projectsMedia.mediaCheck
   const media = post.projects.projectsMedia
-  const video = post.projects.projectsMedia.video
+  //const video = post.projects.projectsMedia.video
   const credit = post.projects.projectsCredit
   const count = post.projects.projectsMediaCount
   const power = post.projects.projectsMediaPower
@@ -144,7 +144,7 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
                   {!!credit && (
                     <footer className={single.footer}>
                       <div className={single.credit}>{parse(credit)}</div>
-                      <div className={single.url}><a href={url} target="_blank">{url}<i className={single.linkArrow}><IconArrow fill={fillColor} /></i></a></div>
+                      <div className={single.url}><a href={url} target="_blank" rel="noreferrer">{url}<i className={single.linkArrow}><IconArrow fill={fillColor} /></i></a></div>
                     </footer>
                   )}
 
