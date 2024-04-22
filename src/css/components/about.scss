@@ -1,31 +1,114 @@
 @import './global.scss';
 /* about*/
 .about-page {
+ .inner {
+  padding: 0;
+  height: inherit;
+ }
+ .about-box {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-between;
+  height: inherit;
+ }
  .about-content-left {
-  min-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 50%;
   background-color: $clr-red;
+  .sns-list {
+   padding-top: 10px;
+  }
+  .about-time {
+   position: relative;
+   display: inline-block;
+
+   .icon-star {
+    display: inline-block;
+    margin-left: 10px;
+    svg {
+     path {
+      fill: $clr-main;
+     }
+    }
+   }
+  }
+  .about-info {
+   padding-bottom: 20px;
+   .about-logo {
+    margin-bottom: 10px;
+    svg {
+     path {
+      fill: $clr-main;
+     }
+    }
+   }
+   .about-creative {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: center;
+    margin-bottom: 10px;
+
+    .creative-list {
+     display: flex;
+     flex-wrap: wrap;
+     align-items: center;
+     li {
+      &:not(:last-child) {
+       margin-right: 5px;
+      }
+      span {
+       display: inline-block;
+       font-size: 13px;
+      }
+     }
+    }
+    .creative-main {
+     font-size: 28px;
+    }
+   }
+   .about-mail {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+
+    .mail-title {
+     font-size: 13px;
+    }
+    .mail-address {
+     font-size: 28px;
+    }
+   }
+  }
  }
  .about-content-right {
   .about-greeting {
-   padding: 15px 0;
-   .about-block1 {
+   padding: 15px 10px;
+   .about-title {
     margin-bottom: 25px;
     font-size: 20px;
    }
-   .about-block2 {
+   .about-read {
     margin-bottom: 25px;
     font-size: 24px;
    }
-   .about-block3 {
+   .about-text {
     margin-bottom: 25px;
     font-size: 32px;
    }
-   .about-block4 {
+   .about-message {
     font-size: 16px;
    }
-   .about-profile {
-    font-size: 11px;
-   }
+  }
+  .about-profile {
+   border-top: 1px solid $clr-main;
+   padding: 20px 10px;
+   font-size: 11px;
   }
  }
 }

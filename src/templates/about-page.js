@@ -2,6 +2,8 @@ import React, { useContext } from "react"
 import { graphql, Link, navigate } from "gatsby"
 
 import { TimeContext } from '../contexts/TimeContext';
+import Logo from "../components/logo";
+import Star from "../components/star";
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
@@ -45,33 +47,57 @@ const Page = ({ data: { node }, location }) => {
       <div className={`modal ${safeClassName}-page`}>
         <div className="modal-inner">
           <Scrollbar>
-            <article
-              className={`${page.page}`}
-            >
+            <article className={`${page.page}`}>
               <div className={page.pageCont}>
                 <div className={page.pageContLeft}>
                   <div className="about-content-left">
-                    <ul className="sns-list">
-                      <li><a href="" target="_blank">Instagram</a></li>
-                      <li><a href="" target="_blank">Vimeo</a></li>
-                      <li><a href="" target="_blank">X</a></li>
-                    </ul>
-                    <div className="current-time">{currentTime}</div>
-                    <div className="about-info">
-                      {node.title}
+                    <div className="inner">
+                      <div className="about-box">
+                        <ul className="sns-list">
+                          <li><a href="" target="_blank">Instagram</a></li>
+                          <li><a href="" target="_blank">Vimeo</a></li>
+                          <li><a href="" target="_blank">X</a></li>
+                        </ul>
+                        <div className="about-time">
+                          <div className="current-time">{currentTime}<i className="icon-star"><Star /></i></div>
+                        </div>
+                        <div className="about-info">
+                          <div className="about-logo"><Logo /></div>
+                          <div className="about-creative">
+                            <ul className="creative-list">
+                              <li>graphic/</li>
+                              <li>film/</li>
+                              <li>graphic/</li>
+                              <li>film/</li>
+                              <li>motion/</li>
+                              <li>digital/</li>
+                              <li>sound</li>
+                            </ul>
+                            <h2 className="creative-main">Designer</h2>
+                          </div>
+                          <div className="about-mail">
+                            <div className="mail-title">mail</div>
+                            <div className="mail-address">paa(at)paa.ac</div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div className={page.pageContRight}>
                   <div className="about-content-right">
-                    <div className="about-greeting">
-                      <h1 className="about-block1">{node.about.aboutBlock1}</h1>
-                      <h2 className="about-block2">{node.about.aboutBlock2}</h2>
-                      <p className="about-block3">{node.about.aboutBlock3}</p>
-                      <p className="about-block4">{node.about.aboutBlock4}</p>
-                      {!!node.content && (
-                        <div className="about-profile">{parse(node.content)}</div>
-                      )}
+                    <div className="inner">
+                      <div className="about-box">
+                        <div className="about-greeting">
+                          <h1 className="about-title">{node.about.aboutBlock1}</h1>
+                          <h2 className="about-read">{node.about.aboutBlock2}</h2>
+                          <p className="about-text">{node.about.aboutBlock3}</p>
+                          <p className="about-message">{node.about.aboutBlock4}</p>
+                        </div>
+                        {!!node.content && (
+                          <div className="about-profile">{parse(node.content)}</div>
+                        )}
+                      </div>
                     </div>
                     {/*{featuredImage && (
                     <GatsbyImage

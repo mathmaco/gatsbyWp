@@ -7,6 +7,7 @@ import Seo from "../components/seo"
 import Scrollbar from '../components/scrollbar'
 import IconClose from "../components/icon_close"
 import * as projectSingle from '../css/components/project-single.module.scss'
+import Star from "../components/star";
 
 const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
   const handleModalClose = () => {
@@ -18,14 +19,14 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
     }
   };
   const featuredImage = post.featuredImage?.node?.localFile?.childImageSharp?.gatsbyImageData
-  //const category = post.categories.nodes
-  //const tag = post.tags.nodes
+  const category = post.categories.nodes
+  const tag = post.tags.nodes
   //const speed = post.projects.projectsGallerySpeed
   const media = post.projects.projectsMedia
   //const video = post.projects.projectsMedia.videoid
   //const credit = post.projects.projectsCredit
-  //const count = post.projects.projectsMediaCount
-  //const power = post.projects.projectsMediaPower
+  const count = post.projects.projectsMediaCount
+  const power = post.projects.projectsMediaPower
   //const subTtlEn = post.projects.projectsSubtitleEn
   const subTtlJa = post.projects.projectsSubtitleJa
   //const ttlEn = post.projects.projectsTitleEn
@@ -34,7 +35,6 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
   return (
     <Layout>
       <Seo title={post.title} description={post.excerpt} />
-
       <div className="modal">
         <div className="modal-inner">
           <Scrollbar>
@@ -77,15 +77,40 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
                   <header>
                     <h1 itemProp="headline">{parse(post.title)}</h1>
                     <div>{subTtlJa}</div>
-                    <p>{post.date}</p>
+                    <div>{post.date}</div>
+                    <div className="meta">
+                      <div className="meta-box">
+                        <div className="meta-box-left">
+                          {category && (
+                            <ul>
+                              {category.map((cat, index) => (
+                                <li key={index}>{cat.name}</li>
+                              ))}
+                            </ul>
+                          )}
+                          {tag && (
+                            <ul>
+                              {tag.map((tags, index) => (
+                                <li key={index}>{tags.name}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                        <div className="meta-box-right">
+                          <div>{power}</div>
+                          <div>{count}</div>
+                          <div><i className="icon-star"><Star /></i></div>
+                        </div>
+                      </div>
+                    </div>
 
-                    {featuredImage && (
+                    {/*{featuredImage && (
                       <GatsbyImage
                         image={featuredImage}
                         alt={post.featuredImage.node.altText}
                         style={{ marginBottom: 50 }}
                       />
-                    )}
+                    )}*/}
                   </header>
 
                   {!!post.content && (
