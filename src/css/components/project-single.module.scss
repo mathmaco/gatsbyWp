@@ -92,5 +92,22 @@
     font-size: 18px;
    }
   }
+  .footer {
+   .credit {
+    border-top: 1px solid $clr-main;
+    padding: 15px 10px;
+   }
+   .url {
+    border-top: 1px solid $clr-main;
+    border-bottom: 1px solid $clr-main;
+    padding: 15px 10px 20px;
+    a {
+     text-decoration: underline;
+     &:hover {
+      text-decoration: none;
+     }
+    }
+   }
+  }
  }
 }

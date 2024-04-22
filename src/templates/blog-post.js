@@ -25,13 +25,13 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
   //const speed = post.projects.projectsGallerySpeed
   const media = post.projects.projectsMedia
   //const video = post.projects.projectsMedia.videoid
-  //const credit = post.projects.projectsCredit
+  const credit = post.projects.projectsCredit
   const count = post.projects.projectsMediaCount
   const power = post.projects.projectsMediaPower
   //const subTtlEn = post.projects.projectsSubtitleEn
   const subTtlJa = post.projects.projectsSubtitleJa
   //const ttlEn = post.projects.projectsTitleEn
-  //const url = post.projects.projectsUrl
+  const url = post.projects.projectsUrl
 
   const fillColor = "#000";
 
@@ -138,10 +138,13 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
                     </section>
                   )}
 
-                  <hr />
+                  {!!credit && (
+                    <footer className={single.footer}>
+                      <div className={single.credit}>{parse(credit)}</div>
+                      <div className={single.url}><a href="{url}" target="_blank">{url}</a></div>
+                    </footer>
+                  )}
 
-                  <footer>
-                  </footer>
                 </div>
               </div>
             </article>
