@@ -9,5 +9,88 @@
   .postContRight {
    width: 50%;
   }
+  .header {
+   border-bottom: 1px solid $clr-main;
+   .TtlCont {
+    padding: 20px 10px 0;
+   }
+   .ttlja {
+    font-size: 60px;
+   }
+   .subttlja {
+    font-size: 60px;
+   }
+   .meta {
+    padding: 15px 10px;
+    .metaBox {
+     display: flex;
+     justify-content: space-between;
+
+     .metaBoxRight {
+      text-align: right;
+     }
+    }
+    .categoryList {
+     display: flex;
+     margin-bottom: 3px;
+     li {
+      font-size: 11px;
+      &:not(:last-child) {
+       margin-right: 5px;
+      }
+     }
+    }
+    .tagList {
+     display: flex;
+     margin-bottom: 3px;
+
+     li {
+      position: relative;
+      font-size: 11px;
+
+      &:not(:last-child) {
+       margin-right: 10px;
+       &::before {
+        content: ',';
+        position: absolute;
+        right: -5px;
+        bottom: 0;
+        font-size: 11px;
+       }
+      }
+     }
+    }
+    .date {
+     font-size: 11px;
+    }
+    .power {
+     margin-bottom: 3px;
+     font-size: 11px;
+    }
+    .count {
+     margin-bottom: 3px;
+     font-size: 11px;
+    }
+    .star {
+     .icon-star {
+      svg {
+       path {
+        fill: $clr-main;
+       }
+      }
+     }
+    }
+   }
+  }
+  .textarea {
+   padding: 20px 10px;
+   h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+   }
+   p {
+    font-size: 18px;
+   }
+  }
  }
 }

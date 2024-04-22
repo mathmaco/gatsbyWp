@@ -1,13 +1,14 @@
 import React from "react"
 import { Link, graphql, navigate } from "gatsby"
 import { GatsbyImage } from "gatsby-plugin-image"
-import parse from "html-react-parser"
+import parse, { domToReact } from 'html-react-parser'
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 import Scrollbar from '../components/scrollbar'
 import IconClose from "../components/icon_close"
-import * as projectSingle from '../css/components/project-single.module.scss'
+import * as single from '../css/components/project-single.module.scss'
 import Star from "../components/star";
+
 
 const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
   const handleModalClose = () => {
@@ -32,6 +33,21 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
   //const ttlEn = post.projects.projectsTitleEn
   //const url = post.projects.projectsUrl
 
+  const fillColor = "#000";
+
+  const options = {
+    replace: ({ attribs, children, name }) => {
+      if (!attribs) {
+        return;
+      }
+
+      if (name === 'br') {
+        return <br />;
+      }
+    }
+  };
+
+
   return (
     <Layout>
       <Seo title={post.title} description={post.excerpt} />
@@ -39,14 +55,14 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
         <div className="modal-inner">
           <Scrollbar>
             <article
-              className={projectSingle.post}
+              className={single.post}
               itemScope
               itemType="http://schema.org/Article"
             >
-              <div className={projectSingle.postCont}>
-                <div className={projectSingle.postContLeft}>
+              <div className={single.postCont}>
+                <div className={single.postContLeft}>
                   <div>
-                    <ul>
+                    <ul className="">
                       {media.map((item, index) => (
                         <li key={index}>
                           {item.photo && (
@@ -73,33 +89,35 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
                     </ul>
                   </div>
                 </div>
-                <div className={projectSingle.postContRight}>
-                  <header>
-                    <h1 itemProp="headline">{parse(post.title)}</h1>
-                    <div>{subTtlJa}</div>
-                    <div>{post.date}</div>
-                    <div className="meta">
-                      <div className="meta-box">
-                        <div className="meta-box-left">
+                <div className={single.postContRight}>
+                  <header className={single.header}>
+                    <div className={single.TtlCont}>
+                      <h1 itemProp="headline" className={single.ttlja}>{parse(post.title)}</h1>
+                      <div className={single.subttlja}>{subTtlJa}</div>
+                    </div>
+                    <div className={single.meta}>
+                      <div className={single.metaBox}>
+                        <div className={single.metaBoxLeft}>
                           {category && (
-                            <ul>
+                            <ul className={single.categoryList}>
                               {category.map((cat, index) => (
                                 <li key={index}>{cat.name}</li>
                               ))}
                             </ul>
                           )}
                           {tag && (
-                            <ul>
+                            <ul className={single.tagList}>
                               {tag.map((tags, index) => (
                                 <li key={index}>{tags.name}</li>
                               ))}
                             </ul>
                           )}
+                          <div className={single.date}>{post.date}</div>
                         </div>
-                        <div className="meta-box-right">
-                          <div>{power}</div>
-                          <div>{count}</div>
-                          <div><i className="icon-star"><Star /></i></div>
+                        <div className={single.metaBoxRight}>
+                          <div className={single.power}>P{power}</div>
+                          <div className={single.count}>[{count}]</div>
+                          <div className={single.star}><i className="icon-star"><Star fill={fillColor} /></i></div>
                         </div>
                       </div>
                     </div>
@@ -113,8 +131,11 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
                     )}*/}
                   </header>
 
+
                   {!!post.content && (
-                    <section itemProp="articleBody">{parse(post.content)}</section>
+                    <section itemProp="articleBody" className={single.textarea}>
+                      {parse(post.content, options)}
+                    </section>
                   )}
 
                   <hr />
@@ -203,7 +224,7 @@ export const pageQuery = graphql`
           }
         }
       }
-      date(formatString: "MMMM DD, YYYY")
+      date(formatString: "MMMM YYYY")
       featuredImage {
         node {
           altText
