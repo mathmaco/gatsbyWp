@@ -23,6 +23,7 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
   const category = post.categories.nodes
   const tag = post.tags.nodes
   //const speed = post.projects.projectsGallerySpeed
+  const mediaCheck = post.projects.projectsMedia.mediaCheck
   const media = post.projects.projectsMedia
   const video = post.projects.projectsMedia.video
   const credit = post.projects.projectsCredit
@@ -61,25 +62,27 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
             >
               <div className={single.postCont}>
                 <div className={single.postContLeft}>
-                  <div>
-                    <ul className="">
+                  <div className={single.mediaList}>
+                    <ul>
                       {media.map((item, index) => (
                         <li key={index}>
-                          {item.photo && (
-                            <GatsbyImage
-                              image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-                              style={{ width: '100%', height: '100%' }}
-                              alt={item.altText}
-                            />
+                          {item.mediaCheck === 'photo' && item.photo && (
+                            <div className={single.photo}>
+                              <GatsbyImage
+                                image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
+                                style={{ width: '100%', height: '100%' }}
+                                alt={item.altText}
+                              />
+                            </div>
                           )}
-                          {item.video && (
-                            <div>
+                          {item.mediaCheck === 'video' && item.video && (
+                            <div className={single.video}>
                               <iframe
                                 src={`https://player.vimeo.com/video/${item.video}?autoplay=0&loop=0&title=0&byline=0&portrait=0&controls=1&mute=0&autopause=0`}
-                                width={'100%'}
-                                height={'100%'}
-                                frameBorder={'0'}
-                                title='vimeo'
+                                width="100%"
+                                height="100%"
+                                frameBorder="0"
+                                title="vimeo"
                                 loading="lazy"
                               />
                             </div>
@@ -141,7 +144,7 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
                   {!!credit && (
                     <footer className={single.footer}>
                       <div className={single.credit}>{parse(credit)}</div>
-                      <div className={single.url}><a href="{url}" target="_blank">{url}<i className={single.linkArrow}><IconArrow fill={fillColor} /></i></a></div>
+                      <div className={single.url}><a href={url} target="_blank">{url}<i className={single.linkArrow}><IconArrow fill={fillColor} /></i></a></div>
                     </footer>
                   )}
 
@@ -214,6 +217,7 @@ export const pageQuery = graphql`
         projectsTitleEn
         projectsUrl
         projectsMedia {
+          mediaCheck
           video
           photo {
             node {

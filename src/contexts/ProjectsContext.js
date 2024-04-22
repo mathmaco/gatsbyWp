@@ -37,6 +37,7 @@ export const ProjectsProvider = ({ children }) => {
                         projectsTitleEn
                         projectsUrl
                         projectsMedia {
+                            mediaCheck
                             video
                             photo {
                                 node {

@@ -19,18 +19,20 @@ const GalleryMarquee = ({ media, speed, postIndex, customStyle }) => {
   useEffect(() => {
     setContent(media.map((item, index) => (
       <div className={p.item} key={index}>
-        {item.photo && (
+        {item.mediaCheck === 'photo' && item.photo && (
+          <div className={p.photo}>
           <GatsbyImage
             image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
             style={{ width:'100%',height: '100%' }}
             alt=""
-          />
+            />
+            </div>
         )}
-{item.videoid && (
+{item.mediaCheck === 'video' && item.video && (
           <>
   <div className={p.video}>
               <iframe
-                src={`https://player.vimeo.com/video/${item.videoid}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`}
+                src={`https://player.vimeo.com/video/${item.video}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`}
                 width={'100%'}
                 height={'100%'}
                 title='vimeo'
@@ -110,7 +112,8 @@ useEffect(() => {
         //const galleries = post.projects.projectsGallery.nodes;
         const speed = post.projects.projectsGallerySpeed;
         const media = post.projects.projectsMedia;
-        //const photo = post.projects.projectsMedia.photo.node;
+        //const mediaCheck = post.projects.projectsMedia.mediaCheck;
+        ////const photo = post.projects.projectsMedia.photo.node;
         //const video = post.projects.projectsMedia.oembed;
 
         const credit = post.projects.projectsCredit
