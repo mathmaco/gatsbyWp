@@ -12,7 +12,9 @@
   .mediaList {
    li {
     .photo {
+     width: 100%;
      img {
+      width: 100%;
      }
     }
     .video {
@@ -46,7 +48,9 @@
     .metaBox {
      display: flex;
      justify-content: space-between;
-
+     .metaBoxLeft {
+      text-align: left;
+     }
      .metaBoxRight {
       text-align: right;
      }
@@ -117,6 +121,9 @@
    .credit {
     border-top: 1px solid $clr-main;
     padding: 15px 10px;
+   }
+   .linkArrow {
+    position: relative;
    }
    .url {
     border-top: 1px solid $clr-main;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 
 import { Link } from "gatsby";
 //import { StaticImage } from "gatsby-plugin-image"

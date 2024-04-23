@@ -1,101 +1,152 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Link } from 'gatsby';
+
+
+import React,{useEffect} from "react";
+import { Link,graphql, useStaticQuery } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
 import parse from 'html-react-parser';
-import * as p from '../css/components/project.module.scss';
-import Marquee from 'react-fast-marquee';
+import * as project from '../css/components/project.module.scss';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
-import { ProjectsContext } from '../contexts/ProjectsContext';
+import Loop from './loop'; // Import the Loop component
+import Marquee from 'react-fast-marquee';
+
 
 const GalleryMarquee = ({ media, speed, postIndex }) => {
   return (
-    <Marquee speed={speed} direction={postIndex % 2 === 0 ? 'left' : 'right'} autoFill={true}>
-      {media.map((item, index) => (
-        <div className={p.item} key={index}>
-          {item.mediaCheck === 'photo' && item.photo && (
-            <div className={p.photo}>
-              <GatsbyImage
-                image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-                alt=""
-                style={{ width: '100%', height: '100%' }}
-              />
-            </div>
-          )}
-          {item.mediaCheck === 'video' && item.video && (
-            <div className={p.video}>
-              <iframe
-                src={`https://player.vimeo.com/video/${item.video}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`}
-                width="100%"
-                height="100%"
-                title="vimeo"
-                loading="lazy"
-              />
-            </div>
-          )}
-        </div>
-      ))}
+      <Marquee speed={speed} direction={postIndex % 2 === 0 ? 'left' : 'right'} autoFill={true}>
+          {media.map((item, index) => (
+                                    <div className={project.item} key={index}>
+                                        {item.mediaCheck === 'photo' && item.photo && (
+                                            <div className={project.photo}>
+                                                <GatsbyImage
+                                                    image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
+                                                    style={{ width: '100%', height: '100%' }}
+                                                    alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                                            </div>
+                                        )}
+                                        {item.mediaCheck === 'video' && item.video && (
+                                            <div className={project.video}>
+                                                <iframe
+                                                    src={`https://player.vimeo.com/video/${item.video}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`}
+                                                    width="100%"
+                                                    height="100%"
+                                                    title="vimeo"
+                                                    loading="lazy"
+                                                    frameBorder="0"
+                                                    allow="autoplay; fullscreen"
+                                                ></iframe>
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+
     </Marquee>
   );
 };
-
-const ItemList = ({ items, className, renderItem }) => (
-  <ul className={className}>
-    {items.map((item, index) => (
-      <li key={index}>{renderItem(item)}</li>
-    ))}
-  </ul>
-);
-
 const Projects = () => {
-  const projectsContext = useContext(ProjectsContext);
-  const { selectedValue } = useSelectedValue();
-  const [list, setList] = useState([]);
-  const loadRef = useRef();
+    const { selectedValue } = useSelectedValue();
 
-  useEffect(() => {
-    setList(projectsContext.slice(0, 1));
-    const observer = new IntersectionObserver(
-      ([entry]) => entry.isIntersecting && setList(current => current.concat(projectsContext.slice(current.length, current.length + 1))),
-      { rootMargin: '0px', threshold: 1 }
+
+
+    const data = useStaticQuery(graphql`
+        query {
+            allWpPost(sort: { fields: [date], order: DESC }, limit: 1000) {
+                nodes {
+                    excerpt
+                    uri
+                    date(formatString: "MMMM DD, YYYY")
+                    title
+                    categories {
+                        nodes {
+                            name
+                            slug
+                            id
+                        }
+                    }
+                    tags {
+                        nodes {
+                            name
+                            id
+                            slug
+                        }
+                    }
+                    projects {
+                        projectsGallerySpeed
+                        projectsCredit
+                        projectsMediaCount
+                        projectsMediaPower
+                        projectsSubtitleEn
+                        projectsSubtitleJa
+                        projectsTitleEn
+                        projectsUrl
+                        projectsMedia {
+                            mediaCheck
+                            video
+                            photo {
+                                node {
+                                    altText
+                                    localFile {
+                                        childImageSharp {
+                                            gatsbyImageData(placeholder: DOMINANT_COLOR, quality: 100, layout: CONSTRAINED)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    `);
+
+
+
+    return (
+      <>
+            <Loop>
+            <ul data-view={selectedValue} className={project.list}>
+                    {data.allWpPost.nodes.map((post,postIndex) => (
+                    <li key={post.uri} className={project.listItem}>
+                        <article className={project.post} itemScope itemType="http://schema.org/Article">
+                            <header className={project.meta}>
+                                <div className={project.metaList}>
+                                    <div>{post.projects.projectsTitleEn}</div>
+                                    <div>{post.projects.projectsSubtitleEn}</div>
+                                    <div>
+                                        {post.categories.nodes && (
+                                            <ul className={project.catList}>
+                                                {post.categories.nodes.map((cat, index) => (
+                                                    <li key={index}>{cat.name}</li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+                                    <div>
+                                        {post.tags.nodes && (
+                                            <ul className={project.tagList}>
+                                                {post.tags.nodes.map((tags, index) => (
+                                                    <li key={index}>{tags.name}</li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+                                    <div>{post.date}</div>
+                                </div>
+                                <h2>
+                                    <Link to={post.uri} itemProp="url">
+                                        <span itemProp="headline">{parse(post.title)}</span>
+                                    </Link>
+                                </h2>
+                            </header>
+                            <div className={project.gallery}>
+                                <GalleryMarquee media={post.projects.projectsMedia} speed={post.projects.projectsGallerySpeed} postIndex={postIndex + 1} />
+                            </div>
+                        </article>
+                    </li>
+                ))}
+          </ul>
+</Loop>
+        </>
     );
-    if (loadRef.current) {
-      observer.observe(loadRef.current);
-    }
-    return () => observer.disconnect();
-  }, [projectsContext]);
-
-  return (
-    <>
-      <ul data-view={selectedValue} className={p.list}>
-        {list.map((post, postIndex) => (
-          <li key={post.uri} className={p.listItem}>
-            <article className={p.post} itemScope itemType="http://schema.org/Article">
-              <header className={p.meta}>
-                <div className={p.metaList}>
-                  <div>{post.projects.projectsTitleEn}</div>
-                  <div>{post.projects.projectsSubtitleEn}</div>
-                  <ItemList items={post.categories.nodes} className={p.catList} renderItem={cat => cat.name} />
-                  <ItemList items={post.tags.nodes} className={p.tagList} renderItem={tag => tag.name} />
-                  <div>{post.date}</div>
-                </div>
-                <h2>
-                  <Link to={post.uri} itemProp="url">
-                    <span itemProp="headline">{parse(post.title)}</span>
-                  </Link>
-                </h2>
-              </header>
-              <div className={p.gallery}>
-                <GalleryMarquee media={post.projects.projectsMedia} speed={post.projects.projectsGallerySpeed} postIndex={postIndex + 1} />
-              </div>
-            </article>
-          </li>
-        ))}
-      </ul>
-      <div ref={loadRef}>
-        {list.length < projectsContext.length ? <p>Loading...</p> : <p>No more results</p>}
-      </div>
-    </>
-  );
 };
 
 export default Projects;

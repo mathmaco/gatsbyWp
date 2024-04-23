@@ -71,7 +71,7 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
                               <GatsbyImage
                                 image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
                                 style={{ width: '100%', height: '100%' }}
-                                alt={item.altText}
+                                alt={item.altText || "画像名"}
                               />
                             </div>
                           )}
@@ -81,6 +81,7 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
                                 src={`https://player.vimeo.com/video/${item.video}?autoplay=0&loop=0&title=0&byline=0&portrait=0&controls=1&mute=0&autopause=0`}
                                 width="100%"
                                 height="100%"
+                                allow="autoplay; fullscreen"
                                 frameBorder="0"
                                 title="vimeo"
                                 loading="lazy"
