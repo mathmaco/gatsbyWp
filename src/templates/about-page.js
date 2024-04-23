@@ -31,7 +31,7 @@ const Page = ({ data: { node }, location }) => {
   };
 
   const safeClassName = node.slug.replace(/\s+/g, '-').toLowerCase();
-  const pageName = node.slug;
+  //const pageName = node.slug;
   const featuredImage = node.featuredImage?.node
   const originalImages = node.featuredImage?.node.localFile.childImageSharp.original
   return (

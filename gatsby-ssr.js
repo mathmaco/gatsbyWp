@@ -1,4 +1,5 @@
-// gatsby-ssr.js
+
+
 import React from "react";
 import { TimeProvider } from "./src/contexts/TimeContext";
 import { ProjectsProvider } from './src/contexts/ProjectsContext';

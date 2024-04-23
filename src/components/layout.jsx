@@ -8,8 +8,7 @@ import { Helmet } from "react-helmet"
 
 import Footer from "./footer";
 import Header from "./header";
-import Projects from './customStyle';
-
+import Projects from './projects';
 
 
 
@@ -39,29 +38,15 @@ const Layout = ({ isHomePage, children }) => {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
       </Helmet>
-      <Header />
-
         <div className="global-wrapper" data-is-root-path={isHomePage}>
-          <header className="global-header">
-            {/*{isHomePage ? (
-              <h1 className="main-heading">
-                <Link to="/">{parse(title)}</Link>
-              </h1>
-            ) : (
-              <Link className="header-link-home" to="/">
-                {title}
-              </Link>
-            )}*/}
-          </header>
-
+        <Header />
+        <Projects />
         <main>
-          <Projects />
-          {children}</main>
-
+          {children}
+        </main>
           <Footer />
         </div>
       </>
       )
 }
-
-      export default Layout
+export default Layout

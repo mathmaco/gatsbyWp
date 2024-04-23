@@ -1,4 +1,4 @@
-// src/contexts/ProjectsContext.js
+
 import React, { createContext, useState, useEffect } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 

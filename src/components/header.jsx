@@ -43,7 +43,6 @@ const Header = () => {
                 <li><Link to="/">PROJECTS<i className={header.mark}><Star/></i><i className={header.count}>(23)</i></Link></li>
                 <li><Link to="/service/">SERVICE</Link></li>
                 <li><Link to="/about/">ABOUT</Link></li>
-                <li><Link to="/sample/">sample</Link></li>
               </ul>
         </nav>
       <div className={header.layoutNav}>
