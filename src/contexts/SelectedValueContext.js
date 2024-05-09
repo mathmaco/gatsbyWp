@@ -1,14 +1,13 @@
 // src/contexts/SelectedValueContext.js
 import React, { createContext, useState, useContext } from 'react';
 
-// Contextを作成
-export const SelectedValueContext = createContext();
+const SelectedValueContext = createContext();
 
-// Context Provider コンポーネント
+export const useSelectedValue = () => useContext(SelectedValueContext);
+
 export const SelectedValueProvider = ({ children }) => {
- const [selectedValue, setSelectedValue] = useState(null);
+ const [selectedValue, setSelectedValue] = useState('');
 
- // Contextが提供する値
  const value = {
   selectedValue,
   setSelectedValue
@@ -20,6 +19,3 @@ export const SelectedValueProvider = ({ children }) => {
   </SelectedValueContext.Provider>
  );
 };
-
-// Custom Hook
-export const useSelectedValue = () => useContext(SelectedValueContext);

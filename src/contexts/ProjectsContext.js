@@ -1,8 +1,8 @@
-
+// ProjectsContext.js
 import React, { createContext, useState, useEffect } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 
-export const ProjectsContext = createContext();
+export const ProjectsContext = createContext([]);
 
 export const ProjectsProvider = ({ children }) => {
     const data = useStaticQuery(graphql`
@@ -59,7 +59,9 @@ export const ProjectsProvider = ({ children }) => {
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-        setPosts(data.allWpPost.nodes);
+        if (data.allWpPost && data.allWpPost.nodes) {
+            setPosts(data.allWpPost.nodes);
+        }
     }, [data]);
 
     return (

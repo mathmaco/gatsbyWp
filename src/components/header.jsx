@@ -1,8 +1,9 @@
-import React, { useEffect } from "react"
+import React, { useEffect,useState } from "react"
 
 import { Link } from "gatsby";
 //import { StaticImage } from "gatsby-plugin-image"
 
+// Header コンポーネント または Projects コンポーネント内
 import { useSelectedValue } from '../contexts/SelectedValueContext';
 
 import Logo from "./logo";
@@ -18,19 +19,20 @@ import * as header from "../css/components/header.module.scss"
 
 
 const Header = () => {
- const { selectedValue, setSelectedValue } = useSelectedValue();
-// 以前のローカルストレージのロジックもここに含めることができます
+const { selectedValue, setSelectedValue } = useSelectedValue();
+
   useEffect(() => {
     const savedValue = localStorage.getItem('selectedValue');
     if (savedValue) {
       setSelectedValue(savedValue);
     }
-  }, [setSelectedValue]);
+  }, []);
 
   const handleClick = (value) => {
     setSelectedValue(value);
     localStorage.setItem('selectedValue', value);
   };
+
 
   return (
     <>
@@ -45,7 +47,8 @@ const Header = () => {
                 <li><Link to="/about/">ABOUT</Link></li>
               </ul>
         </nav>
-      <div className={header.layoutNav}>
+            <div className={header.layoutNav}>
+
       <ul className={header.layoutNavList}>
         <li><button type="button" data-value="list1" onClick={() => handleClick("list1")}onKeyDown={(event) => {if (event.key === 'Enter' || event.key === ' ') {handleClick("list1");}}} className={selectedValue === "list1" ? "selected" : ""}><List1 /><span style={{ visibility: 'hidden',display:'none' }}>レイアウト</span></button></li>
         <li><button type="button" data-value="list2" onClick={() => handleClick("list2")}onKeyDown={(event) => {if (event.key === 'Enter' || event.key === ' ') {handleClick("list2");}}} className={selectedValue === "list2" ? "selected" : ""}><List2/><span style={{ visibility: 'hidden',display:'none' }}>レイアウト</span></button></li>

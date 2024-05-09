@@ -142,6 +142,9 @@ iframe {
  padding: 1px;
  border: 1px solid $clr-red !important;
 }
+.rfm-marquee-container {
+ overflow: hidden;
+}
 
 .modal {
  position: fixed;

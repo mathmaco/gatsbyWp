@@ -1,3 +1,5 @@
+// gatsby-browser.js
+
 // custom typefaces
 import "typeface-montserrat"
 import "typeface-merriweather"
@@ -14,12 +16,16 @@ import { TimeProvider } from "./src/contexts/TimeContext";
 import { ProjectsProvider } from './src/contexts/ProjectsContext';
 import { SelectedValueProvider } from './src/contexts/SelectedValueContext';
 
-export const wrapRootElement = ({ element }) => (
- <SelectedValueProvider>
-  <ProjectsProvider>
-   <TimeProvider>
-    {element}
-   </TimeProvider>
-  </ProjectsProvider>
- </SelectedValueProvider>
-);
+import Layout from './src/components/Layout';
+
+export const wrapPageElement = ({ element, props }) => {
+ return (
+  <SelectedValueProvider>
+   <ProjectsProvider>
+    <TimeProvider>
+     <Layout {...props}>{element}</Layout>
+    </TimeProvider>
+   </ProjectsProvider>
+  </SelectedValueProvider>
+ );
+};

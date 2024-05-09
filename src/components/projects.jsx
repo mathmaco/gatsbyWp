@@ -1,12 +1,10 @@
-
-
-import React,{useEffect} from "react";
-import { Link,graphql, useStaticQuery } from 'gatsby';
+import React, { useContext } from "react";
+import { ProjectsContext } from '../contexts/ProjectsContext'; // コンテキストをインポート
+import { Link, graphql, useStaticQuery } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
 import parse from 'html-react-parser';
 import * as project from '../css/components/project.module.scss';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
-import Loop from './loop'; // Import the Loop component
 import Marquee from 'react-fast-marquee';
 
 
@@ -42,69 +40,16 @@ const GalleryMarquee = ({ media, speed, postIndex }) => {
     </Marquee>
   );
 };
+
+
 const Projects = () => {
     const { selectedValue } = useSelectedValue();
-
-
-
-    const data = useStaticQuery(graphql`
-        query {
-            allWpPost(sort: { fields: [date], order: DESC }, limit: 1000) {
-                nodes {
-                    excerpt
-                    uri
-                    date(formatString: "MMMM DD, YYYY")
-                    title
-                    categories {
-                        nodes {
-                            name
-                            slug
-                            id
-                        }
-                    }
-                    tags {
-                        nodes {
-                            name
-                            id
-                            slug
-                        }
-                    }
-                    projects {
-                        projectsGallerySpeed
-                        projectsCredit
-                        projectsMediaCount
-                        projectsMediaPower
-                        projectsSubtitleEn
-                        projectsSubtitleJa
-                        projectsTitleEn
-                        projectsUrl
-                        projectsMedia {
-                            mediaCheck
-                            video
-                            photo {
-                                node {
-                                    altText
-                                    localFile {
-                                        childImageSharp {
-                                            gatsbyImageData(placeholder: DOMINANT_COLOR, quality: 100, layout: CONSTRAINED)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    `);
-
-
+    const posts = useContext(ProjectsContext); // コンテキストからプロジェクトデータを取得
 
     return (
-      <>
-            <Loop>
+        <>
             <ul data-view={selectedValue} className={project.list}>
-                    {data.allWpPost.nodes.map((post,postIndex) => (
+                {posts.map((post, postIndex) => ( // コンテキストから取得したデータを使用
                     <li key={post.uri} className={project.listItem}>
                         <article className={project.post} itemScope itemType="http://schema.org/Article">
                             <header className={project.meta}>
@@ -143,8 +88,7 @@ const Projects = () => {
                         </article>
                     </li>
                 ))}
-          </ul>
-</Loop>
+            </ul>
         </>
     );
 };

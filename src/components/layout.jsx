@@ -10,7 +10,7 @@ import Footer from "./footer";
 import Header from "./header";
 import Projects from './projects';
 
-
+import { MarqueeProvider } from '../contexts/MarqueeContext';
 
 const Layout = ({ isHomePage, children }) => {
   const {
@@ -40,7 +40,9 @@ const Layout = ({ isHomePage, children }) => {
       </Helmet>
         <div className="global-wrapper" data-is-root-path={isHomePage}>
         <Header />
-        <Projects />
+        <MarqueeProvider>
+          <Projects />
+          </MarqueeProvider>
         <main>
           {children}
         </main>

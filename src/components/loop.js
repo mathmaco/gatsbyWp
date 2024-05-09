@@ -1,5 +1,4 @@
-// Import necessary hooks and styled-components
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.section`
@@ -10,20 +9,32 @@ const Container = styled.section`
 `;
 
 const Loop = ({ children }) => {
-  const handleScroll = (e) => {
-    const { scrollHeight, scrollTop, clientHeight } = e.target;
-    const isAtBottom = scrollHeight - scrollTop === clientHeight;
-    if (isAtBottom) {
-      if (scrollHeight <= clientHeight) {
-        // For less content, you might want to disable scroll reset or handle differently
-        e.target.scrollTop = 1; // Small adjustment to prevent stuck at the bottom
-      } else {
-        e.target.scrollTop = 0; // Reset scroll to top
-      }
-    }
-  }
+  const containerRef = useRef(null);
+  const [contentList, setContentList] = useState([children]);
 
-  return <Container onScroll={handleScroll}>{children}</Container>;
+  const handleScroll = () => {
+    const { scrollHeight, scrollTop, clientHeight } = containerRef.current;
+    if (scrollTop + clientHeight >= scrollHeight - 100) {
+      // 末尾に近づいたら、同じコンテンツをリストに追加
+      setContentList(prev => [...prev, children]);
+    }
+  };
+
+  useEffect(() => {
+    const container = containerRef.current;
+    container.addEventListener('scroll', handleScroll);
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  return (
+    <Container ref={containerRef}>
+      {contentList.map((item, index) => (
+        <div key={index}>{item}</div>
+      ))}
+    </Container>
+  );
 };
 
 export default Loop;
