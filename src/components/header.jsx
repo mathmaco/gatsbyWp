@@ -3,7 +3,7 @@ import React, { useContext, useEffect,useState } from "react"
 import { Link } from "gatsby";
 //import { StaticImage } from "gatsby-plugin-image"
 
-// Header コンポーネント または Projects コンポーネント内
+
 import { useSelectedValue } from '../contexts/SelectedValueContext';
 import { ProjectsContext } from "../contexts/ProjectsContext";
 
@@ -17,9 +17,11 @@ import List3 from "./icon_viewlist3";
 
 import * as header from "../css/components/header.module.scss"
 
-
+import { TimeContext } from '../contexts/TimeContext';
 
 const Header = () => {
+const currentTime = useContext(TimeContext);
+
 const { selectedValue, setSelectedValue } = useSelectedValue();
 
   const posts = useContext(ProjectsContext);
@@ -49,17 +51,26 @@ const { selectedValue, setSelectedValue } = useSelectedValue();
                 <li><Link to="/service/">SERVICE</Link></li>
                 <li><Link to="/about/">ABOUT</Link></li>
               </ul>
-        </nav>
-            <div className={header.layoutNav}>
-
-      <ul className={header.layoutNavList}>
-        <li><button type="button" data-value="list1" onClick={() => handleClick("list1")}onKeyDown={(event) => {if (event.key === 'Enter' || event.key === ' ') {handleClick("list1");}}} className={selectedValue === "list1" ? "selected" : ""}><List1 /><span style={{ visibility: 'hidden',display:'none' }}>レイアウト</span></button></li>
-        <li><button type="button" data-value="list2" onClick={() => handleClick("list2")}onKeyDown={(event) => {if (event.key === 'Enter' || event.key === ' ') {handleClick("list2");}}} className={selectedValue === "list2" ? "selected" : ""}><List2/><span style={{ visibility: 'hidden',display:'none' }}>レイアウト</span></button></li>
-        <li><button type="button" data-value="list3" onClick={() => handleClick("list3")}onKeyDown={(event) => {if (event.key === 'Enter' || event.key === ' ') {handleClick("list3");}}} className={selectedValue === "list3" ? "selected" : ""}><List3/><span style={{ visibility: 'hidden',display:'none' }}>レイアウト</span></button></li>
-      </ul>
-      <div className={header.layoutNavPaa}><Paa/></div>
-        </div>
-      </div>
+              <div className={header.time}>
+                <div className="current-time">{currentTime}<i className="icon-star"><Star /></i></div>
+             </div>
+            </nav>
+            <div className={header.right}>
+        <div className={header.layoutNav}>
+          <ul className={header.layoutNavList}>
+            <li><button type="button" data-value="list1" onClick={() => handleClick("list1")}onKeyDown={(event) => {if (event.key === 'Enter' || event.key === ' ') {handleClick("list1");}}} className={selectedValue === "list1" ? "selected" : ""}><List1 /><span style={{ visibility: 'hidden',display:'none' }}>レイアウト</span></button></li>
+            <li><button type="button" data-value="list2" onClick={() => handleClick("list2")}onKeyDown={(event) => {if (event.key === 'Enter' || event.key === ' ') {handleClick("list2");}}} className={selectedValue === "list2" ? "selected" : ""}><List2/><span style={{ visibility: 'hidden',display:'none' }}>レイアウト</span></button></li>
+            <li><button type="button" data-value="list3" onClick={() => handleClick("list3")}onKeyDown={(event) => {if (event.key === 'Enter' || event.key === ' ') {handleClick("list3");}}} className={selectedValue === "list3" ? "selected" : ""}><List3/><span style={{ visibility: 'hidden',display:'none' }}>レイアウト</span></button></li>
+          </ul>
+          <div className={header.layoutNavPaa}><Paa/></div>
+            </div>
+            <ul className={`sns-list ${header.snsList}`}>
+                          <li><a href="" target="_blank">Instagram</a></li>
+                          <li><a href="" target="_blank">Vimeo</a></li>
+                          <li><a href="" target="_blank">X</a></li>
+              </ul>
+              </div>
+    </div>
     </div>
     </header>
 

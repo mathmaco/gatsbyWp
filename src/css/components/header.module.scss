@@ -18,7 +18,9 @@
   width: 136px;
  }
  .nav {
+  position: relative;
   display: flex;
+  flex-flow: column;
  }
  .menu {
   display: flex;
@@ -55,6 +57,36 @@
     }
     .count {
      font-size: 10px;
+    }
+   }
+  }
+ }
+ .time {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  text-align: center;
+  color: $clr-red;
+  font-size: 13px;
+ }
+ .right {
+  position: relative;
+  display: block;
+  .snsList {
+   position: absolute;
+   top: 40px;
+   left: 0;
+   right: 0;
+   margin: auto;
+   text-align: right;
+   justify-content: flex-end;
+   margin-right: 10px;
+   li {
+    a {
+     color: $clr-red;
+     font-size: 13px;
     }
    }
   }

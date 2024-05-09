@@ -8,7 +8,7 @@ import Star from "../components/star";
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 import parse from "html-react-parser"
-import { GatsbyImage } from "gatsby-plugin-image"
+//import { GatsbyImage } from "gatsby-plugin-image"
 
 import Scrollbar from '../components/scrollbar';
 import "../css/components/scrollbar.scss"
