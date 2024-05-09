@@ -7,13 +7,10 @@ import { Helmet } from "react-helmet"
 
 
 
-import Footer from "./footer";
-import Header from "./header";
-import Projects from './projects';
+
 
 
 const Layout = ({ isHomePage, children }) => {
-  console.log(children);
   const {
     wp: {
       generalSettings: { title },
@@ -40,12 +37,7 @@ const Layout = ({ isHomePage, children }) => {
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
       </Helmet>
         <div className="global-wrapper" data-is-root-path={isHomePage}>
-        <Header />
-          <Projects />
-        <main>
-          {children}
-        </main>
-          <Footer />
+        <main>{children}</main>
         </div>
       </>
       )

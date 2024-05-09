@@ -44,7 +44,7 @@ const Projects = () => {
   const posts = useContext(ProjectsContext);
   const renderedPosts = useMemo(() => (
     posts.map((post, postIndex) => (
-      <li key={post.uri} className={project.listItem}>
+        <li key={post.uri} className={project.listItem}>
         <article className={project.post} itemScope itemType="http://schema.org/Article">
           <header className={project.meta}>
             <div className={project.metaList}>
@@ -85,9 +85,11 @@ const Projects = () => {
   ), [posts]);
 
   return (
+    <section className="projects">
     <ul data-view={selectedValue} className={project.list}>
       {renderedPosts}
-    </ul>
+      </ul>
+      </section>
   );
 };
 
