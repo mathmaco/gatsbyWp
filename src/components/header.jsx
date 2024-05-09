@@ -1,10 +1,11 @@
-import React, { useEffect,useState } from "react"
+import React, { useContext, useEffect,useState } from "react"
 
 import { Link } from "gatsby";
 //import { StaticImage } from "gatsby-plugin-image"
 
 // Header コンポーネント または Projects コンポーネント内
 import { useSelectedValue } from '../contexts/SelectedValueContext';
+import { ProjectsContext } from "../contexts/ProjectsContext";
 
 import Logo from "./logo";
 import Paa from "./paa";
@@ -20,6 +21,8 @@ import * as header from "../css/components/header.module.scss"
 
 const Header = () => {
 const { selectedValue, setSelectedValue } = useSelectedValue();
+
+  const posts = useContext(ProjectsContext);
 
   useEffect(() => {
     const savedValue = localStorage.getItem('selectedValue');
@@ -42,7 +45,7 @@ const { selectedValue, setSelectedValue } = useSelectedValue();
         <div className={header.logo}><Link to="/"><Logo/></Link></div>
         <nav className={header.nav}>
               <ul className={header.menu}>
-                <li><Link to="/">PROJECTS<i className={header.mark}><Star/></i><i className={header.count}>(23)</i></Link></li>
+                <li><Link to="/">PROJECTS<i className={header.mark}><Star/></i><i className={header.count}>({posts.length})</i></Link></li>
                 <li><Link to="/service/">SERVICE</Link></li>
                 <li><Link to="/about/">ABOUT</Link></li>
               </ul>
