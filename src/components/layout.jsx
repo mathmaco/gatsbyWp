@@ -1,3 +1,4 @@
+//layout.jsx
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 //import parse from "html-react-parser"
@@ -10,9 +11,9 @@ import Footer from "./footer";
 import Header from "./header";
 import Projects from './projects';
 
-import { MarqueeProvider } from '../contexts/MarqueeContext';
 
 const Layout = ({ isHomePage, children }) => {
+  console.log(children);
   const {
     wp: {
       generalSettings: { title },
@@ -40,9 +41,7 @@ const Layout = ({ isHomePage, children }) => {
       </Helmet>
         <div className="global-wrapper" data-is-root-path={isHomePage}>
         <Header />
-        <MarqueeProvider>
           <Projects />
-          </MarqueeProvider>
         <main>
           {children}
         </main>

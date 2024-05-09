@@ -1,9 +1,9 @@
-// gatsby-ssr.js
+// gatsby-browser.js および gatsby-ssr.js
 import React from "react";
+import { MarqueeProvider } from './src/contexts/MarqueeContext';
 import { TimeProvider } from "./src/contexts/TimeContext";
 import { ProjectsProvider } from './src/contexts/ProjectsContext';
 import { SelectedValueProvider } from './src/contexts/SelectedValueContext';
-
 import Layout from './src/components/Layout';
 
 export const wrapPageElement = ({ element, props }) => {
@@ -11,7 +11,9 @@ export const wrapPageElement = ({ element, props }) => {
   <SelectedValueProvider>
    <ProjectsProvider>
     <TimeProvider>
-     <Layout {...props}>{element}</Layout>
+     <MarqueeProvider>
+      <Layout {...props}>{element}</Layout>
+     </MarqueeProvider>
     </TimeProvider>
    </ProjectsProvider>
   </SelectedValueProvider>
