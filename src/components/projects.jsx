@@ -46,6 +46,7 @@ const Projects = () => {
     posts.map((post, postIndex) => (
         <li key={post.uri} className={project.listItem}>
         <article className={project.post} itemScope itemType="http://schema.org/Article">
+          <Link to={post.uri} itemProp="url" className={project.link}>
           <header className={project.meta}>
             <div className={project.metaList}>
               <div>{post.projects.projectsTitleEn}</div>
@@ -71,14 +72,15 @@ const Projects = () => {
               <div>{post.date}</div>
             </div>
             <h2>
-              <Link to={post.uri} itemProp="url">
+
                 <span itemProp="headline">{parse(post.title)}</span>
-              </Link>
+
             </h2>
           </header>
           <div className={project.gallery}>
             <GalleryMarquee media={post.projects.projectsMedia} speed={post.projects.projectsGallerySpeed} postIndex={postIndex + 1} />
-          </div>
+            </div>
+            </Link>
         </article>
       </li>
     ))

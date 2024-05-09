@@ -16,7 +16,6 @@ import { MarqueeProvider } from './src/contexts/MarqueeContext';
 import { TimeProvider } from "./src/contexts/TimeContext";
 import { ProjectsProvider } from './src/contexts/ProjectsContext';
 import { SelectedValueProvider } from './src/contexts/SelectedValueContext';
-//import Layout from './src/components/layout';
 import Projects from './src/components/projects';
 import Footer from "./src/components/footer";
 import Header from "./src/components/header";

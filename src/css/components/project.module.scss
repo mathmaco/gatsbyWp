@@ -78,7 +78,7 @@
   min-width: 50px;
   height: 250px;
   background-color: $clr-red;
-  padding: 1px;
+  padding: 0.5px;
   .photo {
    img {
     max-width: 100%;
@@ -110,6 +110,32 @@
 }
 .post {
  position: relative;
+
+ .link {
+  position: relative;
+  display: block;
+
+  &:hover {
+   &::before {
+    opacity: 1;
+   }
+  }
+
+  &::before {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   margin: auto;
+   width: calc(100% - 10px);
+   height: calc(100% - 10px);
+   border: 1px solid $clr-red;
+   opacity: 0;
+   z-index: 2;
+  }
+ }
  .meta {
   position: absolute;
   left: 0;
