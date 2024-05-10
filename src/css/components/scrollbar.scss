@@ -2,11 +2,9 @@
 
 .custom-scrollbars__container {
  position: relative;
- display: grid;
+ display: flex;
  height: 100%;
  width: calc(100% - 24px);
- grid-template: auto / 1fr 8px;
- overflow: hidden;
 }
 
 .custom-scrollbars__content {
