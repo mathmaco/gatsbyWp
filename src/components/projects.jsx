@@ -50,33 +50,37 @@ const Projects = () => {
           <Link to={post.uri} itemProp="url" className={project.link}>
           <header className={project.meta}>
             <div className={`${project.metaList} ${project.layout1}`}>
-              <div className={project.metaItem}>{post.projects.projectsTitleEn}</div>
-              <div className={project.metaItem}>{post.projects.projectsSubtitleEn}</div>
-              <div className={project.metaItem}>
+              <div className={project.metaItem}><div className={project.metaItemChild}><h3 className={project.titleEn}>{post.projects.projectsTitleEn}</h3></div></div>
+              <div className={project.metaItem}><div className={project.metaItemChild}><div className={project.subTitleEn}>{post.projects.projectsSubtitleEn}</div></div></div>
+                <div className={project.metaItem}>
+                  <div className={project.metaItemChild}>
                 {post.categories.nodes && (
                   <ul className={project.catList}>
                     {post.categories.nodes.map((cat, index) => (
                       <li key={index}>{cat.name}</li>
                     ))}
                   </ul>
-                )}
+                    )}
+                    </div>
               </div>
-              <div className={project.metaItem}>
+                <div className={project.metaItem}>
+                  <div className={project.metaItemChild}>
                 {post.tags.nodes && (
                   <ul className={project.tagList}>
                     {post.tags.nodes.map((tags, index) => (
                       <li key={index}>{tags.name}</li>
                     ))}
                   </ul>
-                )}
+                    )}
+                    </div>
               </div>
-              <div className={project.metaItem}>{post.date}</div>
+              <div className={project.metaItem}><div className={project.metaItemChild}><div className={project.date}>{post.date}</div></div></div>
               </div>
               <div className={`${project.metaList} ${project.layout2}`}>
                 <div className={project.metaListHeader}>
                   <div className={project.metaItem}>
-                    <div className={project.metaItemChild}>{parse(post.title)}</div>
-                    <div className={project.metaItemChild}>{post.projects.projectsSubtitleJa}</div>
+                    <div className={project.metaItemChild}><h2 className={project.titleJa}>{parse(post.title)}</h2></div>
+                    <div className={project.metaItemChild}><div className={project.subTitleJa}>{post.projects.projectsSubtitleJa}</div></div>
                   </div>
                   <div className={project.metaItem}>
                     <div className={project.metaItemChild}>
@@ -90,19 +94,19 @@ const Projects = () => {
                     </div>
                   </div>
                   <div className={project.metaItem}>
-                    <div className={project.metaItemChild}>{post.date}</div>
+                    <div className={project.metaItemChild}><div className={project.date}>{post.date}</div></div>
                   </div>
                   <div className={project.metaItem}>
                     <div className={project.metaItemChild}></div>
                   </div>
                   <div className={project.metaItem}>
-                    <div className={project.metaItemChild}><Star fill={fillColor} /></div>
+                    <div className={project.metaItemChild}><Star fill={fillColor} w={15} h={15} /></div>
                   </div>
                 </div>
                 <div className={project.metaListFooter}>
                   <div className={project.metaItem}>
-                    <div className={project.metaItemChild}>{post.projects.projectsTitleEn}</div>
-                    <div className={project.metaItemChild}>{post.projects.projectsSubtitleEn}</div>
+                    <div className={project.metaItemChild}><h3 className={project.titleEn}>{post.projects.projectsTitleEn}</h3></div>
+                    <div className={project.metaItemChild}><div className={project.subTitleEn}>{post.projects.projectsSubtitleEn}</div></div>
                   </div>
                   <div className={project.metaItem}>
                     <div className={project.metaItemChild}>
@@ -116,13 +120,13 @@ const Projects = () => {
                     </div>
                   </div>
                   <div className={project.metaItem}>
-                    <div className={project.metaItemChild}>[{post.projects.projectsMediaCount}]</div>
+                    <div className={project.metaItemChild}><div className={project.count}>[{post.projects.projectsMediaCount}]</div></div>
                   </div>
                   <div className={project.metaItem}>
                     <div className={project.metaItemChild}></div>
                   </div>
                   <div className={project.metaItem}>
-                    <div className={project.metaItemChild}>P{post.projects.projectsMediaPower}</div>
+                    <div className={project.metaItemChild}><div className={project.power}>P{post.projects.projectsMediaPower}</div></div>
                   </div>
                 </div>
 
