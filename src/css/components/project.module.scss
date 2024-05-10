@@ -69,6 +69,21 @@
    }
   }
  }
+ &[data-view='list1'],
+ &[data-view='list2'] {
+  .meta {
+   .layout2 {
+    display: none;
+   }
+  }
+ }
+ &[data-view='list3'] {
+  .meta {
+   .layout1 {
+    display: none;
+   }
+  }
+ }
 }
 .gallery {
  display: flex;
@@ -151,6 +166,32 @@
    align-items: center;
    justify-content: space-between;
    color: $clr-red;
+
+   &.layout1 {
+   }
+   &.layout2 {
+    flex-flow: column;
+
+    .metaListHeader,
+    .metaListFooter {
+     width: 100%;
+     display: flex;
+     justify-content: space-between;
+     .metaItem {
+      width: 20%;
+      &:last-child {
+       text-align: right;
+      }
+      .metaItemChild {
+      }
+     }
+    }
+    .metaListHeader {
+     margin-bottom: 20px;
+    }
+    .metaListFooter {
+    }
+   }
 
    .catList {
     display: flex;

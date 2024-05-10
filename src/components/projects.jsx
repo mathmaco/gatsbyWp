@@ -6,7 +6,8 @@ import parse from 'html-react-parser';
 import * as project from '../css/components/project.module.scss';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
 import Marquee from 'react-fast-marquee';
-
+import Star from "./star";
+ const fillColor = '#c9171e';
 const GalleryMarquee = ({ media, speed, postIndex }) => {
   return (
     <Marquee speed={speed} direction={postIndex % 2 === 0 ? 'left' : 'right'} autoFill={true}>
@@ -48,10 +49,10 @@ const Projects = () => {
         <article className={project.post} itemScope itemType="http://schema.org/Article">
           <Link to={post.uri} itemProp="url" className={project.link}>
           <header className={project.meta}>
-            <div className={project.metaList}>
-              <div>{post.projects.projectsTitleEn}</div>
-              <div>{post.projects.projectsSubtitleEn}</div>
-              <div>
+            <div className={`${project.metaList} ${project.layout1}`}>
+              <div className={project.metaItem}>{post.projects.projectsTitleEn}</div>
+              <div className={project.metaItem}>{post.projects.projectsSubtitleEn}</div>
+              <div className={project.metaItem}>
                 {post.categories.nodes && (
                   <ul className={project.catList}>
                     {post.categories.nodes.map((cat, index) => (
@@ -60,7 +61,7 @@ const Projects = () => {
                   </ul>
                 )}
               </div>
-              <div>
+              <div className={project.metaItem}>
                 {post.tags.nodes && (
                   <ul className={project.tagList}>
                     {post.tags.nodes.map((tags, index) => (
@@ -69,17 +70,71 @@ const Projects = () => {
                   </ul>
                 )}
               </div>
-              <div>{post.date}</div>
+              <div className={project.metaItem}>{post.date}</div>
+              </div>
+              <div className={`${project.metaList} ${project.layout2}`}>
+                <div className={project.metaListHeader}>
+                  <div className={project.metaItem}>
+                    <div className={project.metaItemChild}>{parse(post.title)}</div>
+                    <div className={project.metaItemChild}>{post.projects.projectsSubtitleJa}</div>
+                  </div>
+                  <div className={project.metaItem}>
+                    <div className={project.metaItemChild}>
+                      {post.categories.nodes && (
+                      <ul className={project.catList}>
+                        {post.categories.nodes.map((cat, index) => (
+                          <li key={index}>{cat.name}</li>
+                        ))}
+                      </ul>
+                      )}
+                    </div>
+                  </div>
+                  <div className={project.metaItem}>
+                    <div className={project.metaItemChild}>{post.date}</div>
+                  </div>
+                  <div className={project.metaItem}>
+                    <div className={project.metaItemChild}></div>
+                  </div>
+                  <div className={project.metaItem}>
+                    <div className={project.metaItemChild}><Star fill={fillColor} /></div>
+                  </div>
+                </div>
+                <div className={project.metaListFooter}>
+                  <div className={project.metaItem}>
+                    <div className={project.metaItemChild}>{post.projects.projectsTitleEn}</div>
+                    <div className={project.metaItemChild}>{post.projects.projectsSubtitleEn}</div>
+                  </div>
+                  <div className={project.metaItem}>
+                    <div className={project.metaItemChild}>
+                      {post.tags.nodes && (
+                      <ul className={project.tagList}>
+                        {post.tags.nodes.map((tags, index) => (
+                          <li key={index}>{tags.name}</li>
+                        ))}
+                      </ul>
+                    )}
+                    </div>
+                  </div>
+                  <div className={project.metaItem}>
+                    <div className={project.metaItemChild}>[{post.projects.projectsMediaCount}]</div>
+                  </div>
+                  <div className={project.metaItem}>
+                    <div className={project.metaItemChild}></div>
+                  </div>
+                  <div className={project.metaItem}>
+                    <div className={project.metaItemChild}>P{post.projects.projectsMediaPower}</div>
+                  </div>
+                </div>
+
+              <div>
+
+              </div>
+
             </div>
-            <h2>
-
-                <span itemProp="headline">{parse(post.title)}</span>
-
-            </h2>
           </header>
           <div className={project.gallery}>
             <GalleryMarquee media={post.projects.projectsMedia} speed={post.projects.projectsGallerySpeed} postIndex={postIndex + 1} />
-            </div>
+          </div>
             </Link>
         </article>
       </li>
