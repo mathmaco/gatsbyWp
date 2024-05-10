@@ -39,6 +39,7 @@ export const ProjectsProvider = ({ children }) => {
                         projectsMedia {
                             mediaCheck
                             video
+                            aspect
                             photo {
                                 node {
                                     altText

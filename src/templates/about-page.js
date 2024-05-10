@@ -32,7 +32,7 @@ const Page = ({ data: { node }, location }) => {
 
   const safeClassName = node.slug.replace(/\s+/g, '-').toLowerCase();
   //const pageName = node.slug;
-  const featuredImage = node.featuredImage?.node
+  //const featuredImage = node.featuredImage?.node
   const originalImages = node.featuredImage?.node.localFile.childImageSharp.original
   return (
     <Layout>
@@ -133,10 +133,8 @@ const Page = ({ data: { node }, location }) => {
                 <IconClose />
               </div>
             ) : (
-              <Link to="/">
-                <div>
-                  <IconClose />
-                </div>
+              <Link to="/" className="modal-close">
+                <IconClose />
               </Link>
             )
           }

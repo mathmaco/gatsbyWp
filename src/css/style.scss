@@ -163,11 +163,14 @@ iframe {
   position: relative;
   display: flex;
   width: 100%;
+
   .modal-close {
-   position: absolute;
-   top: 0;
-   right: 0;
-   width: vwpc(24);
+   display: inline-flex;
+   justify-content: center;
+   align-items: center;
+   width: 24px;
+   height: 28px;
+   border-bottom: 1px solid $clr-blk;
   }
   .modal-cont {
    width: calc(100% - vwpc(24));

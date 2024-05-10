@@ -11,6 +11,7 @@ import Star from "../components/star";
 import IconArrow from "../components/icon_arrow";
 
 const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
+
   const handleModalClose = () => {
     // Check if it's the first page
     if (location.pathname === '/') {
@@ -25,7 +26,6 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
   //const speed = post.projects.projectsGallerySpeed
   //const mediaCheck = post.projects.projectsMedia.mediaCheck
   const media = post.projects.projectsMedia
-  //const video = post.projects.projectsMedia.video
   const credit = post.projects.projectsCredit
   const count = post.projects.projectsMediaCount
   const power = post.projects.projectsMediaPower
@@ -70,17 +70,15 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
                             <div className={single.photo}>
                               <GatsbyImage
                                 image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-                                style={{ width: '100%', height: '100%' }}
+                                style={{ width: '100%' }}
                                 alt={item.altText || "画像名"}
                               />
                             </div>
                           )}
                           {item.mediaCheck === 'video' && item.video && (
-                            <div className={single.video}>
+                            <div className={single.video} style={{ paddingTop: item.aspect + '%' }}>
                               <iframe
                                 src={`https://player.vimeo.com/video/${item.video}?autoplay=0&loop=0&title=0&byline=0&portrait=0&controls=1&mute=0&autopause=0`}
-                                width="100%"
-                                height="100%"
                                 allow="autoplay; fullscreen"
                                 frameBorder="0"
                                 title="vimeo"
@@ -170,10 +168,8 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
                 <IconClose />
               </div>
             ) : (
-              <Link to="/">
-                <div>
-                  <IconClose />
-                </div>
+              <Link to="/" className="modal-close">
+                <IconClose />
               </Link>
             )
           }
@@ -220,12 +216,13 @@ export const pageQuery = graphql`
         projectsMedia {
           mediaCheck
           video
+          aspect
           photo {
             node {
               altText
               localFile {
                 childImageSharp {
-                  gatsbyImageData(placeholder: DOMINANT_COLOR, quality: 100, layout: CONSTRAINED)
+                  gatsbyImageData(placeholder: DOMINANT_COLOR, quality: 100, layout: FULL_WIDTH)
                 }
               }
             }

@@ -1,4 +1,4 @@
-import React, { useContext, useMemo,useEffect,useState } from "react";
+import React, { useContext, useMemo } from "react";
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
@@ -25,7 +25,7 @@ const GalleryMarquee = ({ media, speed, postIndex }) => {
             </div>
           )}
           {item.mediaCheck === 'video' && item.video && (
-            <div className={projectStyles.video}>
+            <div className={projectStyles.video} style={{ paddingTop: item.aspect + '%' }}>
               <iframe
                 src={`https://player.vimeo.com/video/${item.video}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`}
                 title="vimeo"
