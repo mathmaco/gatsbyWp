@@ -47,9 +47,9 @@ const { selectedValue, setSelectedValue } = useSelectedValue();
         <div className={header.logo}><Link to="/"><Logo/></Link></div>
         <nav className={header.nav}>
               <ul className={header.menu}>
-                <li><Link to="/">PROJECTS<i className={header.mark}><Star/></i><i className={header.count}>({posts.length})</i></Link></li>
-                <li><Link to="/service/">SERVICE</Link></li>
-                <li><Link to="/about/">ABOUT</Link></li>
+                <li><Link to="/">Projects<i className={header.mark}><Star/></i><i className={header.count}>({posts.length})</i></Link></li>
+                <li><Link to="/about/">About</Link></li>
+                <li><Link to="/">Contact</Link></li>
               </ul>
               <div className={header.time}>
                 <div className="current-time">{currentTime}<i className="icon-star"><Star /></i></div>
