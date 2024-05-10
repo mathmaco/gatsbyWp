@@ -52,7 +52,7 @@ const { selectedValue, setSelectedValue } = useSelectedValue();
                 <li><Link to="/">Contact</Link></li>
               </ul>
               <div className={header.time}>
-                <div className="current-time">{currentTime}<i className="icon-star"><Star /></i></div>
+                <div className="current-time">{currentTime}</div>
              </div>
             </nav>
             <div className={header.right}>

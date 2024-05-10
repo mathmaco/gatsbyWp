@@ -9,6 +9,9 @@ import Marquee from 'react-fast-marquee';
 import Star from "./star";
  const fillColor = '#c9171e';
 const GalleryMarquee = ({ media, speed, postIndex }) => {
+
+
+
   return (
     <Marquee speed={speed} direction={postIndex % 2 === 0 ? 'left' : 'right'} autoFill={true}>
       {media.map((item, index) => (
@@ -25,8 +28,6 @@ const GalleryMarquee = ({ media, speed, postIndex }) => {
             <div className={projectStyles.video}>
               <iframe
                 src={`https://player.vimeo.com/video/${item.video}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&mute=1&autopause=0`}
-                width="100%"
-                height="100%"
                 title="vimeo"
                 loading="lazy"
                 frameBorder="0"
