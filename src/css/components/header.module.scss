@@ -49,14 +49,22 @@
     .mark {
      position: absolute;
      top: 0;
-     right: 10px;
+     right: 3px;
      display: flex;
      align-items: flex-start;
      width: 10px;
      height: 10px;
+     svg {
+      fill: $clr-red;
+
+      path {
+       fill: $clr-red;
+      }
+     }
     }
     .count {
      font-size: 10px;
+     @include en;
     }
    }
   }
@@ -70,6 +78,7 @@
   text-align: center;
   color: $clr-red;
   font-size: 13px;
+  @include en;
  }
  .right {
   position: relative;
@@ -87,6 +96,7 @@
     a {
      color: $clr-red;
      font-size: 13px;
+     @include en;
     }
    }
   }

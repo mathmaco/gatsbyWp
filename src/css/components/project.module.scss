@@ -140,8 +140,11 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 10px;
   margin: auto;
+  width: calc(100% - 20px);
+  font-size: 12px;
+  @include en;
   z-index: 2;
   .metaList {
    display: flex;
@@ -154,6 +157,20 @@
    }
    .tagList {
     display: flex;
+    li {
+     position: relative;
+
+     &:not(:last-child) {
+      margin-right: 10px;
+      &::before {
+       content: ',';
+       position: absolute;
+       right: -5px;
+       bottom: 0;
+       font-size: 11px;
+      }
+     }
+    }
    }
   }
  }
