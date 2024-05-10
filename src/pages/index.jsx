@@ -12,7 +12,6 @@ const IndexPage = ({ data, location }) => {
 
      <Layout location={location} title={siteTitle}>
        <Seo title="INDEXPAGE" description="TOPページです" />
-
      </Layout>
   </>
  )

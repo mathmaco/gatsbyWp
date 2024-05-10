@@ -33,8 +33,8 @@ export const wrapRootElement = ({ element }) => {
        <script src="https://webfont.fontplus.jp/accessor/script/fontplus.js?k9wWDE0ZkFQ%3D&box=gykzkMgsKtk%3D&pm=1&aa=1&ab=2"></script>
       </Helmet>
       <Header />
-      <Projects />
       {element}
+      <Projects />
      </MarqueeProvider>
     </TimeProvider>
    </ProjectsProvider>
