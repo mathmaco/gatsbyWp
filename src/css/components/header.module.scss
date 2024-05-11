@@ -81,7 +81,7 @@
   font-size: 13px;
   @include en;
  }
- .right {
+ .layout {
   position: relative;
   display: block;
   .snsList {
@@ -138,18 +138,13 @@
 }
 @media #{$tablet} {
  .header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 11;
+  top: vw(20);
   .inner {
    padding: 0;
   }
   .content {
-   display: flex;
    align-items: center;
-   justify-content: space-between;
+   justify-content: center;
   }
   .logo {
    margin: 0 auto;
@@ -158,16 +153,8 @@
   .nav {
    display: none;
   }
-  .menu {
-   display: flex;
-   li {
-   }
-  }
 
-  .right {
-   display: none;
-  }
-  .layoutNav {
+  .layout {
    display: none;
   }
  }

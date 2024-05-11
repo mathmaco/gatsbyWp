@@ -55,7 +55,7 @@ const { selectedValue, setSelectedValue } = useSelectedValue();
                 <div className="current-time">{currentTime}</div>
              </div>
             </nav>
-            <div className={header.right}>
+            <div className={header.layout}>
         <div className={header.layoutNav}>
           <ul className={header.layoutNavList}>
             <li><button type="button" data-value="list1" onClick={() => handleClick("list1")}onKeyDown={(event) => {if (event.key === 'Enter' || event.key === ' ') {handleClick("list1");}}} className={selectedValue === "list1" ? "selected" : ""}><List1 /><span style={{ visibility:'hidden',display:'none' }}>レイアウト</span></button></li>
