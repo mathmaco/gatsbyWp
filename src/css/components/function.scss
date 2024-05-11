@@ -6,7 +6,7 @@
  @return $rate * $size * 1vw;
 }
 // モニタサイズ750pxを起点にしたvwのサイズ指定
-@function vw($size, $viewport: 750) {
+@function vw($size, $viewport: 395) {
  $rate: math.div(100, $viewport);
  @return $rate * $size * 1vw;
 }

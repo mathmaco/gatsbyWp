@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Link, graphql, navigate } from "gatsby"
 import { GatsbyImage } from "gatsby-plugin-image"
 import parse from 'html-react-parser'
@@ -10,7 +10,13 @@ import * as single from '../css/components/project-single.module.scss'
 import Star from "../components/star";
 import IconArrow from "../components/icon_arrow";
 
-const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
+const BlogPostTemplate = ({ data, location }) => {
+  const [post, setPost] = useState(data.post);
+
+  useEffect(() => {
+    setPost(data.post);
+  }, [data.post]);
+
 
   const handleModalClose = () => {
     // Check if it's the first page
@@ -50,8 +56,11 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
 
 
   return (
-    <Layout>
-      <Seo title={post.title} description={post.excerpt} />
+    <Layout location={location}>
+      <Seo
+        pagetitle={post.title}
+        pagedesc={post.excerpt}
+      />
       <div className="modal">
         <div className="modal-inner">
           <Scrollbar>
@@ -118,7 +127,7 @@ const BlogPostTemplate = ({ data: { previous, next, post }, location }) => {
                         <div className={single.metaBoxRight}>
                           <div className={single.power}>P{power}</div>
                           <div className={single.count}>[{count}]</div>
-                          <div className={single.star}><i className="icon-star"><Star fill={fillColor} /></i></div>
+                          <div className={single.star}><i className="icon-star"><Star fill={fillColor} w={10} h={10} /></i></div>
                         </div>
                       </div>
                     </div>

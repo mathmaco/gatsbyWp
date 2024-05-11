@@ -27,9 +27,7 @@ const Layout = ({ isHomePage, children }) => {
 
   return (
     <>
-        <div className="global-wrapper" data-is-root-path={isHomePage}>
-        <main>{children}</main>
-        </div>
+        <main data-is-root-path={isHomePage}>{children}</main>
       </>
       )
 }

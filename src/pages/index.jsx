@@ -9,7 +9,6 @@ const IndexPage = ({ data, location }) => {
   //const siteDescription = data.site.siteMetadata.description
  return (
   <>
-
      <Layout location={location} title={siteTitle}>
        <Seo title="INDEXPAGE" description="TOPページです" />
      </Layout>
