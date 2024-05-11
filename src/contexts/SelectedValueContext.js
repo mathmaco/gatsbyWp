@@ -6,7 +6,7 @@ const SelectedValueContext = createContext();
 export const useSelectedValue = () => useContext(SelectedValueContext);
 
 export const SelectedValueProvider = ({ children }) => {
- const [selectedValue, setSelectedValue] = useState('');
+ const [selectedValue, setSelectedValue] = useState('list1');
 
  const value = {
   selectedValue,
