@@ -7,9 +7,8 @@ import * as projectStyles from '../css/components/project.module.scss';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
 import Marquee from 'react-fast-marquee';
 import Star from "./star";
-const fillColor = '#c9171e';
-
-export const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
+ const fillColor = '#c9171e';
+const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
   const mediaContent = useMemo(() => {
     return media.map((item, index) => (
       <div className={projectStyles.item} key={index}>
@@ -25,7 +24,7 @@ export const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
         {item.mediaCheck === 'video' && item.video && (
           <div className={projectStyles.video} style={{ paddingTop: item.aspect + '%' }}>
             <iframe
-              src={`https://player.vimeo.com/video/${item.video}?autoplay=0&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
+              src={`https://player.vimeo.com/video/${item.video}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
               title="vimeo"
               loading="lazy"
               frameBorder="0"
@@ -43,6 +42,7 @@ export const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
     </Marquee>
   );
 });
+
 
 const Projects = () => {
 
