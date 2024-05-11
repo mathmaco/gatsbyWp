@@ -71,49 +71,46 @@ const Scrollbar = ({
     const thumb = scrollThumbRef.current;
     thumb.style.top = `${newTop}px`;
   }, []);
-
-  const handleThumbMousedown = useCallback((e) => {
+const handleThumbMousedown = useCallback((e) => {
+  // ドラッグが開始された場合にのみデフォルトのイベントを停止
+  if (scrollThumbRef.current && scrollThumbRef.current.contains(e.target)) {
     e.preventDefault();
     e.stopPropagation();
     setScrollStartPosition(e.clientY);
     if (contentRef.current) setInitialScrollTop(contentRef.current.scrollTop);
     setIsDragging(true);
-  }, []);
+  }
+}, []);
 
-  const handleThumbMouseup = useCallback(
-    (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (isDragging) {
-        setIsDragging(false);
-      }
-    },
-    [isDragging]
-  );
+const handleThumbMousemove = useCallback((e) => {
+  if (isDragging) {
+    // ドラッグ中のみデフォルトのイベントを停止
+    e.preventDefault();
+    e.stopPropagation();
+    const {
+      scrollHeight: contentScrollHeight,
+      offsetHeight: contentOffsetHeight,
+    } = contentRef.current;
 
-  const handleThumbMousemove = useCallback(
-    (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (isDragging) {
-        const {
-          scrollHeight: contentScrollHeight,
-          offsetHeight: contentOffsetHeight,
-        } = contentRef.current;
+    const deltaY =
+      (e.clientY - scrollStartPosition) *
+      (contentOffsetHeight / thumbHeight);
+    const newScrollTop = Math.min(
+      initialScrollTop + deltaY,
+      contentScrollHeight - contentOffsetHeight
+    );
 
-        const deltaY =
-          (e.clientY - scrollStartPosition) *
-          (contentOffsetHeight / thumbHeight);
-        const newScrollTop = Math.min(
-          initialScrollTop + deltaY,
-          contentScrollHeight - contentOffsetHeight
-        );
+    contentRef.current.scrollTop = newScrollTop;
+  }
+}, [isDragging, scrollStartPosition, thumbHeight, initialScrollTop]);
 
-        contentRef.current.scrollTop = newScrollTop;
-      }
-    },
-    [isDragging, scrollStartPosition, thumbHeight]
-  );
+const handleThumbMouseup = useCallback((e) => {
+  if (isDragging) {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  }
+}, [isDragging]);
 
   // If the content and the scrollbar track exist, use a ResizeObserver to adjust height of thumb and listen for scroll event to move the thumb
   useEffect(() => {
