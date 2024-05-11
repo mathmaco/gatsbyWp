@@ -10,7 +10,7 @@ import "./src/css/normalize.css"
 // custom CSS styles
 import "./src/css/style.scss"
 
-// gatsby-browser.js
+
 
 import React from "react";
 import { Helmet } from 'react-helmet';

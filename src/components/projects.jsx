@@ -7,8 +7,9 @@ import * as projectStyles from '../css/components/project.module.scss';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
 import Marquee from 'react-fast-marquee';
 import Star from "./star";
- const fillColor = '#c9171e';
-const GalleryMarquee = ({ media, speed, postIndex }) => {
+const fillColor = '#c9171e';
+
+export const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
   const mediaContent = useMemo(() => {
     return media.map((item, index) => (
       <div className={projectStyles.item} key={index}>
@@ -41,7 +42,7 @@ const GalleryMarquee = ({ media, speed, postIndex }) => {
       {mediaContent}
     </Marquee>
   );
-};
+});
 
 const Projects = () => {
 
