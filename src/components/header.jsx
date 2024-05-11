@@ -72,7 +72,20 @@ const { selectedValue, setSelectedValue } = useSelectedValue();
               </div>
     </div>
     </div>
-    </header>
+      </header>
+      <div className={header.spNav}>
+        <nav className={header.nav}>
+              <ul className={header.menu}>
+                <li><Link to="/">Projects<i className={header.mark}><Star/></i><i className={header.count}>({posts.length})</i></Link></li>
+                <li><Link to="/about/">About</Link></li>
+                <li><Link to="/">Contact</Link></li>
+              </ul>
+              <div className={header.time}>
+                <div className="current-time">{currentTime}</div>
+             </div>
+        </nav>
+
+      </div>
 
     </>
 

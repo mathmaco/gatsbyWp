@@ -133,3 +133,87 @@
   }
  }
 }
+.spNav {
+ display: none;
+}
+@media #{$tablet} {
+ .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 11;
+  .inner {
+   padding: 0;
+  }
+  .content {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+  }
+  .logo {
+   margin: 0 auto;
+   width: vw(121);
+  }
+  .nav {
+   display: none;
+  }
+  .menu {
+   display: flex;
+   li {
+   }
+  }
+
+  .right {
+   display: none;
+  }
+  .layoutNav {
+   display: none;
+  }
+ }
+ .spNav {
+  position: fixed;
+  left: vw(10);
+  bottom: vw(50);
+  display: block;
+  z-index: 201;
+  .nav {
+   .menu {
+    li {
+     a {
+      position: relative;
+      display: inline-block;
+      font-size: vw(36);
+      @include en;
+      color: $clr-red;
+      .mark {
+       position: absolute;
+       top: 0;
+       right: 3px;
+       display: flex;
+       align-items: flex-start;
+       width: vw(9);
+       height: vw(9);
+       svg {
+        fill: $clr-red;
+
+        path {
+         fill: $clr-red;
+        }
+       }
+      }
+      .count {
+       font-size: vw(10);
+       @include en;
+      }
+     }
+    }
+   }
+  }
+  .time {
+   color: $clr-red;
+   font-size: vw(12);
+   @include en;
+  }
+ }
+}
