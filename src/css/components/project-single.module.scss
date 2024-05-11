@@ -146,3 +146,136 @@
   }
  }
 }
+
+@media #{$tablet} {
+ .post {
+  .postCont {
+   display: block;
+   .postContLeft {
+    width: 100%;
+   }
+   .postContRight {
+    width: 100%;
+   }
+   .mediaList {
+    li {
+     .photo {
+      position: relative;
+      width: 100%;
+      img {
+       width: 100%;
+      }
+     }
+     .video {
+      position: relative;
+      min-width: 100%;
+      height: 0;
+      iframe {
+       position: absolute;
+       top: 0;
+       left: 0;
+       right: 0;
+       bottom: 0;
+       width: 100%;
+       height: 100%;
+       object-fit: cover;
+      }
+     }
+    }
+   }
+   .header {
+    border-bottom: 1px solid $clr-main;
+    .TtlCont {
+     padding: 20px 10px 0;
+    }
+    .ttlja {
+     font-size: vw(44);
+    }
+    .subttlja {
+     font-size: vw(44);
+    }
+    .meta {
+     padding: 15px 10px;
+     .metaBox {
+      display: flex;
+      justify-content: space-between;
+      .metaBoxLeft {
+       text-align: left;
+      }
+      .metaBoxRight {
+       text-align: right;
+      }
+     }
+     .categoryList {
+      display: flex;
+      margin-bottom: vw(3);
+      li {
+       font-size: vw(12);
+       &:not(:last-child) {
+        margin-right: vw(5);
+       }
+      }
+     }
+     .tagList {
+      margin-bottom: vw(3);
+      li {
+       font-size: vw(11);
+       &:not(:last-child) {
+        margin-right: vw(10);
+        &::before {
+         content: ',';
+         right: vw(-5);
+         font-size: vw(11);
+        }
+       }
+      }
+     }
+     .date {
+      font-size: vw(11);
+     }
+     .power {
+      margin-bottom: vw(3);
+      font-size: vw(11);
+     }
+     .count {
+      margin-bottom: vw(3);
+      font-size: vw(11);
+     }
+     .star {
+      .icon-star {
+       svg {
+        path {
+         fill: $clr-main;
+        }
+       }
+      }
+     }
+    }
+   }
+   .textarea {
+    padding: vw(20) vw(10);
+    h2 {
+     font-size: vw(28);
+     margin-bottom: vw(20);
+    }
+    p {
+     font-size: vw(18);
+    }
+   }
+   .footer {
+    .credit {
+     padding: vw(15) vw(10);
+    }
+
+    .url {
+     border-top: 1px solid $clr-main;
+     border-bottom: 1px solid $clr-main;
+
+     a {
+      padding: vw(15) vw(10) vw(20);
+     }
+    }
+   }
+  }
+ }
+}
