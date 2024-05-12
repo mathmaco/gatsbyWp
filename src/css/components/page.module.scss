@@ -17,3 +17,21 @@
   }
  }
 }
+@media #{$tablet} {
+ .page {
+  height: inherit;
+  .pageCont {
+   display: block;
+   .pageContLeft {
+    width: 100%;
+    height: auto;
+   }
+   .pageContRight {
+    width: 100%;
+    height: auto;
+   }
+   .pageThumb {
+   }
+  }
+ }
+}

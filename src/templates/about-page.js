@@ -19,6 +19,8 @@ import "../css/components/about.scss"
 
 const Page = ({ data: { node }, location }) => {
 
+
+  const fillColor = "#000";
   const currentTime = useContext(TimeContext);
 
   const handleModalClose = () => {
@@ -59,19 +61,17 @@ const Page = ({ data: { node }, location }) => {
                           <li><a href="" target="_blank">X</a></li>
                         </ul>
                         <div className="about-time">
-                          <div className="current-time">{currentTime}<i className="icon-star"><Star /></i></div>
+                          <div className="current-time">{currentTime}<i className="icon-star"><Star fill={fillColor} w={10} h={10} /></i></div>
                         </div>
                         <div className="about-info">
                           <div className="about-logo"><Logo /></div>
                           <div className="about-creative">
                             <ul className="creative-list">
-                              <li>graphic/</li>
-                              <li>film/</li>
-                              <li>graphic/</li>
-                              <li>film/</li>
-                              <li>motion/</li>
-                              <li>digital/</li>
-                              <li>sound</li>
+                              <li><span>graphic/</span></li>
+                              <li><span>film/</span></li>
+                              <li><span>motion/</span></li>
+                              <li><span>digital/</span></li>
+                              <li><span>sound</span></li>
                             </ul>
                             <h2 className="creative-main">Designer</h2>
                           </div>

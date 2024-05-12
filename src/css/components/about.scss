@@ -25,7 +25,9 @@
   .about-time {
    position: relative;
    display: inline-block;
-
+   .current-time {
+    font-size: 13px;
+   }
    .icon-star {
     display: inline-block;
     margin-left: 10px;
@@ -68,6 +70,7 @@
      }
     }
     .creative-main {
+     margin-left: 40px;
      font-size: 28px;
     }
    }
@@ -78,6 +81,8 @@
     justify-content: center;
 
     .mail-title {
+     padding-top: 15px;
+     margin-right: 5px;
      font-size: 13px;
     }
     .mail-address {
@@ -98,7 +103,7 @@
     font-size: 24px;
    }
    .about-text {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     font-size: 32px;
    }
    .about-message {
@@ -109,6 +114,129 @@
    border-top: 1px solid $clr-main;
    padding: 20px 10px;
    font-size: 11px;
+  }
+ }
+}
+
+@media #{$tablet} {
+ .about-page {
+  .inner {
+   padding: 0;
+   height: inherit;
+  }
+  .about-box {
+   display: block;
+  }
+  .about-content-left {
+   position: static;
+   height: vw(720);
+   width: 100%;
+   .about-box {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+   }
+   .sns-list {
+    padding-top: vw(10);
+
+    li {
+     a {
+      font-size: vw(12);
+     }
+    }
+   }
+   .about-time {
+    position: relative;
+    display: inline-block;
+    .current-time {
+     font-size: vw(13);
+    }
+    .icon-star {
+     display: inline-block;
+     margin-left: vw(10);
+     svg {
+      path {
+       fill: $clr-main;
+      }
+     }
+    }
+   }
+   .about-info {
+    padding-bottom: vw(20);
+    .about-logo {
+     margin-bottom: vw(5);
+     svg {
+      path {
+       fill: $clr-main;
+      }
+     }
+    }
+    .about-creative {
+     display: flex;
+     flex-wrap: wrap;
+     align-items: flex-end;
+     justify-content: center;
+     margin-bottom: vw(5);
+
+     .creative-list {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      li {
+       &:not(:last-child) {
+        margin-right: vw(5);
+       }
+       span {
+        font-size: vw(11);
+       }
+      }
+     }
+     .creative-main {
+      margin-left: vw(8);
+      font-size: vw(24);
+     }
+    }
+    .about-mail {
+     display: flex;
+     flex-wrap: wrap;
+     align-items: center;
+     justify-content: center;
+
+     .mail-title {
+      padding-top: vw(12.5);
+      margin-right: vw(5);
+      font-size: vw(11);
+     }
+     .mail-address {
+      font-size: vw(24);
+     }
+    }
+   }
+  }
+  .about-content-right {
+   .about-greeting {
+    padding: vw(15) vw(10);
+    .about-title {
+     margin-bottom: vw(25);
+     font-size: vw(16);
+    }
+    .about-read {
+     margin-bottom: vw(25);
+     font-size: vw(20);
+    }
+    .about-text {
+     margin-bottom: vw(20);
+     font-size: vw(28);
+    }
+    .about-message {
+     font-size: vw(14);
+    }
+   }
+   .about-profile {
+    border-top: 1px solid $clr-main;
+    padding: vw(20) vw(10);
+    font-size: vw(11);
+   }
   }
  }
 }
