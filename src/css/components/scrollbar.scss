@@ -58,3 +58,12 @@
  margin: auto;
  width: 1px;
 }
+
+@media #{$tablet} {
+ .custom-scrollbars__container {
+  width: 100%;
+ }
+ .custom-scrollbars__scrollbar {
+  display: none;
+ }
+}

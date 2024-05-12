@@ -205,3 +205,41 @@ button {
   }
  }
 }
+
+@media #{$tablet} {
+ .modal {
+  position: fixed;
+  top: vwpc(20);
+  left: vwpc(20);
+  right: vwpc(20);
+  display: flex;
+  margin: auto;
+  width: calc(100% - vwpc(40));
+  height: calc(100% - vwpc(40));
+  background-color: $clr-wht;
+  border: 1px solid $clr-blk;
+  overflow: hidden;
+  z-index: 101;
+  .modal-inner {
+   position: relative;
+   display: flex;
+   width: 100%;
+
+   .modal-close {
+    position: absolute;
+    top: vw(2);
+    right: vw(2);
+    width: vw(21);
+    height: vw(21);
+    border-bottom: none;
+    svg {
+     background-color: $clr-wht;
+    }
+   }
+   .modal-cont {
+    width: calc(100% - vwpc(24));
+    height: calc(100% - vwpc(120));
+   }
+  }
+ }
+}
