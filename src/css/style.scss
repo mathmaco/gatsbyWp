@@ -233,8 +233,8 @@ button {
     position: absolute;
     top: vw(2);
     right: vw(2);
-    width: vw(21);
-    height: vw(21);
+    width: auto;
+    height: auto;
     border-bottom: none;
     overflow: hidden;
     svg {
