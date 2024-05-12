@@ -181,6 +181,10 @@ button {
    width: 24px;
    height: 28px;
    border-bottom: 1px solid $clr-blk;
+   svg {
+    path {
+    }
+   }
   }
   .modal-cont {
    width: calc(100% - vwpc(24));
@@ -237,6 +241,9 @@ button {
      width: vw(21);
      height: vw(21);
      background-color: $clr-wht;
+
+     rect {
+     }
     }
    }
    .modal-cont {
