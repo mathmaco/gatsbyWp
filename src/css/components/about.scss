@@ -164,8 +164,11 @@
    .about-info {
     padding-bottom: vw(20);
     .about-logo {
+     width: vw(125);
      margin-bottom: vw(5);
      svg {
+      width: vw(125);
+      height: auto;
       path {
        fill: $clr-main;
       }

@@ -290,18 +290,18 @@
     &:nth-child(3n + 1) {
      .gallery {
       .item {
-       min-width: vw(500);
-       height: vw(500);
+       min-width: vw(300);
+       height: vw(300);
        .photo {
         img {
-         height: vw(500);
+         height: vw(300);
         }
        }
        .video {
-        min-width: vw(500);
-        height: vw(500);
+        min-width: vw(300);
+        height: vw(300);
         iframe {
-         height: vw(500);
+         height: vw(300);
         }
        }
       }
@@ -375,20 +375,20 @@
   .item {
    position: relative;
    max-width: 100%;
-   min-width: vw(250);
-   height: vw(250);
+   min-width: vw(150);
+   height: vw(150);
    margin: vw(0.5);
 
    .photo {
     img {
-     height: vw(250);
+     height: vw(150);
     }
    }
 
    .video {
     padding-top: 0 !important;
-    min-width: vw(250);
-    height: vw(250);
+    min-width: vw(150);
+    height: vw(150);
    }
   }
  }

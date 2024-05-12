@@ -163,7 +163,7 @@
   left: vw(10);
   bottom: vw(50);
   display: block;
-  z-index: 201;
+  z-index: 100;
   .nav {
    .menu {
     li {
@@ -198,6 +198,7 @@
    }
   }
   .time {
+   margin-top: vw(10);
    color: $clr-red;
    font-size: vw(12);
    @include en;
