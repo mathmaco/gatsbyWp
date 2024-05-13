@@ -1,5 +1,4 @@
-import React, { useContext, useMemo, useEffect } from "react";
-import Lenis from '@studio-freight/lenis';
+import React, { useContext, useMemo,useEffect } from "react";
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';

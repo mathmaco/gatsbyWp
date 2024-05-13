@@ -13,7 +13,9 @@ import "./src/css/style.scss"
 
 
 import React from "react";
-import { Helmet } from 'react-helmet';
+
+
+
 import { MarqueeProvider } from './src/contexts/MarqueeContext';
 import { TimeProvider } from "./src/contexts/TimeContext";
 import { ProjectsProvider } from './src/contexts/ProjectsContext';
@@ -27,10 +29,6 @@ export const wrapRootElement = ({ element }) => {
    <ProjectsProvider>
     <TimeProvider>
      <MarqueeProvider>
-      <Helmet>
-       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/yakuhanjp@4.0.1/dist/css/yakuhanjp.css" />
-       <script src="https://webfont.fontplus.jp/accessor/script/fontplus.js?k9wWDE0ZkFQ%3D&box=gykzkMgsKtk%3D&pm=1&aa=1&ab=2" defer></script>
-      </Helmet>
       <Header />
       {element}
       <Projects />
@@ -39,4 +37,17 @@ export const wrapRootElement = ({ element }) => {
    </ProjectsProvider>
   </SelectedValueProvider>
  );
+};
+
+export const onClientEntry = () => {
+ const script = document.createElement('script');
+ script.src = "https://webfont.fontplus.jp/accessor/script/fontplus.js?LqAVuNxPvBc%3D&box=glQh17RBFY8%3D&aa=1&ab=1";
+ script.defer = true;
+ document.body.appendChild(script);
+ const script2 = document.createElement('script');
+ script2.src = "https://webfont.fontplus.jp/accessor/script/fontplus.js?LqAVuNxPvBc%3D&box=glQh17RBFY8%3D&aa=1&ab=2";
+ script2.defer = true;
+ document.body.appendChild(script2);
+
+ // ここではクリーンアップ関数を追加しない
 };

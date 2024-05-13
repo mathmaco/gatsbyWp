@@ -46,6 +46,7 @@
     display: inline-block;
     font-size: 32px;
     @include en;
+    font-weight: 600;
     color: $clr-red;
     .mark {
      position: absolute;
