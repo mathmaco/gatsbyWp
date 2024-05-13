@@ -140,16 +140,22 @@ const Projects = () => {
       </li>
     ))
   ), [posts]);
+
+
   useEffect(() => {
     const scrollSpeed = 30; // スクロール間隔（ミリ秒）
     const scrollDistance = 1; // 1回のスクロールで移動する距離（ピクセル）
     const intervalId = setInterval(() => {
-      window.scrollBy(0, scrollDistance);
+      const reachedBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
+      if (reachedBottom) {
+        window.scrollTo(0, 0); // ページの最上部に戻る
+      } else {
+        window.scrollBy(0, scrollDistance);
+      }
     }, scrollSpeed);
 
     return () => clearInterval(intervalId); // コンポーネントのアンマウント時にインターバルをクリア
   }, []);
-
 
   return (
     <section className="projects">
