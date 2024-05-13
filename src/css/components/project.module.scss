@@ -109,7 +109,6 @@
 
   .video {
    position: relative;
-   min-width: 100%;
    padding-top: 0 !important;
    min-width: 250px;
    height: 250px;
@@ -380,7 +379,11 @@
    margin: vw(0.5);
 
    .photo {
+    width: auto;
+    min-width: vw(150);
     img {
+     width: auto;
+     min-width: vw(150);
      height: vw(150);
     }
    }
@@ -389,6 +392,12 @@
     padding-top: 0 !important;
     min-width: vw(150);
     height: vw(150);
+
+    iframe {
+     width: auto;
+     min-width: vw(150);
+     height: vw(150);
+    }
    }
   }
  }

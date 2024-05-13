@@ -233,14 +233,25 @@ button {
     position: absolute;
     top: vw(2);
     right: vw(2);
-    width: auto;
-    height: auto;
+    width: vw(21);
+    height: vw(21);
     border-bottom: none;
     overflow: hidden;
+    &::before {
+     content: '';
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: vw(20);
+     height: vw(20);
+     background-color: $clr-wht;
+     z-index: 0;
+    }
     svg {
+     position: relative;
      width: vw(21);
      height: vw(21);
-     background-color: $clr-wht;
+     z-index: 1;
 
      rect {
      }
