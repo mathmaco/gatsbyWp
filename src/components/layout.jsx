@@ -1,6 +1,7 @@
 //layout.jsx
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
+
 //import parse from "html-react-parser"
 //import { Helmet } from "react-helmet"
 

@@ -1,4 +1,5 @@
-import React, { useContext, useMemo,useEffect } from "react";
+import React, { useContext, useMemo, useEffect } from "react";
+import Lenis from '@studio-freight/lenis';
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
@@ -143,8 +144,10 @@ const Projects = () => {
 
 
   useEffect(() => {
+
     const scrollSpeed = 30; // スクロール間隔（ミリ秒）
     const scrollDistance = 1; // 1回のスクロールで移動する距離（ピクセル）
+
     const intervalId = setInterval(() => {
       const reachedBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
       if (reachedBottom) {
