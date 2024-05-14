@@ -24,6 +24,12 @@ module.exports = {
   },
   plugins: [
     {
+      resolve: `gatsby-plugin-env-variables`,
+      options: {
+        allowList: ["WPGRAPHQL_URL"],
+      },
+    },
+    {
       /**
        * First up is the WordPress source plugin that connects Gatsby
        * to your WordPress site.
