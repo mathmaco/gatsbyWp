@@ -5,7 +5,7 @@
  * https://www.gatsbyjs.com/docs/gatsby-config/
  *
  */
-console.log('WPGRAPHQL_URL:', process.env.WPGRAPHQL_URL);
+//console.log('WPGRAPHQL_URL:', process.env.WPGRAPHQL_URL);
 module.exports = {
   /**
    * Adding plugins to this array adds them to your Gatsby site.
