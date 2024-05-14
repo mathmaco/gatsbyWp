@@ -26,6 +26,9 @@ exports.createPages = async gatsbyUtilities => {
   // And a paginated archive
   await createBlogPostArchive({ posts, gatsbyUtilities })
 
+  // プレビュー用ページの生成
+  await createPreviewPages({ posts, gatsbyUtilities })
+
   const pages = await getPages(gatsbyUtilities)
 
   // If there are no posts in WordPress, don't do anything
@@ -71,6 +74,19 @@ const createIndividualBlogPostPages = async ({ posts, gatsbyUtilities }) =>
     )
   )
 
+
+const createPreviewPages = async ({ posts, gatsbyUtilities }) =>
+  Promise.all(
+    posts.map(({ post }) =>
+      gatsbyUtilities.actions.createPage({
+        path: `/preview/${post.id}/`, // プレビュー用URLの生成
+        component: path.resolve(`./src/templates/blog-post-preview.js`),
+        context: {
+          id: post.id,
+        },
+      })
+    )
+  )
 /**
  * This function creates all the individual blog pages in this site
  */
@@ -240,25 +256,15 @@ async function getPages({ graphql, reporter }) {
 
 
 // プレビュー用のページを作成する関数
-//const createPreviewPages = async ({ posts, pages, gatsbyUtilities }) =>
-//  Promise.all(
-//    posts.map(({ post }) =>
-//      gatsbyUtilities.actions.createPage({
-//        path: `/${post.uri}`,
-//        component: path.resolve(`./src/templates/blog-post-preview.js`),
-//        context: {
-//          id: post.id,
-//        },
-//      })
-//    ).concat(
-//      pages.map(({ node }) =>
-//        gatsbyUtilities.actions.createPage({
-//          path: `/${node.uri}`,
-//          component: path.resolve(`./src/templates/about-page-preview.js`),
-//          context: {
-//            id: node.id,
-//          },
-//        })
-//      )
-//    )
-//  )
+const createPreviewPages = async ({ posts, gatsbyUtilities }) =>
+  Promise.all(
+    posts.map(({ post }) =>
+      gatsbyUtilities.actions.createPage({
+        path: `/preview/${post.id}/`, // プレビュー用URLの生成
+        component: path.resolve(`./src/templates/blog-post-preview.js`),
+        context: {
+          id: post.id,
+        },
+      })
+    )
+  )
