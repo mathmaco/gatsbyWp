@@ -244,7 +244,7 @@ const createPreviewPages = async ({ posts, pages, gatsbyUtilities }) =>
   Promise.all(
     posts.map(({ post }) =>
       gatsbyUtilities.actions.createPage({
-        path: `/preview${post.uri}`,
+        path: `/${post.uri}`,
         component: path.resolve(`./src/templates/blog-post-preview.js`),
         context: {
           id: post.id,
@@ -253,7 +253,7 @@ const createPreviewPages = async ({ posts, pages, gatsbyUtilities }) =>
     ).concat(
       pages.map(({ node }) =>
         gatsbyUtilities.actions.createPage({
-          path: `/preview${node.uri}`,
+          path: `/${node.uri}`,
           component: path.resolve(`./src/templates/blog-post-preview.js`),
           context: {
             id: node.id,
