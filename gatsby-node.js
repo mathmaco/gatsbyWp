@@ -237,3 +237,28 @@ async function getPages({ graphql, reporter }) {
 
   return graphqlResultPages.data.allWpPage.edges
 }
+
+
+// プレビュー用のページを作成する関数
+const createPreviewPages = async ({ posts, pages, gatsbyUtilities }) =>
+  Promise.all(
+    posts.map(({ post }) =>
+      gatsbyUtilities.actions.createPage({
+        path: `/preview${post.uri}`,
+        component: path.resolve(`./src/templates/blog-post-preview.js`),
+        context: {
+          id: post.id,
+        },
+      })
+    ).concat(
+      pages.map(({ node }) =>
+        gatsbyUtilities.actions.createPage({
+          path: `/preview${node.uri}`,
+          component: path.resolve(`./src/templates/blog-post-preview.js`),
+          context: {
+            id: node.id,
+          },
+        })
+      )
+    )
+  )
