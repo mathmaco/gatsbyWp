@@ -23,12 +23,12 @@ module.exports = {
     fbappid: `XXXXXXXXXXXXXXXXXXXXX`,
   },
   plugins: [
-    {
-      resolve: `gatsby-plugin-env-variables`,
-      options: {
-        allowList: ["WPGRAPHQL_URL", "GATSBY_CONTENT_SYNC_URL"],
-      },
-    },
+    //{
+    //  resolve: `gatsby-plugin-env-variables`,
+    //  options: {
+    //    allowList: ["WPGRAPHQL_URL", "GATSBY_CONTENT_SYNC_URL"],
+    //  },
+    //},
     {
       /**
        * First up is the WordPress source plugin that connects Gatsby
