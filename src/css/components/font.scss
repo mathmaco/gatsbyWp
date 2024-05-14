@@ -1,12 +1,12 @@
 @mixin en {
-  font-family: 'HelveticaNeueLTStd-Ex';
+  font-family: HelveticaNeueLTStd-Ex;
+  font-family: AGaramondPro-Italic;
 }
 @mixin YakuHanJP {
   font-family: 'YakuHanJP', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', Meiryo, sans-serif;
 }
 
 @mixin site {
-  font-family: 'HelveticaNeueLTStd-Ex', 'Noto Sans JP', sans-serif;
-  //font-family: HelveticaNeue, 'Noto Sans JP', sans-serif;
-  //font-family: AGaramondPro-Italic, 'Noto Sans JP', sans-serif;
+  font-family: HelveticaNeueLTStd-Ex, 'Noto Sans JP', sans-serif;
+  font-family: AGaramondPro-Italic, 'Noto Sans JP', sans-serif;
 }

@@ -46,7 +46,6 @@
     display: inline-block;
     font-size: 32px;
     @include en;
-    font-weight: 600;
     color: $clr-red;
     .mark {
      position: absolute;
@@ -115,10 +114,11 @@
     }
     button {
      position: relative;
+     font-size: 0;
      &::before {
       content: '';
       position: absolute;
-      top: -1px;
+      top: -2px;
       left: -2px;
       right: 0;
       bottom: 0;
