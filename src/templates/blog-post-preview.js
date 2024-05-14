@@ -7,46 +7,53 @@ import Seo from "../components/seo"
 import Scrollbar from '../components/scrollbar'
 import IconClose from "../components/icon_close"
 import * as single from '../css/components/project-single.module.scss'
-import Star from "../components/star"
-import IconArrow from "../components/icon_arrow"
+import Star from "../components/star";
+import IconArrow from "../components/icon_arrow";
 
 const PreviewTemplate = ({ data, location }) => {
- const [post, setPost] = useState(data.post)
+ const [post, setPost] = useState(data.post);
 
  useEffect(() => {
-  setPost(data.post)
- }, [data.post])
+  setPost(data.post);
+ }, [data.post]);
+
 
  const handleModalClose = () => {
+  // Check if it's the first page
   if (location.pathname === '/') {
-   navigate('/')
+   navigate('/');
   } else {
-   window.history.back()
+   window.history.back();
   }
- }
-
+ };
+ //const featuredImage = post.featuredImage?.node?.localFile?.childImageSharp?.gatsbyImageData
  const category = post.categories.nodes
  const tag = post.tags.nodes
+ //const speed = post.projects.projectsGallerySpeed
+ //const mediaCheck = post.projects.projectsMedia.mediaCheck
  const media = post.projects.projectsMedia
  const credit = post.projects.projectsCredit
  const count = post.projects.projectsMediaCount
  const power = post.projects.projectsMediaPower
+ //const subTtlEn = post.projects.projectsSubtitleEn
  const subTtlJa = post.projects.projectsSubtitleJa
+ //const ttlEn = post.projects.projectsTitleEn
  const url = post.projects.projectsUrl
 
- const fillColor = "#000"
+ const fillColor = "#000";
 
  const options = {
   replace: ({ attribs, children, name }) => {
    if (!attribs) {
-    return
+    return;
    }
 
    if (name === 'br') {
-    return <br />
+    return <br />;
    }
   }
- }
+ };
+
 
  return (
   <Layout location={location}>
@@ -124,7 +131,16 @@ const PreviewTemplate = ({ data, location }) => {
             </div>
            </div>
           </div>
+
+          {/*{featuredImage && (
+                      <GatsbyImage
+                        image={featuredImage}
+                        alt={post.featuredImage.node.altText}
+                        style={{ marginBottom: 50 }}
+                      />
+                    )}*/}
          </header>
+
 
          {!!post.content && (
           <section itemProp="articleBody" className={single.textarea}>
@@ -152,9 +168,10 @@ const PreviewTemplate = ({ data, location }) => {
         onClick={handleModalClose}
         onKeyDown={(e) => {
          if (e.key === 'Enter' || e.key === ' ') {
-          handleModalClose()
+          handleModalClose();
          }
         }}
+        aria-label="Close modal"
        >
         <IconClose />
        </div>
@@ -173,50 +190,67 @@ const PreviewTemplate = ({ data, location }) => {
 export default PreviewTemplate
 
 export const pageQuery = graphql`
-  query PreviewPostById($id: String!) {
-    post: wpPreview(id: { eq: $id }) {
+  query PreviewPostById(
+    $id: String!
+  ) {
+    post: wpPost(id: {eq: $id}) {
       id
-      title
-      content
       excerpt
-      date(formatString: "YYYY.MM.DD")
-      uri
+      content
+      title
       categories {
         nodes {
           name
+          slug
+          id
         }
       }
       tags {
         nodes {
           name
+          id
+          slug
         }
       }
       projects {
-        projectsSubtitleJa
+        projectsGallerySpeed
+        projectsCredit
         projectsMediaCount
         projectsMediaPower
+        projectsSubtitleEn
+        projectsSubtitleJa
+        projectsTitleEn
+        projectsUrl
         projectsMedia {
           mediaCheck
+          video
           aspect
-          altText
           photo {
             node {
+              altText
               localFile {
                 childImageSharp {
-                  gatsbyImageData(
-                    layout: FULL_WIDTH
-                    placeholder: DOMINANT_COLOR
-                    quality: 100
-                    formats: [AUTO, WEBP, AVIF]
-                  )
+                  gatsbyImageData(placeholder: DOMINANT_COLOR, quality: 100, layout: FULL_WIDTH)
                 }
               }
             }
           }
-          video
         }
-        projectsCredit
-        projectsUrl
+      }
+      date(formatString: "MMMM YYYY")
+      featuredImage {
+        node {
+          altText
+          localFile {
+            childImageSharp {
+              gatsbyImageData(
+                quality: 100
+                placeholder: TRACED_SVG
+                layout: FULL_WIDTH
+              )
+            }
+          }
+        }
       }
     }
   }
