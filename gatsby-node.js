@@ -26,9 +26,6 @@ exports.createPages = async gatsbyUtilities => {
   // And a paginated archive
   await createBlogPostArchive({ posts, gatsbyUtilities })
 
-  // プレビュー用ページの生成
-  await createPreviewPages({ posts, gatsbyUtilities })
-
   const pages = await getPages(gatsbyUtilities)
 
   // If there are no posts in WordPress, don't do anything
@@ -65,6 +62,8 @@ const createIndividualBlogPostPages = async ({ posts, gatsbyUtilities }) =>
           // so our blog post template knows which blog post
           // the current page is (when you open it in a browser)
           id: post.id,
+          isPreview: true, // プレビュー用のフラグを追加
+
 
           // We also use the next and previous id's to query them and add links!
           previousPostId: previous ? previous.id : null,
@@ -75,18 +74,7 @@ const createIndividualBlogPostPages = async ({ posts, gatsbyUtilities }) =>
   )
 
 
-const createPreviewPages = async ({ posts, gatsbyUtilities }) =>
-  Promise.all(
-    posts.map(({ post }) =>
-      gatsbyUtilities.actions.createPage({
-        path: `/preview/${post.url}/`, // プレビュー用URLの生成
-        component: path.resolve(`./src/templates/blog-post-preview.js`),
-        context: {
-          id: post.id,
-        },
-      })
-    )
-  )
+
 /**
  * This function creates all the individual blog pages in this site
  */

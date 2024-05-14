@@ -12,7 +12,7 @@ import IconArrow from "../components/icon_arrow";
 
 const BlogPostTemplate = ({ data, location, pageContext }) => {
   const [post, setPost] = useState(data.post);
-  const isPreview = pageContext.isPreview || false // プレビュー用のフラグを追加
+  const isPreview = data.isPreview || false // プレビュー用のフラグを追加
 
   useEffect(() => {
     setPost(data.post);
