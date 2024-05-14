@@ -26,7 +26,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-env-variables`,
       options: {
-        allowList: ["WPGRAPHQL_URL"],
+        allowList: ["WPGRAPHQL_URL", "GATSBY_CONTENT_SYNC_URL"],
       },
     },
     {

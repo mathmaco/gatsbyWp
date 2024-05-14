@@ -10,7 +10,7 @@ import * as single from '../css/components/project-single.module.scss'
 import Star from "../components/star";
 import IconArrow from "../components/icon_arrow";
 
-const BlogPostTemplate = ({ data, location }) => {
+const PreviewTemplate = ({ data, location }) => {
  const [post, setPost] = useState(data.post);
 
  useEffect(() => {
@@ -187,7 +187,7 @@ const BlogPostTemplate = ({ data, location }) => {
  )
 }
 
-export default BlogPostTemplate
+export default PreviewTemplate
 
 export const pageQuery = graphql`
   query PreviewPostById(
