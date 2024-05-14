@@ -16,6 +16,10 @@ export const wrapRootElement = ({ element }) => {
    <ProjectsProvider>
     <TimeProvider>
      <MarqueeProvider>
+      <Helmet>
+       {/*<script src="https://webfont.fontplus.jp/accessor/script/fontplus.js?LqAVuNxPvBc%3D&box=glQh17RBFY8%3D&aa=1&ab=1"></script>*/}
+       <script src="https://webfont.fontplus.jp/accessor/script/fontplus.js?LqAVuNxPvBc%3D&box=glQh17RBFY8%3D&aa=1&ab=2"></script>
+      </Helmet>
       <Header />
       {element}
       <Projects />
