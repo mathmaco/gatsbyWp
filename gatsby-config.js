@@ -44,6 +44,7 @@ module.exports = {
         url:
           process.env.WPGRAPHQL_URL ||
           `http://cms.mathi.jp/paa/graphql`,
+
       },
     },
     {

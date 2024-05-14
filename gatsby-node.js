@@ -79,7 +79,7 @@ const createPreviewPages = async ({ posts, gatsbyUtilities }) =>
   Promise.all(
     posts.map(({ post }) =>
       gatsbyUtilities.actions.createPage({
-        path: `/preview/${post.id}/`, // プレビュー用URLの生成
+        path: `/preview/${post.url}/`, // プレビュー用URLの生成
         component: path.resolve(`./src/templates/blog-post-preview.js`),
         context: {
           id: post.id,
