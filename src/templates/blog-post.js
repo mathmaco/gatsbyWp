@@ -10,8 +10,9 @@ import * as single from '../css/components/project-single.module.scss'
 import Star from "../components/star";
 import IconArrow from "../components/icon_arrow";
 
-const BlogPostTemplate = ({ data, location }) => {
+const BlogPostTemplate = ({ data, location, pageContext }) => {
   const [post, setPost] = useState(data.post);
+  const isPreview = pageContext.isPreview || false // プレビュー用のフラグを追加
 
   useEffect(() => {
     setPost(data.post);
@@ -103,6 +104,7 @@ const BlogPostTemplate = ({ data, location }) => {
                   <header className={single.header}>
                     <div className={single.TtlCont}>
                       <h1 itemProp="headline" className={single.ttlja}>{parse(post.title)}</h1>
+                      {isPreview && <p>This is a preview</p>}
                       <div className={single.subttlja}>{subTtlJa}</div>
                     </div>
                     <div className={single.meta}>
