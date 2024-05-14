@@ -38,21 +38,6 @@ module.exports = {
         url:
           process.env.WPGRAPHQL_URL ||
           `http://cms.mathi.jp/paa/graphql`,
-        schema: {
-          timeout: 30000,
-        },
-        develop: {
-          nodeUpdateInterval: 3000,
-          hardCacheMediaFiles: true,
-        },
-        type: {
-          MediaItem: {
-            createFileNodes: false,
-          },
-        },
-        debug: {
-          preview: true,
-        },
       },
     },
     {
