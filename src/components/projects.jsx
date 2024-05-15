@@ -116,13 +116,21 @@ const Projects = () => {
                     </div>
                   </div>
                   <div className={projectStyles.metaItem}>
-                    <div className={projectStyles.metaItemChild}><div className={projectStyles.count}>[{post.projects.projectsMediaCount}]</div></div>
+                    <div className={projectStyles.metaItemChild}>
+                      {post.projects.projectsMediaCount && (
+                        <div className={projectStyles.count}>[{post.projects.projectsMediaCount}]</div>
+                      )}
+                    </div>
                   </div>
                   <div className={projectStyles.metaItem}>
                     <div className={projectStyles.metaItemChild}></div>
                   </div>
                   <div className={projectStyles.metaItem}>
-                    <div className={projectStyles.metaItemChild}><div className={projectStyles.power}>P{post.projects.projectsMediaPower}</div></div>
+                    <div className={projectStyles.metaItemChild}>
+                      {post.projects.projectsMediaPower && (
+                        <div className={projectStyles.power}>P{post.projects.projectsMediaPower}</div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
