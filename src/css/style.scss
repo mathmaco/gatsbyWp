@@ -155,7 +155,9 @@ button {
   border: 1px solid $clr-red;
  }
 }
-
+.visible {
+ opacity: 1 !important;
+}
 .modal {
  position: fixed;
  top: vwpc(20);
