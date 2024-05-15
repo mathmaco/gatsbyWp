@@ -24,7 +24,7 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
             </div>
           )}
           {item.mediaCheck === 'video' && item.video && (
-            <div className={projectStyles.video} style={{ paddingTop: item.aspect + '%' }}>
+            <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
               <iframe
                 src={`https://player.vimeo.com/video/${item.video}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
                 title="vimeo"
@@ -148,21 +148,21 @@ const Projects = () => {
     ))
   ), [posts]);
 
-  useEffect(() => {
-    const scrollSpeed = 30; // スクロール間隔（ミリ秒）
-    const scrollDistance = 1; // 1回のスクロールで移動する距離（ピクセル）
-
-    const intervalId = setInterval(() => {
-      const reachedBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
-      if (reachedBottom) {
-        window.scrollTo(0, 0); // ページの最上部に戻る
-      } else {
-        window.scrollBy(0, scrollDistance);
-      }
-    }, scrollSpeed);
-
-    return () => clearInterval(intervalId); // コンポーネントのアンマウント時にインターバルをクリア
-  }, []);
+  //  useEffect(() => {
+  //    const scrollSpeed = 30; // スクロール間隔（ミリ秒）
+  //    const scrollDistance = 1; // 1回のスクロールで移動する距離（ピクセル）
+  //
+  //    const intervalId = setInterval(() => {
+  //      const reachedBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
+  //      if (reachedBottom) {
+  //        window.scrollTo(0, 0); // ページの最上部に戻る
+  //      } else {
+  //        window.scrollBy(0, scrollDistance);
+  //      }
+  //    }, scrollSpeed);
+  //
+  //    return () => clearInterval(intervalId); // コンポーネントのアンマウント時にインターバルをクリア
+  //  }, []);
 
   return (
     <section className="projects">

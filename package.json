@@ -27,7 +27,6 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
   "dependencies": {
-    "@studio-freight/lenis": "^1.0.42",
     "gatsby": "~5.3.2",
     "gatsby-omni-font-loader": "^2.0.2",
     "gatsby-plugin-env-variables": "^2.3.0",
