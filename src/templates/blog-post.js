@@ -86,7 +86,7 @@ const BlogPostTemplate = ({ data, location, pageContext }) => {
                             </div>
                           )}
                           {item.mediaCheck === 'video' && item.video && (
-                            <div className={single.video} style={{ aspectRatio: item.aspectRatio }}>
+                            <div className={single.video} style={{ paddingTop: item.aspect + '%' }}>
                               <iframe
                                 src={`https://player.vimeo.com/video/${item.video}?autoplay=0&loop=0&title=0&byline=0&portrait=0&controls=1&muted=0&autopause=0`}
                                 frameBorder="0"
@@ -228,6 +228,7 @@ export const pageQuery = graphql`
           video
           aspect
           aspectRatio
+          videoWidth
           photo {
             node {
               altText

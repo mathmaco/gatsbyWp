@@ -41,6 +41,7 @@ export const ProjectsProvider = ({ children }) => {
                             video
                             aspect
                             aspectRatio
+                            videoWidth
                             photo {
                                 node {
                                     altText

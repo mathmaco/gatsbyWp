@@ -24,7 +24,7 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
             </div>
           )}
           {item.mediaCheck === 'video' && item.video && (
-            <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
+            <div className={projectStyles.video} style={{ paddingTop: item.aspect + '%', aspectRatio: item.aspectRatio }}>
               <iframe
                 src={`https://player.vimeo.com/video/${item.video}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
                 title="vimeo"

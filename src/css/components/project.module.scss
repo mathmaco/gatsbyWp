@@ -6,9 +6,9 @@
    &:nth-child(3n + 1) {
     .gallery {
      .item {
-      min-width: 500px;
       height: 500px;
       .photo {
+       min-width: 500px;
        img {
         height: 500px;
        }
@@ -29,9 +29,9 @@
    &:nth-child(3n + 1) {
     .gallery {
      .item {
-      min-width: 250px;
       height: 250px;
       .photo {
+       min-width: 250px;
        img {
         height: 250px;
        }
@@ -51,9 +51,9 @@
   .listItem {
    .gallery {
     .item {
-     min-width: 700px;
      height: 700px;
      .photo {
+      min-width: 700px;
       img {
        height: 700px;
       }
@@ -106,8 +106,6 @@
 
   .video {
    position: relative;
-   max-width: 100%;
-   width: 100%;
    height: 250px;
    iframe {
     position: absolute;
@@ -387,11 +385,12 @@
    }
 
    .video {
+    padding-top: 0 !important;
     min-width: vw(150);
     height: vw(150);
 
     iframe {
-     //width: auto;
+     width: auto;
      min-width: vw(150);
      height: vw(150);
     }
