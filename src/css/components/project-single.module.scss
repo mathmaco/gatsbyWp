@@ -126,7 +126,9 @@
   .footer {
    .credit {
     border-top: 1px solid $clr-main;
-    padding: 15px 10px;
+    padding: 17px 10px 15px;
+    font-size: 11px;
+    line-height: 1.5;
    }
    .linkArrow {
     position: relative;
@@ -138,9 +140,12 @@
     a {
      position: relative;
      display: flex;
+     align-items: center;
      justify-content: space-between;
-     padding: 15px 10px 20px;
+     padding: 15px 10px;
      text-decoration: underline;
+     font-size: 11px;
+     line-height: 1.5;
      &:hover {
       text-decoration: none;
      }
@@ -189,7 +194,7 @@
    .header {
     border-bottom: 1px solid $clr-main;
     .TtlCont {
-     padding: 20px 10px 0;
+     padding: vw(15) vw(10) vw(5);
     }
     .ttlja {
      font-size: vw(44);
@@ -198,7 +203,7 @@
      font-size: vw(44);
     }
     .meta {
-     padding: 15px 10px;
+     padding: vw(15) vw(10);
      .metaBox {
       display: flex;
       justify-content: space-between;
@@ -211,7 +216,7 @@
      }
      .categoryList {
       display: flex;
-      margin-bottom: vw(3);
+      margin-bottom: vw(2.5);
       li {
        font-size: vw(12);
        &:not(:last-child) {
@@ -220,7 +225,7 @@
       }
      }
      .tagList {
-      margin-bottom: vw(3);
+      margin-bottom: vw(2.5);
       li {
        font-size: vw(11);
        &:not(:last-child) {
@@ -237,19 +242,22 @@
       font-size: vw(11);
      }
      .power {
-      margin-bottom: vw(3);
+      margin-bottom: vw(2.5);
       font-size: vw(11);
      }
      .count {
-      margin-bottom: vw(3);
+      margin-bottom: vw(2.5);
       font-size: vw(11);
      }
      .star {
-      .icon-star {
-       svg {
-        path {
-         fill: $clr-main;
-        }
+      margin-left: auto;
+      width: vw(10);
+      height: vw(10);
+      svg {
+       width: vw(10);
+       height: vw(10);
+       path {
+        fill: $clr-main;
        }
       }
      }
@@ -259,7 +267,7 @@
     padding: vw(20) vw(10);
     h2 {
      font-size: vw(28);
-     margin-bottom: vw(20);
+     margin-bottom: vw(10);
     }
     p {
      font-size: vw(18);
@@ -267,7 +275,8 @@
    }
    .footer {
     .credit {
-     padding: vw(15) vw(10);
+     padding: vw(17) vw(10) vw(15);
+     font-size: vw(11);
     }
 
     .url {
@@ -275,7 +284,8 @@
      border-bottom: 1px solid $clr-main;
 
      a {
-      padding: vw(15) vw(10) vw(20);
+      padding: vw(15) vw(10);
+      font-size: vw(11);
      }
     }
    }
