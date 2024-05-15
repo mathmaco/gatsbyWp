@@ -16,11 +16,11 @@
   position: absolute;
   top: 0;
   left: 0;
-  height: 100%;
-  width: 50%;
+  height: inherit;
+  width: calc(50% - 4px);
   background-color: $clr-red;
+  padding: 15px 10px;
   .sns-list {
-   padding-top: 10px;
   }
   .about-time {
    position: relative;
@@ -39,7 +39,6 @@
    }
   }
   .about-info {
-   padding-bottom: 20px;
    .about-logo {
     margin-bottom: 10px;
     svg {
@@ -92,8 +91,11 @@
   }
  }
  .about-content-right {
+  padding-left: calc(50%);
+
   .about-greeting {
    padding: 15px 10px;
+   line-height: 1.3;
    .about-title {
     margin-bottom: 25px;
     font-size: 20px;
@@ -114,6 +116,7 @@
    border-top: 1px solid $clr-main;
    padding: 20px 10px;
    font-size: 11px;
+   line-height: 1.3;
   }
  }
 }
@@ -129,16 +132,16 @@
   }
   .about-content-left {
    position: static;
-   height: vw(720);
+   height: auto;
    width: 100%;
+   padding: vw(5) vw(10) vw(10);
    .about-box {
     display: flex;
     flex-flow: column;
     justify-content: space-between;
+    height: vw(720);
    }
    .sns-list {
-    padding-top: vw(10);
-
     li {
      a {
       font-size: vw(12);
@@ -162,10 +165,9 @@
     }
    }
    .about-info {
-    padding-bottom: vw(20);
     .about-logo {
      width: vw(125);
-     margin-bottom: vw(5);
+     margin-bottom: 0;
      svg {
       width: vw(125);
       height: auto;
@@ -179,7 +181,7 @@
      flex-wrap: wrap;
      align-items: flex-end;
      justify-content: center;
-     margin-bottom: vw(10);
+     margin-bottom: vw(5);
 
      .creative-list {
       display: flex;
@@ -206,7 +208,7 @@
      justify-content: center;
 
      .mail-title {
-      padding-top: vw(12.5);
+      padding-top: vw(6);
       margin-right: vw(5);
       font-size: vw(11);
      }
@@ -217,6 +219,7 @@
    }
   }
   .about-content-right {
+   padding: 0;
    .about-greeting {
     padding: vw(15) vw(10);
     .about-title {

@@ -51,55 +51,52 @@ const Page = ({ data: { node }, location }) => {
           <Scrollbar>
             <article className={`${page.page}`}>
               <div className={page.pageCont}>
-                <div className={page.pageContLeft}>
-                  <div className="about-content-left">
-                    <div className="inner">
-                      <div className="about-box">
-                        <ul className="sns-list">
-                          <li><a href="" target="_blank">Instagram</a></li>
-                          <li><a href="" target="_blank">Vimeo</a></li>
-                          <li><a href="" target="_blank">X</a></li>
-                        </ul>
-                        <div className="about-time">
-                          <div className="current-time">{currentTime}<i className="icon-star"><Star fill={fillColor} w={10} h={10} /></i></div>
+                <div className="about-content-left">
+                  <div className="inner">
+                    <div className="about-box">
+                      <ul className="sns-list">
+                        <li><a href="" target="_blank">Instagram</a></li>
+                        <li><a href="" target="_blank">Vimeo</a></li>
+                        <li><a href="" target="_blank">X</a></li>
+                      </ul>
+                      <div className="about-time">
+                        <div className="current-time">{currentTime}<i className="icon-star"><Star fill={fillColor} w={10} h={10} /></i></div>
+                      </div>
+                      <div className="about-info">
+                        <div className="about-logo"><Logo /></div>
+                        <div className="about-creative">
+                          <ul className="creative-list">
+                            <li><span>graphic/</span></li>
+                            <li><span>film/</span></li>
+                            <li><span>motion/</span></li>
+                            <li><span>digital/</span></li>
+                            <li><span>sound</span></li>
+                          </ul>
+                          <h2 className="creative-main">Designer</h2>
                         </div>
-                        <div className="about-info">
-                          <div className="about-logo"><Logo /></div>
-                          <div className="about-creative">
-                            <ul className="creative-list">
-                              <li><span>graphic/</span></li>
-                              <li><span>film/</span></li>
-                              <li><span>motion/</span></li>
-                              <li><span>digital/</span></li>
-                              <li><span>sound</span></li>
-                            </ul>
-                            <h2 className="creative-main">Designer</h2>
-                          </div>
-                          <div className="about-mail">
-                            <div className="mail-title">mail</div>
-                            <div className="mail-address">paa(at)paa.ac</div>
-                          </div>
+                        <div className="about-mail">
+                          <div className="mail-title">mail</div>
+                          <div className="mail-address">paa(at)paa.ac</div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className={page.pageContRight}>
-                  <div className="about-content-right">
-                    <div className="inner">
-                      <div className="about-box">
-                        <div className="about-greeting">
-                          <h1 className="about-title">{node.about.aboutBlock1}</h1>
-                          <h2 className="about-read">{node.about.aboutBlock2}</h2>
-                          <p className="about-text">{node.about.aboutBlock3}</p>
-                          <p className="about-message">{node.about.aboutBlock4}</p>
-                        </div>
-                        {!!node.content && (
-                          <div className="about-profile">{parse(node.content)}</div>
-                        )}
+                <div className="about-content-right">
+                  <div className="inner">
+                    <div className="about-box">
+                      <div className="about-greeting">
+                        <h1 className="about-title">{node.about.aboutBlock1}</h1>
+                        <h2 className="about-read">{node.about.aboutBlock2}</h2>
+                        <p className="about-text">{node.about.aboutBlock3}</p>
+                        <p className="about-message">{node.about.aboutBlock4}</p>
                       </div>
+                      {!!node.content && (
+                        <div className="about-profile">{parse(node.content)}</div>
+                      )}
                     </div>
-                    {/*{featuredImage && (
+                  </div>
+                  {/*{featuredImage && (
                     <GatsbyImage
                       image={featuredImage.gatsbyImage}
                       alt={featuredImage.altText}
@@ -109,7 +106,6 @@ const Page = ({ data: { node }, location }) => {
                       placeholder="dominantColor"
                     />
                   )}*/}
-                  </div>
                 </div>
               </div>
             </article>

@@ -173,6 +173,7 @@
       display: inline-block;
       font-size: vw(36);
       @include en;
+      line-height: 1.15;
       color: $clr-red;
       .mark {
        position: absolute;
@@ -199,7 +200,7 @@
    }
   }
   .time {
-   margin-top: vw(10);
+   margin-top: vw(5);
    color: $clr-red;
    font-size: vw(12);
    @include en;

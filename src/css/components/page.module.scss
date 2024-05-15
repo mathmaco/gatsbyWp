@@ -13,6 +13,13 @@
    width: 50%;
    height: inherit;
   }
+  .pageContBox {
+   height: inherit;
+   padding: 15px 10px;
+   display: flex;
+   flex-flow: column;
+   justify-content: space-between;
+  }
   .pageThumb {
   }
  }
@@ -29,6 +36,10 @@
    .pageContRight {
     width: 100%;
     height: auto;
+   }
+   .pageContBox {
+    height: inherit;
+    padding: vw(15) vw(10);
    }
    .pageThumb {
    }

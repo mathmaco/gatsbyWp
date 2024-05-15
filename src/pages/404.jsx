@@ -55,7 +55,6 @@ const NotFoundPage = ({data, location }) => {
               className={`${page.page}`}
             >
               <div className={page.pageCont}>
-                <div className={page.pageContLeft}>
                   <div className="about-content-left">
                     <div className="inner">
                       <div className="about-box">
@@ -84,18 +83,19 @@ const NotFoundPage = ({data, location }) => {
                             <div className="mail-address">paa(at)paa.ac</div>
                           </div>
                         </div>
-                      </div>
+                        </div>
                     </div>
                   </div>
-                </div>
-                <div className={page.pageContRight}>
-                  <div className="about-textarea">
+                <div className="about-content-right">
+                  <div className="inner">
+                    <div className={page.pageContBox}>
+                  <div className="404-content">
                     <h1>404: Not Found</h1>
                     <p>You just hit a route that doesn&#39;t exist... the sadness.</p>
                   </div>
-                  <div className={page.pageThumb}>
-
-                  </div>
+                  <div className={page.pageThumb}></div>
+                    </div>
+                    </div>
                 </div>
               </div>
             </article>
@@ -119,10 +119,8 @@ const NotFoundPage = ({data, location }) => {
                 <IconClose />
               </div>
             ) : (
-              <Link to="/">
-                <div>
-                  <IconClose />
-                </div>
+              <Link to="/" className="modal-close">
+                <IconClose />
               </Link>
             )
           }
