@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react"
 
 import { Link } from "gatsby";
 //import { StaticImage } from "gatsby-plugin-image"
-
+import { Helmet } from 'react-helmet'
 
 import { useSelectedValue } from '../contexts/SelectedValueContext';
 import { ProjectsContext } from "../contexts/ProjectsContext";
@@ -20,6 +20,15 @@ import * as header from "../css/components/header.module.scss"
 import { TimeContext } from '../contexts/TimeContext';
 
 const Header = () => {
+
+const handleCopyEmail = (event) => {
+  const email = "contact@mathi.jp";
+  navigator.clipboard.writeText(email).then(() => {
+    alert(`メールアドレスがコピーされました` + email);
+  }).catch(err => {
+    alert(`コピーに失敗しました`,err);
+  });
+}
 const currentTime = useContext(TimeContext);
 
 const { selectedValue, setSelectedValue } = useSelectedValue();
@@ -49,7 +58,7 @@ const { selectedValue, setSelectedValue } = useSelectedValue();
               <ul className={header.menu}>
                 <li><Link to="/">Projects<i className={header.mark}><Star/></i><i className={header.count}>({posts.length})</i></Link></li>
                 <li><Link to="/about/">About</Link></li>
-                <li><Link to="/">Contact</Link></li>
+                <li><span onClick={handleCopyEmail} id="email-link">Contact</span></li>
               </ul>
               <div className={header.time}>
                 <div className="current-time">{currentTime}</div>
