@@ -156,6 +156,7 @@ button {
  }
 }
 .visible {
+ visibility: visible !important;
  opacity: 1 !important;
 }
 .modal {

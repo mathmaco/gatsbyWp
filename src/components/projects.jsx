@@ -1,4 +1,5 @@
 import React, { useContext, useMemo, useEffect, lazy, Suspense } from "react";
+
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
@@ -12,7 +13,7 @@ const fillColor = '#c9171e';
 const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
   return (
     <Marquee speed={speed} direction={postIndex % 2 === 0 ? 'left' : 'right'} autoFill={true}>
-    {media.map((item, index) => (
+      {media.map((item, index) => (
         <div className={projectStyles.item} key={index}>
           {item.mediaCheck === 'photo' && item.photo && (
             <div className={projectStyles.photo}>
@@ -29,12 +30,12 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
                 title="vimeo"
                 loading="lazy"
                 frameBorder="0"
-                //allow="autoplay;"
+              //allow="autoplay;"
               ></iframe>
             </div>
           )}
         </div>
-    ))}
+      ))}
     </Marquee>
   );
 });
@@ -42,6 +43,9 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
 const Projects = () => {
   const { selectedValue } = useSelectedValue();
   const posts = useContext(ProjectsContext);
+
+
+
 
   const renderedPosts = useMemo(() => (
     posts.map((post, postIndex) => (
