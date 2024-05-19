@@ -2,7 +2,7 @@ import React, { useContext, useMemo, useEffect, useRef, useState } from "react";
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
 import { GatsbyImage, getImage } from 'gatsby-plugin-image';
-
+import { getVimeoThumbnail } from './utils/getVimeoThumbnail'; // Vimeoサムネイルを取得する関数
 import parse from 'html-react-parser';
 import * as projectStyles from '../css/components/project.module.scss';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
@@ -30,6 +30,19 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
               });
             });
           });
+        } else if (item.mediaCheck === 'video' && item.video) {
+          const thumbnailUrl = await getVimeoThumbnail(item.video);
+          return new Promise((resolve) => {
+            pixelateImage(thumbnailUrl, 150, (pixelatedSrc) => {
+              resolve({
+                ...item,
+                video: {
+                  ...item.video,
+                  pixelatedSrc,
+                },
+              });
+            });
+          });
         }
         return item;
       }));
@@ -44,13 +57,13 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
         <div className={projectStyles.item} key={index}>
           {item.mediaCheck === 'photo' && item.photo && (
             <div className={projectStyles.photo}>
-              <div className={projectStyles.photoWrap}>
-                <div className={projectStyles.photoPixel}>
+              <div className={projectStyles.mediaWrap}>
+                <div className={projectStyles.mediaPixel}>
                   <img
                     src={item.photo.pixelatedSrc}
                     alt={item.photo.node.altText || 'デフォルトのサイト名'} />
                 </div>
-                <div className={projectStyles.photoOri}>
+                <div className={projectStyles.mediaOri}>
                   <GatsbyImage
                     image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
                     style={{ width: '100%', height: '100%' }}
@@ -62,15 +75,27 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
             </div>
           )}
           {item.mediaCheck === 'video' && item.video && (
-            <div className={projectStyles.video} style={{ paddingTop: item.aspect + '%', aspectRatio: item.aspectRatio }}>
-              <iframe
-                src={`https://player.vimeo.com/video/${item.video}?background=1`}
-                title="vimeo"
-                loading="lazy"
-                frameBorder="0"
-              //allow="autoplay;"
-              ></iframe>
+            <div className={projectStyles.mediaWrap}>
+              <div className={projectStyles.mediaPixel}>
+                <img
+                  src={item.video.pixelatedSrc}
+                  style={{ width: '100%', height: '100%' }}
+                  alt="ピクセル化されたビデオサムネイル" />
+              </div>
+              <div className={projectStyles.mediaOri}>
+                <div className={projectStyles.video} style={{ paddingTop: item.aspect + '%', aspectRatio: item.aspectRatio }}>
+                  <iframe
+                    src={`https://player.vimeo.com/video/${item.video}?background=1`}
+                    title="vimeo"
+                    loading="lazy"
+                    frameBorder="0"
+                  //allow="autoplay;"
+                  ></iframe>
+                </div>
+              </div>
             </div>
+
+
           )}
         </div>
       ))}
