@@ -9,6 +9,8 @@ import { useSelectedValue } from '../contexts/SelectedValueContext';
 import { pixelateImage } from './utils/pixelateImage';
 import Marquee from 'react-fast-marquee';
 import Star from "./star";
+import { fadeEffect } from "./utils/fadeEffect"; // フェードインエフェクト関数をインポート
+
 const fillColor = '#c9171e';
 
 const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
@@ -47,23 +49,30 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
         return item;
       }));
       setPixelatedImages(pixelated);
+      fadeEffect();
     };
-
     pixelateMedia();
   }, [media]);
+
+  useEffect(() => {
+    fadeEffect();
+  }, []);
+
+
   return (
     <Marquee speed={speed} direction={postIndex % 2 === 0 ? 'left' : 'right'} autoFill={true}>
       {pixelatedImages.map((item, index) => (
-        <div className={projectStyles.item} key={index}>
+        <div className={`${projectStyles.item}`} key={index}>
           {item.mediaCheck === 'photo' && item.photo && (
             <div className={projectStyles.photo}>
-              <div className={projectStyles.mediaWrap}>
-                <div className={projectStyles.mediaPixel}>
+              <div className="media-wrap">
+                <div className="media-pixel">
                   <img
+                    className="fade-effect"
                     src={item.photo.pixelatedSrc}
                     alt={item.photo.node.altText || 'デフォルトのサイト名'} />
                 </div>
-                <div className={projectStyles.mediaOri}>
+                <div className="media-origital">
                   <GatsbyImage
                     image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
                     style={{ width: '100%', height: '100%' }}
@@ -75,21 +84,21 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
             </div>
           )}
           {item.mediaCheck === 'video' && item.video && (
-            <div className={projectStyles.mediaWrap}>
-              <div className={projectStyles.mediaPixel}>
+            <div className="media-wrap">
+              <div className="media-pixel">
                 <img
                   src={item.video.pixelatedSrc}
                   style={{ width: '100%', height: '100%' }}
                   alt="ピクセル化されたビデオサムネイル" />
               </div>
-              <div className={projectStyles.mediaOri}>
+              <div className="media-origital">
                 <div className={projectStyles.video} style={{ paddingTop: item.aspect + '%', aspectRatio: item.aspectRatio }}>
                   <iframe
                     src={`https://player.vimeo.com/video/${item.video}?background=1`}
                     title="vimeo"
                     loading="lazy"
                     frameBorder="0"
-                  //allow="autoplay;"
+                    allow="autoplay;"
                   ></iframe>
                 </div>
               </div>
@@ -99,7 +108,7 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
           )}
         </div>
       ))}
-    </Marquee>
+    </Marquee >
   );
 });
 
@@ -107,6 +116,8 @@ const Projects = () => {
   const { selectedValue } = useSelectedValue();
   const posts = useContext(ProjectsContext);
   const workerRef = useRef(null);
+
+
 
   const renderedPosts = useMemo(() => (
     posts.map((post, postIndex) => (
