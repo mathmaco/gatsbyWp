@@ -1,26 +1,64 @@
-import React, { useContext, useMemo, useEffect, lazy, Suspense } from "react";
-
+import React, { useContext, useMemo, useEffect, useRef, useState } from "react";
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
-import { GatsbyImage } from 'gatsby-plugin-image';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+
 import parse from 'html-react-parser';
 import * as projectStyles from '../css/components/project.module.scss';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
+import { pixelateImage } from './utils/pixelateImage';
 import Marquee from 'react-fast-marquee';
 import Star from "./star";
 const fillColor = '#c9171e';
 
 const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
+  const [pixelatedImages, setPixelatedImages] = useState([]);
+  useEffect(() => {
+    const pixelateMedia = async () => {
+      const pixelated = await Promise.all(media.map(async (item) => {
+        if (item.mediaCheck === 'photo' && item.photo) {
+          const gatsbyImageData = getImage(item.photo.node.localFile.childImageSharp.gatsbyImageData);
+          const originalSrc = gatsbyImageData.images.fallback.src;
+          return new Promise((resolve) => {
+            pixelateImage(originalSrc, 150, (pixelatedSrc) => {
+              resolve({
+                ...item,
+                photo: {
+                  ...item.photo,
+                  pixelatedSrc,
+                },
+              });
+            });
+          });
+        }
+        return item;
+      }));
+      setPixelatedImages(pixelated);
+    };
+
+    pixelateMedia();
+  }, [media]);
   return (
     <Marquee speed={speed} direction={postIndex % 2 === 0 ? 'left' : 'right'} autoFill={true}>
-      {media.map((item, index) => (
+      {pixelatedImages.map((item, index) => (
         <div className={projectStyles.item} key={index}>
           {item.mediaCheck === 'photo' && item.photo && (
             <div className={projectStyles.photo}>
-              <GatsbyImage
-                image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-                style={{ width: '100%', height: '100%' }}
-                alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+              <div className={projectStyles.photoWrap}>
+                <div className={projectStyles.photoPixel}>
+                  <img
+                    src={item.photo.pixelatedSrc}
+                    alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                </div>
+                <div className={projectStyles.photoOri}>
+                  <GatsbyImage
+                    image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
+                    style={{ width: '100%', height: '100%' }}
+                    alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                </div>
+              </div>
+
+
             </div>
           )}
           {item.mediaCheck === 'video' && item.video && (
@@ -43,9 +81,7 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
 const Projects = () => {
   const { selectedValue } = useSelectedValue();
   const posts = useContext(ProjectsContext);
-
-
-
+  const workerRef = useRef(null);
 
   const renderedPosts = useMemo(() => (
     posts.map((post, postIndex) => (
@@ -148,21 +184,30 @@ const Projects = () => {
     ))
   ), [posts]);
 
-  useEffect(() => {
-    const scrollSpeed = 30; // スクロール間隔（ミリ秒）
-    const scrollDistance = 1; // 1回のスクロールで移動する距離（ピクセル）
-
-    const intervalId = setInterval(() => {
-      const reachedBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
-      if (reachedBottom) {
-        window.scrollTo(0, 0); // ページの最上部に戻る
-      } else {
-        window.scrollBy(0, scrollDistance);
-      }
-    }, scrollSpeed);
-
-    return () => clearInterval(intervalId); // コンポーネントのアンマウント時にインターバルをクリア
-  }, []);
+  //  useEffect(() => {
+  //    if (window.Worker) {
+  //      const worker = new Worker(new URL('./scrollWorker.js', import.meta.url));
+  //      workerRef.current = worker;
+  //
+  //      worker.postMessage({ action: 'start', speed: 30, distance: 1 });
+  //
+  //      worker.onmessage = (event) => {
+  //        if (event.data === 'scroll') {
+  //          const reachedBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
+  //          if (reachedBottom) {
+  //            window.scrollTo(0, 0); // ページの最上部に戻る
+  //          } else {
+  //            window.scrollBy(0, 1); // スクロール距離を調整
+  //          }
+  //        }
+  //      };
+  //
+  //      return () => {
+  //        worker.postMessage({ action: 'stop' });
+  //        worker.terminate();
+  //      };
+  //    }
+  //  }, []);
 
   return (
     <section className="projects">
