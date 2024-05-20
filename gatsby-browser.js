@@ -43,20 +43,24 @@ const LoadFontScript = ({ children }) => {
  }, []);
 
  useEffect(() => {
-  const handleMouseEnter = (event) => {
+
+  const handleMouseOver = (event) => {
    if (event.target.tagName === 'A') {
     sound.play();
    }
   };
 
-  document.body.addEventListener("mouseenter", handleMouseEnter, true);
 
-  return () => {
-   document.body.removeEventListener("mouseenter", handleMouseEnter, true);
-  };
+  document.body.addEventListener("mouseover", handleMouseOver, true);
+
+
  }, []);
 
- return <>{children}</>;
+ return (
+  <>
+   {children}
+  </>
+ );
 };
 
 export const wrapRootElement = ({ element }) => {

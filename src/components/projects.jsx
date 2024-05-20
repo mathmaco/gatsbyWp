@@ -75,14 +75,14 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
           { zIndex: 2 },
           {
             zIndex: -2,
-            stagger: 0.15,
+            stagger: 0.05,
             duration: 0.01,
             scrollTrigger: {
               trigger: element, // 各 .js-pixel 要素をトリガーとして設定
-              start: "0% 10%",
-              end: "top 100%",
+              start: "top 15%",
+              end: "top 50%",
               scrub: false,
-              toggleActions: "play none none none",
+              toggleActions: "play none none reset",
               once: false,
             },
           }
@@ -261,7 +261,7 @@ const Projects = () => {
       const worker = new Worker(new URL('./scrollWorker.js', import.meta.url));
       workerRef.current = worker;
 
-      worker.postMessage({ action: 'start', speed: 30, distance: 1 });
+      worker.postMessage({ action: 'start', speed: 30, distance: 10 });
 
       worker.onmessage = (event) => {
         if (event.data === 'scroll') {
