@@ -1,28 +1,42 @@
 // src/scrollWorker.js
 /* eslint-disable no-restricted-globals */
-let scrollSpeed = 30; // スクロール間隔（ミリ秒）
-let scrollDistance = 1; // 1回のスクロールで移動する距離（ピクセル）
+//let scrollSpeed = 30; // スクロール間隔（ミリ秒）
+//let scrollDistance = 1; // 1回のスクロールで移動する距離（ピクセル）
+//
+//self.onmessage = function (event) {
+// const { action, speed, distance } = event.data;
+//
+// if (action === 'start') {
+//  scrollSpeed = speed || scrollSpeed;
+//  scrollDistance = distance || scrollDistance;
+//  startScrolling();
+// } else if (action === 'stop') {
+//  stopScrolling();
+// }
+//};
+//
+//let intervalId;
+//
+//function startScrolling() {
+// intervalId = setInterval(() => {
+//  self.postMessage('scroll');
+// }, scrollSpeed);
+//}
+//
+//function stopScrolling() {
+// clearInterval(intervalId);
+//}
 
-self.onmessage = function (event) {
+let interval;
+
+self.onmessage = (event) => {
  const { action, speed, distance } = event.data;
 
  if (action === 'start') {
-  scrollSpeed = speed || scrollSpeed;
-  scrollDistance = distance || scrollDistance;
-  startScrolling();
+  interval = setInterval(() => {
+   self.postMessage('scroll');
+  }, speed);
  } else if (action === 'stop') {
-  stopScrolling();
+  clearInterval(interval);
  }
 };
-
-let intervalId;
-
-function startScrolling() {
- intervalId = setInterval(() => {
-  self.postMessage('scroll');
- }, scrollSpeed);
-}
-
-function stopScrolling() {
- clearInterval(intervalId);
-}

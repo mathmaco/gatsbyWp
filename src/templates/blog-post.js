@@ -226,9 +226,7 @@ export const pageQuery = graphql`
         projectsMedia {
           mediaCheck
           video
-          aspect
           aspectRatio
-          videoWidth
           photo {
             node {
               altText

@@ -1,9 +1,7 @@
-import React, { useContext, useMemo, useEffect, useRef, useState } from "react";
+import React, { useContext, useMemo, useEffect, useRef, useState, useCallback } from "react";
 import { gsap } from 'gsap';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-
-
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
 import { GatsbyImage, getImage } from 'gatsby-plugin-image';
@@ -20,8 +18,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 const fillColor = '#c9171e';
 const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
-
-
   const [pixelatedImages, setPixelatedImages] = useState([]);
 
   useEffect(() => {
@@ -79,8 +75,8 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
             duration: 0.01,
             scrollTrigger: {
               trigger: element, // 各 .js-pixel 要素をトリガーとして設定
-              start: "top 15%",
-              end: "top 50%",
+              start: "top 50%",
+              end: "top 90%",
               scrub: false,
               toggleActions: "play none none reset",
               once: false,
@@ -90,11 +86,6 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
       });
     }
   }, [pixelatedImages]);
-
-
-
-
-
 
   return (
     <Marquee speed={speed} direction={postIndex % 2 === 0 ? 'left' : 'right'} autoFill={true}>
@@ -115,8 +106,6 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
                     alt={item.photo.node.altText || 'デフォルトのサイト名'} />
                 </div>
               </div>
-
-
             </div>
           )}
           {item.mediaCheck === 'video' && item.video && (
@@ -128,7 +117,7 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
                   alt="ピクセル化されたビデオサムネイル" />
               </div>
               <div className="media-origital">
-                <div className={projectStyles.video} style={{ paddingTop: item.aspect + '%', aspectRatio: item.aspectRatio }}>
+                <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
                   <iframe
                     src={`https://player.vimeo.com/video/${item.video}?background=1`}
                     title="vimeo"
@@ -139,8 +128,6 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
                 </div>
               </div>
             </div>
-
-
           )}
         </div>
       ))}
@@ -151,9 +138,7 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
 const Projects = () => {
   const { selectedValue } = useSelectedValue();
   const posts = useContext(ProjectsContext);
-  const workerRef = useRef(null);
-
-
+  const listRef = useRef(null);
 
   const renderedPosts = useMemo(() => (
     posts.map((post, postIndex) => (
@@ -256,34 +241,32 @@ const Projects = () => {
     ))
   ), [posts]);
 
-  useEffect(() => {
-    if (window.Worker) {
-      const worker = new Worker(new URL('./scrollWorker.js', import.meta.url));
-      workerRef.current = worker;
+  const handleScroll = useCallback(() => {
+    const listElement = listRef.current;
+    if (listElement) {
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const bottomPosition = listElement.scrollHeight;
 
-      worker.postMessage({ action: 'start', speed: 30, distance: 10 });
-
-      worker.onmessage = (event) => {
-        if (event.data === 'scroll') {
-          const reachedBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
-          if (reachedBottom) {
-            window.scrollTo(0, 0); // ページの最上部に戻る
-          } else {
-            window.scrollBy(0, 1); // スクロール距離を調整
-          }
-        }
-      };
-
-      return () => {
-        worker.postMessage({ action: 'stop' });
-        worker.terminate();
-      };
+      if (scrollPosition >= bottomPosition) {
+        const clonedContent = listElement.innerHTML;
+        listElement.innerHTML += clonedContent;
+        listElement.scrollTop = 0; // スクロール位置を最上部にリセット
+      }
     }
   }, []);
 
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [handleScroll]);
+
+
+
   return (
     <section className="projects">
-      <ul data-view={selectedValue} className={projectStyles.list}>
+      <ul ref={listRef} data-view={selectedValue} className={projectStyles.list}>
         {renderedPosts}
       </ul>
     </section>
