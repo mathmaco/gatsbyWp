@@ -80,15 +80,17 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
             scrollTrigger: {
               trigger: element, // 各 .js-pixel 要素をトリガーとして設定
               start: "0% 10%",
-              end: "bottom bottom",
+              end: "top 100%",
+              scrub: false,
               toggleActions: "play none none none",
-              once: true,
+              once: false,
             },
           }
         );
       });
     }
   }, [pixelatedImages]);
+
 
 
 
@@ -149,7 +151,7 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
 const Projects = () => {
   const { selectedValue } = useSelectedValue();
   const posts = useContext(ProjectsContext);
-  //const workerRef = useRef(null);
+  const workerRef = useRef(null);
 
 
 
@@ -254,30 +256,30 @@ const Projects = () => {
     ))
   ), [posts]);
 
-  //  useEffect(() => {
-  //    if (window.Worker) {
-  //      const worker = new Worker(new URL('./scrollWorker.js', import.meta.url));
-  //      workerRef.current = worker;
-  //
-  //      worker.postMessage({ action: 'start', speed: 30, distance: 1 });
-  //
-  //      worker.onmessage = (event) => {
-  //        if (event.data === 'scroll') {
-  //          const reachedBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
-  //          if (reachedBottom) {
-  //            window.scrollTo(0, 0); // ページの最上部に戻る
-  //          } else {
-  //            window.scrollBy(0, 1); // スクロール距離を調整
-  //          }
-  //        }
-  //      };
-  //
-  //      return () => {
-  //        worker.postMessage({ action: 'stop' });
-  //        worker.terminate();
-  //      };
-  //    }
-  //  }, []);
+  useEffect(() => {
+    if (window.Worker) {
+      const worker = new Worker(new URL('./scrollWorker.js', import.meta.url));
+      workerRef.current = worker;
+
+      worker.postMessage({ action: 'start', speed: 30, distance: 1 });
+
+      worker.onmessage = (event) => {
+        if (event.data === 'scroll') {
+          const reachedBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
+          if (reachedBottom) {
+            window.scrollTo(0, 0); // ページの最上部に戻る
+          } else {
+            window.scrollBy(0, 1); // スクロール距離を調整
+          }
+        }
+      };
+
+      return () => {
+        worker.postMessage({ action: 'stop' });
+        worker.terminate();
+      };
+    }
+  }, []);
 
   return (
     <section className="projects">
