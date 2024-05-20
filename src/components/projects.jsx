@@ -1,4 +1,9 @@
 import React, { useContext, useMemo, useEffect, useRef, useState } from "react";
+import { gsap } from 'gsap';
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+
+
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
 import { GatsbyImage, getImage } from 'gatsby-plugin-image';
@@ -9,12 +14,16 @@ import { useSelectedValue } from '../contexts/SelectedValueContext';
 import { pixelateImage } from './utils/pixelateImage';
 import Marquee from 'react-fast-marquee';
 import Star from "./star";
-import { fadeEffect } from "./utils/fadeEffect"; // フェードインエフェクト関数をインポート
+
+
+gsap.registerPlugin(ScrollTrigger);
 
 const fillColor = '#c9171e';
-
 const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
+
+
   const [pixelatedImages, setPixelatedImages] = useState([]);
+
   useEffect(() => {
     const pixelateMedia = async () => {
       const pixelated = await Promise.all(media.map(async (item) => {
@@ -49,14 +58,40 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
         return item;
       }));
       setPixelatedImages(pixelated);
-      fadeEffect();
     };
+
     pixelateMedia();
   }, [media]);
 
   useEffect(() => {
-    fadeEffect();
-  }, []);
+    if (pixelatedImages.length > 0) {
+      const boundElms = document.querySelectorAll(".js-pixel");
+
+      boundElms.forEach((element, index) => {
+        const mediaPixels = element.querySelectorAll('.media-pixel');
+
+        gsap.fromTo(
+          mediaPixels,
+          { zIndex: 2 },
+          {
+            zIndex: -2,
+            stagger: 0.15,
+            duration: 0.01,
+            scrollTrigger: {
+              trigger: element, // 各 .js-pixel 要素をトリガーとして設定
+              start: "0% 10%",
+              end: "bottom bottom",
+              toggleActions: "play none none none",
+              once: true,
+            },
+          }
+        );
+      });
+    }
+  }, [pixelatedImages]);
+
+
+
 
 
   return (
@@ -68,7 +103,6 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
               <div className="media-wrap">
                 <div className="media-pixel">
                   <img
-                    className="fade-effect"
                     src={item.photo.pixelatedSrc}
                     alt={item.photo.node.altText || 'デフォルトのサイト名'} />
                 </div>
@@ -98,7 +132,7 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
                     title="vimeo"
                     loading="lazy"
                     frameBorder="0"
-                    allow="autoplay;"
+                  //allow="autoplay;"
                   ></iframe>
                 </div>
               </div>
@@ -115,7 +149,7 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
 const Projects = () => {
   const { selectedValue } = useSelectedValue();
   const posts = useContext(ProjectsContext);
-  const workerRef = useRef(null);
+  //const workerRef = useRef(null);
 
 
 
@@ -211,7 +245,7 @@ const Projects = () => {
                 </div>
               </div>
             </header>
-            <div className={projectStyles.gallery}>
+            <div className={`${projectStyles.gallery} js-pixel`}>
               <GalleryMarquee media={post.projects.projectsMedia} speed={post.projects.projectsGallerySpeed} postIndex={postIndex + 1} />
             </div>
           </Link>

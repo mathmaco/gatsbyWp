@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 
+
 import { Link } from "gatsby";
 //import { StaticImage } from "gatsby-plugin-image"
 import { Helmet } from 'react-helmet'
@@ -22,6 +23,8 @@ import { TimeContext } from '../contexts/TimeContext';
 const Header = () => {
 
   const [PaaMessage, setPaaMessage] = useState(false);
+
+
 
   const handleMessageClick = () => {
     setPaaMessage(!PaaMessage);
@@ -60,9 +63,11 @@ const Header = () => {
         <div className={`inner ${header.inner}`}>
           <div className={header.content}>
             <div className={header.logo}><Link to="/"><Logo /></Link></div>
-            <nav className={header.nav}>
+            <nav id="js-nav" className={header.nav}>
               <ul className={header.menu}>
-                <li><Link to="/">Projects<i className={header.mark}><Star /></i><i className={header.count}>({posts.length})</i></Link></li>
+                <li>
+                  <Link to="/">Projects<i className={header.mark}><Star /></i><i className={header.count}>({posts.length})</i></Link>
+                </li>
                 <li><Link to="/about/">About</Link></li>
                 <li><span onClick={handleCopyEmail} id="email-link">Contact</span></li>
               </ul>
