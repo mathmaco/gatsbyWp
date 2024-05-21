@@ -65,29 +65,33 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
 
   useEffect(() => {
     if (pixelatedImages.length > 0) {
-      const boundElms = document.querySelectorAll(".js-pixel");
+      const animateElements = () => {
+        const boundElms = document.querySelectorAll(".js-pixel");
 
-      boundElms.forEach((element, index) => {
-        const mediaPixels = element.querySelectorAll('.media-pixel');
+        boundElms.forEach((element, index) => {
+          const mediaPixels = element.querySelectorAll('.media-pixel');
 
-        gsap.fromTo(
-          mediaPixels,
-          { zIndex: 2 },
-          {
-            zIndex: -2,
-            stagger: 0.05,
-            duration: 0.01,
-            scrollTrigger: {
-              trigger: element, // 各 .js-pixel 要素をトリガーとして設定
-              start: "top 90%",
-              end: "top 90%",
-              scrub: false,
-              toggleActions: "play none none reset",
-              once: false,
-            },
-          }
-        );
-      });
+          gsap.fromTo(
+            mediaPixels,
+            { zIndex: 2 },
+            {
+              zIndex: -2,
+              stagger: 0.05,
+              duration: 0.01,
+              scrollTrigger: {
+                trigger: element, // 各 .js-pixel 要素をトリガーとして設定
+                start: "top 50%",
+                end: "top bottom",
+                scrub: false,
+                toggleActions: "play none none none",
+                once: false,
+              },
+            }
+          );
+        });
+      };
+
+      animateElements();
     }
   }, [pixelatedImages]);
 
@@ -96,54 +100,53 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
 
 
 
+
   return (
     <Marquee speed={speed} direction={postIndex % 2 === 0 ? 'left' : 'right'} autoFill={true}>
-      {pixelatedImages.map((item, index) => (
-        <div className={`${projectStyles.item}`} key={index}>
-          {item.mediaCheck === 'photo' && item.photo && (
-            <div className={projectStyles.photo}>
+      <section className={projectStyles.itemWrap}>
+        {pixelatedImages.map((item, index) => (
+          <div className={`${projectStyles.item}`} key={index}>
+            {item.mediaCheck === 'photo' && item.photo && (
+              <div className={projectStyles.photo}>
+                <div className="media-wrap">
+                  <div className="media-pixel">
+                    <img
+                      src={item.photo.pixelatedSrc}
+                      alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                  </div>
+                  <div className="media-origital">
+                    <GatsbyImage
+                      image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
+                      style={{ width: '100%', height: '100%' }}
+                      alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                  </div>
+                </div>
+              </div>
+            )}
+            {item.mediaCheck === 'video' && item.video && (
               <div className="media-wrap">
                 <div className="media-pixel">
                   <img
-                    src={item.photo.pixelatedSrc}
-                    alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                    src={item.video.pixelatedSrc}
+                    style={{ width: '100%', height: '100%' }}
+                    alt="ピクセル化されたビデオサムネイル" />
                 </div>
                 <div className="media-origital">
-                  <GatsbyImage
-                    image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-                    style={{ width: '100%', height: '100%' }}
-                    alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                  <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
+                    <iframe
+                      src={`https://player.vimeo.com/video/${item.video}?background=1`}
+                      title="vimeo"
+                      loading="lazy"
+                      frameBorder="0"
+                      allow="autoplay;"
+                    ></iframe>
+                  </div>
                 </div>
               </div>
-
-
-            </div>
-          )}
-          {item.mediaCheck === 'video' && item.video && (
-            <div className="media-wrap">
-              <div className="media-pixel">
-                <img
-                  src={item.video.pixelatedSrc}
-                  style={{ width: '100%', height: '100%' }}
-                  alt="ピクセル化されたビデオサムネイル" />
-              </div>
-              <div className="media-origital">
-                <div className={projectStyles.video} style={{ paddingTop: item.aspect + '%', aspectRatio: item.aspectRatio }}>
-                  <iframe
-                    src={`https://player.vimeo.com/video/${item.video}?background=1`}
-                    title="vimeo"
-                    loading="lazy"
-                    frameBorder="0"
-                  //allow="autoplay;"
-                  ></iframe>
-                </div>
-              </div>
-            </div>
-
-
-          )}
-        </div>
-      ))}
+            )}
+          </div>
+        ))}
+      </section>
     </Marquee >
   );
 });
@@ -159,7 +162,7 @@ const Projects = () => {
     posts.map((post, postIndex) => (
       <li key={post.uri} className={projectStyles.listItem}>
         <article className={projectStyles.post} itemScope itemType="http://schema.org/Article">
-          <Link to={post.uri} itemProp="url" className={projectStyles.link}>
+          <Link to={post.uri} itemProp="url" className={`${projectStyles.link} play-sound`}>
             <header className={projectStyles.meta}>
               <div className={`${projectStyles.metaList} ${projectStyles.layout1}`}>
                 <div className={projectStyles.metaItem}><div className={projectStyles.metaItemChild}><h3 className={projectStyles.titleEn}>{post.projects.projectsTitleEn}</h3></div></div>
@@ -256,30 +259,30 @@ const Projects = () => {
     ))
   ), [posts]);
 
-  useEffect(() => {
-    if (window.Worker) {
-      const worker = new Worker(new URL('./utils/scrollWorker.js', import.meta.url));
-      workerRef.current = worker;
-
-      worker.postMessage({ action: 'start', speed: 30, distance: 10 });
-
-      worker.onmessage = (event) => {
-        if (event.data === 'scroll') {
-          const reachedBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
-          if (reachedBottom) {
-            window.scrollTo(0, 0); // ページの最上部に戻る
-          } else {
-            window.scrollBy(0, 1); // スクロール距離を調整
-          }
-        }
-      };
-
-      return () => {
-        worker.postMessage({ action: 'stop' });
-        worker.terminate();
-      };
-    }
-  }, []);
+  //  useEffect(() => {
+  //    if (window.Worker) {
+  //      const worker = new Worker(new URL('./utils/scrollWorker.js', import.meta.url));
+  //      workerRef.current = worker;
+  //
+  //      worker.postMessage({ action: 'start', speed: 30, distance: 10 });
+  //
+  //      worker.onmessage = (event) => {
+  //        if (event.data === 'scroll') {
+  //          const reachedBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
+  //          if (reachedBottom) {
+  //            window.scrollTo(0, 0); // ページの最上部に戻る
+  //          } else {
+  //            window.scrollBy(0, 1); // スクロール距離を調整
+  //          }
+  //        }
+  //      };
+  //
+  //      return () => {
+  //        worker.postMessage({ action: 'stop' });
+  //        worker.terminate();
+  //      };
+  //    }
+  //  }, []);
 
   return (
     <section className="projects">

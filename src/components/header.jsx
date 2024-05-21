@@ -62,14 +62,14 @@ const Header = () => {
       <header id="mashhead" className={header.header}>
         <div className={`inner ${header.inner}`}>
           <div className={header.content}>
-            <div className={header.logo}><Link to="/"><Logo /></Link></div>
+            <div className={header.logo}><Link to="/" className="play-sound"><Logo /></Link></div>
             <nav id="js-nav" className={header.nav}>
               <ul className={header.menu}>
                 <li>
-                  <Link to="/">Projects<i className={header.mark}><Star /></i><i className={header.count}>({posts.length})</i></Link>
+                  <Link to="/" className="play-sound">Projects<i className={header.mark}><Star /></i><i className={header.count}>({posts.length})</i></Link>
                 </li>
-                <li><Link to="/about/">About</Link></li>
-                <li><span onClick={handleCopyEmail} id="email-link">Contact</span></li>
+                <li><Link to="/about/" className="play-sound">About</Link></li>
+                <li><span onClick={handleCopyEmail} id="email-link" className="play-sound">Contact</span></li>
               </ul>
               <div className={header.time}>
                 <div className="current-time">{currentTime}</div>
@@ -79,18 +79,18 @@ const Header = () => {
               <div className={header.layoutNav}>
                 <ul className={header.layoutNavList}>
                   <li><button type="button" data-value="list1" onClick={() => handleClick("list1")} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { handleClick("list1"); } }} className={selectedValue === "list1" ? "selected" : ""}><List1 /><span style={{ visibility: 'hidden', display: 'none' }}>レイアウト</span></button></li>
-                  <li><button type="button" data-value="list2" onClick={() => handleClick("list2")} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { handleClick("list2"); } }} className={selectedValue === "list2" ? "selected" : ""}><List2 /><span style={{ visibility: 'hidden', display: 'none' }}>レイアウト</span></button></li>
-                  <li><button type="button" data-value="list3" onClick={() => handleClick("list3")} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { handleClick("list3"); } }} className={selectedValue === "list3" ? "selected" : ""}><List3 /><span style={{ visibility: 'hidden', display: 'none' }}>レイアウト</span></button></li>
+                  <li><button className="play-sound" type="button" data-value="list2" onClick={() => handleClick("list2")} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { handleClick("list2"); } }} className={selectedValue === "list2" ? "selected" : ""}><List2 /><span style={{ visibility: 'hidden', display: 'none' }}>レイアウト</span></button></li>
+                  <li><button className="play-sound" type="button" data-value="list3" onClick={() => handleClick("list3")} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { handleClick("list3"); } }} className={selectedValue === "list3" ? "selected" : ""}><List3 /><span style={{ visibility: 'hidden', display: 'none' }}>レイアウト</span></button></li>
                 </ul>
-                <div className={header.layoutNavPaa} id="icon-paa" onClick={handleMessageClick}><Paa /></div>
+                <div className={`${header.layoutNavPaa} play-sound`} id="icon-paa" onClick={handleMessageClick}><Paa /></div>
                 <div className={`${header.PaaMessage} ${PaaMessage ? 'visible' : ''}`}>
                   もうちょっと待ってね！
                 </div>
               </div>
               <ul className={`sns-list ${header.snsList}`}>
-                <li><a href="" target="_blank">Instagram</a></li>
-                <li><a href="" target="_blank">Vimeo</a></li>
-                <li><a href="" target="_blank">X</a></li>
+                <li><a href="" target="_blank" className="play-sound">Instagram</a></li>
+                <li><a href="" target="_blank" className="play-sound">Vimeo</a></li>
+                <li><a href="" target="_blank" className="play-sound">X</a></li>
               </ul>
             </div>
           </div>

@@ -166,7 +166,7 @@ const BlogPostTemplate = ({ data, location, pageContext }) => {
               <div
                 role="button"
                 tabIndex={0}
-                className="modal-close"
+                className="modal-close play-sound"
                 onClick={handleModalClose}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
@@ -178,7 +178,7 @@ const BlogPostTemplate = ({ data, location, pageContext }) => {
                 <IconClose />
               </div>
             ) : (
-              <Link to="/" className="modal-close">
+              <Link to="/" className="modal-close play-sound">
                 <IconClose />
               </Link>
             )

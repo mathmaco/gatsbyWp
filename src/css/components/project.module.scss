@@ -87,11 +87,11 @@
 .gallery {
  position: relative;
  background-color: $clr-red;
-
+ .itemWrap {
+  display: flex;
+ }
  .item {
   position: relative;
-  max-width: 100%;
-  min-width: 100%;
   height: vwpc(250);
   background-color: $clr-blk;
   margin: 0.5px;
