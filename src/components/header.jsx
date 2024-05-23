@@ -23,7 +23,7 @@ import { TimeContext } from '../contexts/TimeContext';
 const Header = () => {
 
   const [PaaMessage, setPaaMessage] = useState(false);
-
+  //const marqueeRef = useRef(null);
 
 
   const handleMessageClick = () => {
@@ -39,9 +39,7 @@ const Header = () => {
     });
   }
   const currentTime = useContext(TimeContext);
-
   const { selectedValue, setSelectedValue } = useSelectedValue();
-
   const posts = useContext(ProjectsContext);
 
   useEffect(() => {
@@ -54,6 +52,7 @@ const Header = () => {
   const handleClick = (value) => {
     setSelectedValue(value);
     localStorage.setItem('selectedValue', value);
+
   };
 
 
@@ -78,9 +77,9 @@ const Header = () => {
             <div className={header.layout}>
               <div className={header.layoutNav}>
                 <ul className={header.layoutNavList}>
-                  <li><button type="button" data-value="list1" onClick={() => handleClick("list1")} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { handleClick("list1"); } }} className={selectedValue === "list1" ? "selected" : ""}><List1 /><span style={{ visibility: 'hidden', display: 'none' }}>レイアウト</span></button></li>
-                  <li><button className="play-sound" type="button" data-value="list2" onClick={() => handleClick("list2")} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { handleClick("list2"); } }} className={selectedValue === "list2" ? "selected" : ""}><List2 /><span style={{ visibility: 'hidden', display: 'none' }}>レイアウト</span></button></li>
-                  <li><button className="play-sound" type="button" data-value="list3" onClick={() => handleClick("list3")} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { handleClick("list3"); } }} className={selectedValue === "list3" ? "selected" : ""}><List3 /><span style={{ visibility: 'hidden', display: 'none' }}>レイアウト</span></button></li>
+                  <li className="play-sound"><button type="button" data-value="list1" onClick={() => handleClick("list1")} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { handleClick("list1"); } }} className={selectedValue === "list1" ? "selected" : ""}><List1 /><span style={{ visibility: 'hidden', display: 'none' }}>レイアウト</span></button></li>
+                  <li className="play-sound"><button type="button" data-value="list2" onClick={() => handleClick("list2")} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { handleClick("list2"); } }} className={selectedValue === "list2" ? "selected" : ""}><List2 /><span style={{ visibility: 'hidden', display: 'none' }}>レイアウト</span></button></li>
+                  <li className="play-sound"><button type="button" data-value="list3" onClick={() => handleClick("list3")} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { handleClick("list3"); } }} className={selectedValue === "list3" ? "selected" : ""}><List3 /><span style={{ visibility: 'hidden', display: 'none' }}>レイアウト</span></button></li>
                 </ul>
                 <div className={`${header.layoutNavPaa} play-sound`} id="icon-paa" onClick={handleMessageClick}><Paa /></div>
                 <div className={`${header.PaaMessage} ${PaaMessage ? 'visible' : ''}`}>
@@ -95,7 +94,7 @@ const Header = () => {
             </div>
           </div>
         </div>
-      </header>
+      </header >
       <div className={header.spNav}>
         <nav className={header.nav}>
           <ul className={header.menu}>

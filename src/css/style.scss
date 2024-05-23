@@ -181,22 +181,7 @@ button {
   position: relative;
  }
 }
-.annotation-marquee-container {
- .annotation-marquee {
-  display: flex;
-  overflow: hidden;
-  white-space: nowrap;
-  will-change: transform;
-  .marquee-content {
-   flex: 0 0 auto;
-   min-width: auto;
-   z-index: 1;
-   display: flex;
-   flex-direction: row;
-   align-items: center;
-  }
- }
-}
+
 .modal {
  position: fixed;
  top: vwpc(20);
