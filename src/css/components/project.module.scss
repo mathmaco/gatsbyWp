@@ -85,7 +85,6 @@
  }
 }
 .gallery {
- position: relative;
  background-color: $clr-red;
  .itemWrap {
   display: flex;
@@ -127,7 +126,7 @@
  .link {
   position: relative;
   display: block;
-  z-index: 2;
+  z-index: 5;
   &:hover {
    &::before {
     opacity: 1;
