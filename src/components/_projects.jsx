@@ -1,136 +1,24 @@
-import React, { useContext, useMemo, useEffect, useRef, useState } from "react";
+import React, { useContext, useMemo, useRef } from "react";
+import { Link } from 'gatsby';
+
 import { gsap } from 'gsap';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { handleAnimation } from './effect';
 
-import { ProjectsContext } from '../contexts/ProjectsContext';
-import { Link } from 'gatsby';
-import { GatsbyImage, getImage } from 'gatsby-plugin-image';
-import { getVimeoThumbnail } from '../utils/getVimeoThumbnail'; // Vimeoサムネイルを取得する関数
+
 import parse from 'html-react-parser';
 import * as projectStyles from '../css/components/project.module.scss';
+import { ProjectsContext } from '../contexts/ProjectsContext';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
-import { pixelateImage } from '../utils/pixelateImage';
-import Marquee from 'react-fast-marquee';
 import Star from "./star";
-
-
-gsap.registerPlugin(ScrollTrigger);
+import GalleryMarquee from './GalleryMarquee'; // GalleryMarqueeコンポーネントをインポート
 
 const fillColor = '#c9171e';
-const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
-  const [pixelatedImages, setPixelatedImages] = useState([]);
-  const marqueeRef = useRef(null);
-  useEffect(() => {
-    const pixelateMedia = async () => {
-      const pixelated = await Promise.all(media.map(async (item) => {
-        if (item.mediaCheck === 'photo' && item.photo) {
-          const gatsbyImageData = getImage(item.photo.node.localFile.childImageSharp.gatsbyImageData);
-          const originalSrc = gatsbyImageData.images.fallback.src;
-          return new Promise((resolve) => {
-            pixelateImage(originalSrc, 150, (pixelatedSrc) => {
-              resolve({
-                ...item,
-                photo: {
-                  ...item.photo,
-                  pixelatedSrc,
-                },
-              });
-            });
-          });
-        } else if (item.mediaCheck === 'video' && item.video) {
-          const thumbnailUrl = await getVimeoThumbnail(item.video);
-          return new Promise((resolve) => {
-            pixelateImage(thumbnailUrl, 150, (pixelatedSrc) => {
-              resolve({
-                ...item,
-                video: {
-                  ...item.video,
-                  pixelatedSrc,
-                },
-              });
-            });
-          });
-        }
-        return item;
-      }));
-      setPixelatedImages(pixelated);
-    };
-    pixelateMedia();
-  }, [media]);
-  useEffect(() => {
-    if (pixelatedImages.length === 0) return;
-    //handleAnimation(marqueeRef.current);
-  }, [pixelatedImages]);
-  const marqueeStyle = {
-    justifyContent: postIndex % 2 === 0 ? 'flex-end' : 'flex-start',
-  };
-  return (
-    <div ref={marqueeRef}>
-      <Marquee speed={speed} direction={postIndex % 2 === 0 ? 'left' : 'right'} autoFill={true}>
-        {pixelatedImages.map((item, index) => (
-          <div key={index} className="">
-            {
-              item.mediaCheck === 'photo' && item.photo && (
-                <div className={`${projectStyles.item}`}>
-                  <div className={projectStyles.photo}>
-                    <div className="media-wrap">
-                      <div className="media-pixel">
-                        <img
-                          src={item.photo.pixelatedSrc}
-                          alt={item.photo.node.altText || 'デフォルトのサイト名'} />
-                      </div>
-                      <div className="media-origital">
-                        <GatsbyImage
-                          image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-                          style={{ width: '100%', height: '100%' }}
-                          alt={item.photo.node.altText || 'デフォルトのサイト名'} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )
-            }
-            {
-              item.mediaCheck === 'video' && item.video && (
-                <div className={`${projectStyles.item}`}>
-                  <div className="media-wrap">
-                    <div className="media-pixel">
-                      <img
-                        src={item.video.pixelatedSrc}
-                        style={{ width: '100%', height: '100%' }}
-                        alt="ピクセル化されたビデオサムネイル" />
-                    </div>
-                    <div className="media-origital">
-                      <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
-                        <iframe
-                          src={`https://player.vimeo.com/video/${item.video}?background=1`}
-                          title="vimeo"
-                          loading="lazy"
-                          frameBorder="0"
-                          allow="autoplay;"
-                        ></iframe>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )
-            }
-          </div>
-        ))}
-
-      </Marquee >
-    </div>
-  );
-});
 
 const Projects = () => {
   const { selectedValue } = useSelectedValue();
   const posts = useContext(ProjectsContext);
   const workerRef = useRef(null);
-
-
 
   const renderedPosts = useMemo(() => (
     posts.map((post, postIndex) => (
@@ -233,37 +121,15 @@ const Projects = () => {
     ))
   ), [posts]);
 
-  //  useEffect(() => {
-  //    if (window.Worker) {
-  //      const worker = new Worker(new URL('../utils/scrollWorker.js', import.meta.url));
-  //      workerRef.current = worker;
-  //
-  //      worker.postMessage({ action: 'start', speed: 30, distance: 10 });
-  //
-  //      worker.onmessage = (event) => {
-  //        if (event.data === 'scroll') {
-  //          const reachedBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
-  //          if (reachedBottom) {
-  //            window.scrollTo(0, 0); // ページの最上部に戻る
-  //          } else {
-  //            window.scrollBy(0, 1); // スクロール距離を調整
-  //          }
-  //        }
-  //      };
-  //
-  //      return () => {
-  //        worker.postMessage({ action: 'stop' });
-  //        worker.terminate();
-  //      };
-  //    }
-  //  }, []);
-
   return (
-    <section className="projects">
-      <ul data-view={selectedValue} className={projectStyles.list}>
-        {renderedPosts}
-      </ul>
-    </section>
+    <>
+      <div id="projects" className="projects">
+        <ul data-view={selectedValue} className={projectStyles.list}>
+          {renderedPosts}
+        </ul>
+      </div>
+      <footer></footer>
+    </>
   );
 };
 

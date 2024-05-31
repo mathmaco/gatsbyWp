@@ -5,11 +5,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
 import { GatsbyImage, getImage } from 'gatsby-plugin-image';
-import { getVimeoThumbnail } from '../utils/getVimeoThumbnail'; // Vimeoサムネイルを取得する関数
+import { getVimeoThumbnail } from '../utils/getVimeoThumbnail';
 import { pixelateImage } from '../utils/pixelateImage';
-import Marquee from 'react-fast-marquee';
+//import Marquee from 'react-fast-marquee';
 import * as projectStyles from '../css/components/project.module.scss';
 
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -89,58 +91,85 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
 
   return (
     <div ref={marqueeRef}>
-      <Marquee speed={speed} direction={postIndex % 2 === 0 ? 'left' : 'right'} autoFill={true}>
+      <Swiper
+        // install Swiper modules
+        spaceBetween={50}
+        slidesPerView={3}
+        navigation
+        pagination={{ clickable: true }}
+        scrollbar={{ draggable: true }}
+        onSwiper={(swiper) => console.log(swiper)}
+        onSlideChange={() => console.log('slide change')}
+      >
         {pixelatedImages.map((item, index) => (
-          <div key={index} className="">
-            {
-              item.mediaCheck === 'photo' && item.photo && (
-                <div className={`${projectStyles.item}`}>
-                  <div className={projectStyles.photo}>
-                    <div className="media-wrap">
+          <SwiperSlide>
+            <div key={index} className="">
+              {
+                item.mediaCheck === 'photo' && item.photo && (
+                  <div className={`${projectStyles.item}`}>
+                    <div className={projectStyles.photo}>
+                      <GatsbyImage
+                        image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
+                        style={{ width: '100%', height: '100%' }}
+                        alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                      {/*<div className="media-wrap">
+                        <div className="media-pixel">
+                          <img
+                            src={item.photo.pixelatedSrc}
+                            alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                        </div>
+                        <div className="media-origital">
+                          <GatsbyImage
+                            image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
+                            style={{ width: '100%', height: '100%' }}
+                            alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                        </div>
+                      </div>*/}
+
+                    </div>
+                  </div>
+                )
+              }
+              {
+                item.mediaCheck === 'video' && item.video && (
+                  <div className={`${projectStyles.item}`}>
+                    <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
+                      <iframe
+                        src={`https://player.vimeo.com/video/${item.video}?background=1`}
+                        title="vimeo"
+                        loading="lazy"
+                        frameBorder="0"
+                        allow="autoplay;"
+                      ></iframe>
+                    </div>
+                    {/*<div className="media-wrap">
                       <div className="media-pixel">
                         <img
-                          src={item.photo.pixelatedSrc}
-                          alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                          src={item.video.pixelatedSrc}
+                          style={{ width: '100%', height: '100%' }}
+                          alt="ピクセル化されたビデオサムネイル" />
                       </div>
                       <div className="media-origital">
-                        <GatsbyImage
-                          image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-                          style={{ width: '100%', height: '100%' }}
-                          alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                        <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
+                          <iframe
+                            src={`https://player.vimeo.com/video/${item.video}?background=1`}
+                            title="vimeo"
+                            loading="lazy"
+                            frameBorder="0"
+                            allow="autoplay;"
+                          ></iframe>
+                        </div>
                       </div>
-                    </div>
+                    </div>*/}
+
                   </div>
-                </div>
-              )
-            }
-            {
-              item.mediaCheck === 'video' && item.video && (
-                <div className={`${projectStyles.item}`}>
-                  <div className="media-wrap">
-                    <div className="media-pixel">
-                      <img
-                        src={item.video.pixelatedSrc}
-                        style={{ width: '100%', height: '100%' }}
-                        alt="ピクセル化されたビデオサムネイル" />
-                    </div>
-                    <div className="media-origital">
-                      <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
-                        <iframe
-                          src={`https://player.vimeo.com/video/${item.video}?background=1`}
-                          title="vimeo"
-                          loading="lazy"
-                          frameBorder="0"
-                          allow="autoplay;"
-                        ></iframe>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )
-            }
-          </div>
+                )
+              }
+            </div>
+          </SwiperSlide>
         ))}
-      </Marquee>
+
+      </Swiper>
     </div>
   );
 });
