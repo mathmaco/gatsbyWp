@@ -127,7 +127,7 @@
  .link {
   position: relative;
   display: block;
-
+  z-index: 2;
   &:hover {
    &::before {
     opacity: 1;
