@@ -75,27 +75,30 @@ const BlogPostTemplate = ({ data, location, pageContext }) => {
                   <div className={single.mediaList}>
                     <ul>
                       {media.map((item, index) => (
-                        <li key={index}>
-                          {item.mediaCheck === 'photo' && item.photo && (
-                            <div className={single.photo}>
-                              <GatsbyImage
-                                image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-                                style={{ width: '100%' }}
-                                alt={item.altText || "画像名"}
-                              />
-                            </div>
-                          )}
-                          {item.mediaCheck === 'video' && item.fullVideo && (
-                            <div className={single.fullVideo} style={{ aspectRatio: item.aspectRatio }}>
-                              <iframe
-                                src={`https://player.vimeo.com/video/${item.fullVideo}?autoplay=0&loop=0&title=0&byline=0&portrait=0&controls=1&muted=0&autopause=0`}
-                                frameBorder="0"
-                                title="vimeo"
-                                loading="lazy"
-                              />
-                            </div>
-                          )}
-                        </li>
+                        (item.viewCheck === 'view2' || item.viewCheck === 'view3') && (
+                          //(item.viewCheck !== 'view1' && (item.viewCheck === 'view2' || item.viewCheck === 'view3')) && (
+                          <li key={index}>
+                            {item.mediaCheck === 'photo' && item.photo && (
+                              <div className={single.photo}>
+                                <GatsbyImage
+                                  image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
+                                  style={{ width: '100%' }}
+                                  alt={item.altText || "画像名"}
+                                />
+                              </div>
+                            )}
+                            {item.mediaCheck === 'video' && item.fullVideo && (
+                              <div className={single.video} style={{ aspectRatio: item.aspectRatio }}>
+                                <iframe
+                                  src={`https://player.vimeo.com/video/${item.fullVideo}?autoplay=0&loop=0&title=0&byline=0&portrait=0&controls=1&muted=0&autopause=0`}
+                                  frameBorder="0"
+                                  title="vimeo"
+                                  loading="lazy"
+                                />
+                              </div>
+                            )}
+                          </li>
+                        )
                       ))}
                     </ul>
                   </div>

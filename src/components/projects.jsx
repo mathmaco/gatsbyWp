@@ -15,27 +15,30 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
   return (
     <Marquee speed={speed} autoFill={true}>
       {media.map((item, index) => (
-        <div className={projectStyles.item} key={index}>
-          {item.mediaCheck === 'photo' && item.photo && (
-            <div className={projectStyles.photo}>
-              <GatsbyImage
-                image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-                style={{ width: '100%', height: '100%' }}
-                alt={item.photo.node.altText || 'デフォルトのサイト名'} />
-            </div>
-          )}
-          {item.mediaCheck === 'video' && item.shortVideo && (
-            <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
-              <iframe
-                src={`https://player.vimeo.com/video/${item.shortVideo}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
-                title="vimeo"
-                loading="lazy"
-                frameBorder="0"
-                allow="autoplay;"
-              ></iframe>
-            </div>
-          )}
-        </div>
+
+        (item.viewCheck === 'view1' || item.viewCheck === 'view3') && (
+          <div className={projectStyles.item} key={index}>
+            {item.mediaCheck === 'photo' && item.photo && (
+              <div className={projectStyles.photo}>
+                <GatsbyImage
+                  image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
+                  style={{ width: '100%', height: '100%' }}
+                  alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+              </div>
+            )}
+            {item.mediaCheck === 'video' && item.shortVideo && (
+              <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
+                <iframe
+                  src={`https://player.vimeo.com/video/${item.shortVideo}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
+                  title="vimeo"
+                  loading="lazy"
+                  frameBorder="0"
+                  allow="autoplay;"
+                ></iframe>
+              </div>
+            )}
+          </div>
+        )
       ))}
     </Marquee>
   );
