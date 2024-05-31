@@ -37,8 +37,10 @@ export const ProjectsProvider = ({ children }) => {
                         projectsTitleEn
                         projectsUrl
                         projectsMedia {
+                            viewCheck
                             mediaCheck
-                            video
+                            shortVideo
+                            fullVideo
                             aspectRatio
                             photo {
                                 node {

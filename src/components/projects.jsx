@@ -7,6 +7,7 @@ import parse from 'html-react-parser';
 import * as projectStyles from '../css/components/project.module.scss';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
 import Marquee from 'react-fast-marquee';
+
 import Star from "./star";
 const fillColor = '#c9171e';
 
@@ -23,14 +24,14 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
                 alt={item.photo.node.altText || 'デフォルトのサイト名'} />
             </div>
           )}
-          {item.mediaCheck === 'video' && item.video && (
-            <div className={projectStyles.video} style={{ paddingTop: item.aspect + '%', aspectRatio: item.aspectRatio }}>
+          {item.mediaCheck === 'video' && item.shortVideo && (
+            <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
               <iframe
-                src={`https://player.vimeo.com/video/${item.video}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
+                src={`https://player.vimeo.com/video/${item.shortVideo}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
                 title="vimeo"
                 loading="lazy"
                 frameBorder="0"
-              //allow="autoplay;"
+                allow="autoplay;"
               ></iframe>
             </div>
           )}

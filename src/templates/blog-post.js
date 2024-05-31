@@ -85,10 +85,10 @@ const BlogPostTemplate = ({ data, location, pageContext }) => {
                               />
                             </div>
                           )}
-                          {item.mediaCheck === 'video' && item.video && (
-                            <div className={single.video} style={{ paddingTop: item.aspect + '%' }}>
+                          {item.mediaCheck === 'video' && item.fullVideo && (
+                            <div className={single.fullVideo} style={{ aspectRatio: item.aspectRatio }}>
                               <iframe
-                                src={`https://player.vimeo.com/video/${item.video}?autoplay=0&loop=0&title=0&byline=0&portrait=0&controls=1&muted=0&autopause=0`}
+                                src={`https://player.vimeo.com/video/${item.fullVideo}?autoplay=0&loop=0&title=0&byline=0&portrait=0&controls=1&muted=0&autopause=0`}
                                 frameBorder="0"
                                 title="vimeo"
                                 loading="lazy"
@@ -224,8 +224,10 @@ export const pageQuery = graphql`
         projectsTitleEn
         projectsUrl
         projectsMedia {
+          viewCheck
           mediaCheck
-          video
+          shortVideo
+          fullVideo
           aspectRatio
           photo {
             node {
