@@ -88,16 +88,23 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [pixelatedImages, postIndex]);
-
+  const slideLength = 5; // 実際のスライドの長さに応じて設定してください
   return (
     <div ref={marqueeRef}>
       <Swiper
-        // install Swiper modules
-        spaceBetween={50}
-        slidesPerView={3}
-        navigation
-        pagination={{ clickable: true }}
-        scrollbar={{ draggable: true }}
+        spaceBetween={0}
+        slidesPerView="auto"
+        loop={true}
+        loopedSlides={slideLength}
+        speed={6000}
+        autoplay={{
+          delay: 0,
+          disableOnInteraction: false,
+        }}
+        freeMode={{
+          enabled: true,
+          momentum: false,
+        }}
         onSwiper={(swiper) => console.log(swiper)}
         onSlideChange={() => console.log('slide change')}
       >
