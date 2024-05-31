@@ -127,7 +127,13 @@ const Header = () => {
           <ul className={header.menu}>
             <li><Link to="/">Projects<i className={header.mark}><Star /></i><i className={header.count}>({posts.length})</i></Link></li>
             <li><Link to="/about/">About</Link></li>
-            <li><span onClick={handleCopyEmail}>Contact</span></li>
+            <li className="js-Tooltip">
+              <span onClick={handleTooltipClick}>Contact</span>
+              <div className={`${header.Tooltip} ${Tooltip ? 'visible' : ''}`}>
+                <div className={header.TooltipMail}>paa(at)paa.ac</div>
+                <div onClick={handleCopyEmail} className={header.TooltipClipbord}>Copy this e-mail address</div>
+              </div>
+            </li>
           </ul>
           <div className={header.time}>
             <div className="current-time">{currentTime}</div>

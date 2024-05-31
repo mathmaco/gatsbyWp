@@ -27,7 +27,6 @@
   display: flex;
   li {
    position: relative;
-
    .Tooltip {
     position: absolute;
     left: -20px;
@@ -44,7 +43,7 @@
     visibility: hidden;
     transition: opacity 0.3s;
     .TooltipMail {
-     margin-bottom: 5px;
+     margin-bottom: 10px;
      font-size: 14px;
     }
     .TooltipClipbord {
@@ -103,6 +102,7 @@
    }
   }
  }
+
  .time {
   position: absolute;
   top: 50px;
@@ -184,6 +184,7 @@
   }
  }
 }
+
 .spNav {
  display: none;
 }
@@ -218,6 +219,35 @@
   .nav {
    .menu {
     li {
+     position: relative;
+     .Tooltip {
+      position: absolute;
+      left: vw(160);
+      top: vw(-15);
+      border-radius: vw(6);
+      padding: vw(10);
+      width: vw(200);
+      background-color: rgba(#888, 0.5);
+      backdrop-filter: blur(10px);
+      color: $clr-wht;
+      text-align: center;
+      z-index: 5;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s;
+      .TooltipMail {
+       margin-bottom: vw(10);
+       font-size: vw(14);
+      }
+      .TooltipClipbord {
+       padding: vw(10) vw(5);
+       font-size: vw(12);
+       border-radius: vw(3);
+       background-color: rgba(#888, 0.6);
+       backdrop-filter: blur(10px);
+       cursor: pointer;
+      }
+     }
      a,
      span {
       position: relative;
