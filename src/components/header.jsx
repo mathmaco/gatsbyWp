@@ -23,21 +23,42 @@ import { TimeContext } from '../contexts/TimeContext';
 const Header = () => {
 
   const [PaaMessage, setPaaMessage] = useState(false);
+  const [Tooltip, setTooltip] = useState(false);
   //const marqueeRef = useRef(null);
 
-
+  const handleTooltipClick = () => {
+    setTooltip(!Tooltip);
+  }
   const handleMessageClick = () => {
     setPaaMessage(!PaaMessage);
   }
 
   const handleCopyEmail = (event) => {
-    const email = "contact@mathi.jp";
+    const email = "paa@paa.ac";
     navigator.clipboard.writeText(email).then(() => {
-      alert(`メールアドレスがコピーされました` + email);
     }).catch(err => {
-      alert(`コピーに失敗しました`, err);
     });
   }
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Check if the click is outside the Tooltip or PaaMessage
+      if (!event.target.closest('.js-Tooltip')) {
+        setTooltip(false);
+        setPaaMessage(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
+
+
   const currentTime = useContext(TimeContext);
   const { selectedValue, setSelectedValue } = useSelectedValue();
   const posts = useContext(ProjectsContext);
@@ -68,7 +89,13 @@ const Header = () => {
                   <Link to="/" className="play-sound">Projects<i className={header.mark}><Star /></i><i className={header.count}>({posts.length})</i></Link>
                 </li>
                 <li><Link to="/about/" className="play-sound">About</Link></li>
-                <li><span onClick={handleCopyEmail} id="email-link" className="play-sound">Contact</span></li>
+                <li className="js-Tooltip">
+                  <span onClick={handleTooltipClick} id="email-link" className="play-sound">Contact</span>
+                  <div className={`${header.Tooltip} ${Tooltip ? 'visible' : ''}`}>
+                    <div className={header.TooltipMail}>paa(at)paa.ac</div>
+                    <div onClick={handleCopyEmail} className={header.TooltipClipbord}>Copy this e-mail address</div>
+                  </div>
+                </li>
               </ul>
               <div className={header.time}>
                 <div className="current-time">{currentTime}</div>
@@ -81,7 +108,7 @@ const Header = () => {
                   <li className="play-sound"><button type="button" data-value="list2" onClick={() => handleClick("list2")} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { handleClick("list2"); } }} className={selectedValue === "list2" ? "selected" : ""}><List2 /><span style={{ visibility: 'hidden', display: 'none' }}>レイアウト</span></button></li>
                   <li className="play-sound"><button type="button" data-value="list3" onClick={() => handleClick("list3")} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { handleClick("list3"); } }} className={selectedValue === "list3" ? "selected" : ""}><List3 /><span style={{ visibility: 'hidden', display: 'none' }}>レイアウト</span></button></li>
                 </ul>
-                <div className={`${header.layoutNavPaa} play-sound`} id="icon-paa" onClick={handleMessageClick}><Paa /></div>
+                <div className={`${header.layoutNavPaa} play-sound js-Tooltip`} id="icon-paa" onClick={handleMessageClick}><Paa /></div>
                 <div className={`${header.PaaMessage} ${PaaMessage ? 'visible' : ''}`}>
                   もうちょっと待ってね！
                 </div>

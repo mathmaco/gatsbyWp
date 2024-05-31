@@ -27,6 +27,35 @@
   display: flex;
   li {
    position: relative;
+
+   .Tooltip {
+    position: absolute;
+    left: -20px;
+    top: 30px;
+    border-radius: 6px;
+    padding: 10px;
+    width: 184px;
+    background-color: rgba(#888, 0.5);
+    backdrop-filter: blur(10px);
+    color: $clr-wht;
+    text-align: center;
+    z-index: 5;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s;
+    .TooltipMail {
+     margin-bottom: 5px;
+     font-size: 14px;
+    }
+    .TooltipClipbord {
+     padding: 10px 5px;
+     font-size: 11px;
+     border-radius: 3px;
+     background-color: rgba(#888, 0.5);
+     backdrop-filter: blur(10px);
+     cursor: pointer;
+    }
+   }
    &:not(:first-child) {
     margin-left: 30px;
     &:before {
@@ -136,6 +165,7 @@
   .layoutNavPaa {
    cursor: pointer;
   }
+
   .PaaMessage {
    position: absolute;
    right: 0;
