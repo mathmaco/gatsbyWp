@@ -13,6 +13,12 @@ import * as projectStyles from '../css/components/project.module.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 
+
+import SwiperCore, { Autoplay, FreeMode } from 'swiper';
+
+// Swiperモジュールをインストール
+SwiperCore.use([Autoplay, FreeMode]);
+
 gsap.registerPlugin(ScrollTrigger);
 
 const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
@@ -88,7 +94,9 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [pixelatedImages, postIndex]);
+
   const slideLength = 5; // 実際のスライドの長さに応じて設定してください
+
   return (
     <div ref={marqueeRef}>
       <Swiper
@@ -109,11 +117,11 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
         onSlideChange={() => console.log('slide change')}
       >
         {pixelatedImages.map((item, index) => (
-          <SwiperSlide>
-            <div key={index} className="">
+          <SwiperSlide key={index}>
+            <div className="">
               {
                 item.mediaCheck === 'photo' && item.photo && (
-                  <div className={`${projectStyles.item}`}>
+                  <div className={projectStyles.item}>
                     <div className={projectStyles.photo}>
                       <GatsbyImage
                         image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
@@ -139,7 +147,7 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
               }
               {
                 item.mediaCheck === 'video' && item.video && (
-                  <div className={`${projectStyles.item}`}>
+                  <div className={projectStyles.item}>
                     <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
                       <iframe
                         src={`https://player.vimeo.com/video/${item.video}?background=1`}
