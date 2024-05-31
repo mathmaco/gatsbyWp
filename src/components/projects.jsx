@@ -12,7 +12,7 @@ const fillColor = '#c9171e';
 
 const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
   return (
-    <Marquee speed={speed} direction={postIndex % 2 === 0 ? 'left' : 'right'} autoFill={true}>
+    <Marquee speed={speed} autoFill={true}>
       {media.map((item, index) => (
         <div className={projectStyles.item} key={index}>
           {item.mediaCheck === 'photo' && item.photo && (
@@ -140,7 +140,7 @@ const Projects = () => {
               </div>
             </header>
             <div className={projectStyles.gallery}>
-              <GalleryMarquee media={post.projects.projectsMedia} speed={post.projects.projectsGallerySpeed} postIndex={postIndex + 1} />
+              <GalleryMarquee media={post.projects.projectsMedia} speed={post.projects.projectsGallerySpeed} />
             </div>
           </Link>
         </article>
