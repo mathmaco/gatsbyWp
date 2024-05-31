@@ -1,30 +1,57 @@
-import React, { useContext, useMemo, useRef } from "react";
+import React, { useContext, useMemo, useEffect, lazy, Suspense } from "react";
+
+import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
-
-import { gsap } from 'gsap';
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-
-
+import { GatsbyImage } from 'gatsby-plugin-image';
 import parse from 'html-react-parser';
 import * as projectStyles from '../css/components/project.module.scss';
-import { ProjectsContext } from '../contexts/ProjectsContext';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
+import Marquee from 'react-fast-marquee';
 import Star from "./star";
-import GalleryMarquee from './GalleryMarquee'; // GalleryMarqueeコンポーネントをインポート
-
 const fillColor = '#c9171e';
+
+const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
+  return (
+    <Marquee speed={speed} direction={postIndex % 2 === 0 ? 'left' : 'right'} autoFill={true}>
+      {media.map((item, index) => (
+        <div className={projectStyles.item} key={index}>
+          {item.mediaCheck === 'photo' && item.photo && (
+            <div className={projectStyles.photo}>
+              <GatsbyImage
+                image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
+                style={{ width: '100%', height: '100%' }}
+                alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+            </div>
+          )}
+          {item.mediaCheck === 'video' && item.video && (
+            <div className={projectStyles.video} style={{ paddingTop: item.aspect + '%', aspectRatio: item.aspectRatio }}>
+              <iframe
+                src={`https://player.vimeo.com/video/${item.video}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
+                title="vimeo"
+                loading="lazy"
+                frameBorder="0"
+              //allow="autoplay;"
+              ></iframe>
+            </div>
+          )}
+        </div>
+      ))}
+    </Marquee>
+  );
+});
 
 const Projects = () => {
   const { selectedValue } = useSelectedValue();
   const posts = useContext(ProjectsContext);
-  const workerRef = useRef(null);
+
+
+
 
   const renderedPosts = useMemo(() => (
     posts.map((post, postIndex) => (
-      <li id={`js-pixel` + postIndex} key={post.uri} className={projectStyles.listItem}>
+      <li key={post.uri} className={projectStyles.listItem}>
         <article className={projectStyles.post} itemScope itemType="http://schema.org/Article">
-          <Link to={post.uri} itemProp="url" className={`${projectStyles.link} play-sound`}>
+          <Link to={post.uri} itemProp="url" className={projectStyles.link}>
             <header className={projectStyles.meta}>
               <div className={`${projectStyles.metaList} ${projectStyles.layout1}`}>
                 <div className={projectStyles.metaItem}><div className={projectStyles.metaItemChild}><h3 className={projectStyles.titleEn}>{post.projects.projectsTitleEn}</h3></div></div>
@@ -112,7 +139,7 @@ const Projects = () => {
                 </div>
               </div>
             </header>
-            <div className={`${projectStyles.gallery}`}>
+            <div className={projectStyles.gallery}>
               <GalleryMarquee media={post.projects.projectsMedia} speed={post.projects.projectsGallerySpeed} postIndex={postIndex + 1} />
             </div>
           </Link>
@@ -121,15 +148,28 @@ const Projects = () => {
     ))
   ), [posts]);
 
+  useEffect(() => {
+    const scrollSpeed = 30; // スクロール間隔（ミリ秒）
+    const scrollDistance = 1; // 1回のスクロールで移動する距離（ピクセル）
+
+    const intervalId = setInterval(() => {
+      const reachedBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
+      if (reachedBottom) {
+        window.scrollTo(0, 0); // ページの最上部に戻る
+      } else {
+        window.scrollBy(0, scrollDistance);
+      }
+    }, scrollSpeed);
+
+    return () => clearInterval(intervalId); // コンポーネントのアンマウント時にインターバルをクリア
+  }, []);
+
   return (
-    <>
-      <div id="projects" className="projects">
-        <ul data-view={selectedValue} className={projectStyles.list}>
-          {renderedPosts}
-        </ul>
-      </div>
-      <footer></footer>
-    </>
+    <section className="projects">
+      <ul data-view={selectedValue} className={projectStyles.list}>
+        {renderedPosts}
+      </ul>
+    </section>
   );
 };
 

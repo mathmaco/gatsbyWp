@@ -150,7 +150,8 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
                   <div className={projectStyles.item}>
                     <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
                       <iframe
-                        src={`https://player.vimeo.com/video/${item.video}?background=1`}
+                        //src={`https://player.vimeo.com/video/${item.video}?background=1`}
+                        src={`https://player.vimeo.com/video/${item.video}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
                         title="vimeo"
                         loading="lazy"
                         frameBorder="0"
