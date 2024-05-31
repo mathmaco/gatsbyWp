@@ -52,7 +52,7 @@ const Projects = () => {
     posts.map((post, postIndex) => (
       <li key={post.uri} className={projectStyles.listItem}>
         <article className={projectStyles.post} itemScope itemType="http://schema.org/Article">
-          <Link to={post.uri} itemProp="url" className={projectStyles.link}>
+          <Link to={post.uri} itemProp="url" className={`${projectStyles.link} play-sound`}>
             <header className={projectStyles.meta}>
               <div className={`${projectStyles.metaList} ${projectStyles.layout1}`}>
                 <div className={projectStyles.metaItem}><div className={projectStyles.metaItemChild}><h3 className={projectStyles.titleEn}>{post.projects.projectsTitleEn}</h3></div></div>
