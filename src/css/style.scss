@@ -135,10 +135,21 @@ a:hover {
 iframe {
  border: none;
 }
-//
-//@media #{$tablet} {
-//}
 
+.box {
+ margin: 500px auto;
+ background-color: $clr-main;
+ width: 300px;
+ height: 300px;
+ border-radius: 50%;
+ text-align: center;
+ color: $clr-wht;
+ @include en;
+ font-size: 26px;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}
 .rfm-marquee-container {
  overflow: hidden;
 }
@@ -159,12 +170,6 @@ button {
  visibility: visible !important;
  opacity: 1 !important;
 }
-//.fade-effect {
-// opacity: 0;
-// transition:
-//  opacity 0.5s,
-//  transform 0.5s;
-//}
 
 .media-wrap {
  position: relative;

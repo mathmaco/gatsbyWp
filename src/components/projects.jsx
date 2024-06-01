@@ -1,4 +1,5 @@
-import React, { useContext, useMemo, useEffect, lazy, Suspense } from "react";
+import React, { useContext, useMemo, useEffect } from "react";
+
 
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
@@ -7,9 +8,11 @@ import parse from 'html-react-parser';
 import * as projectStyles from '../css/components/project.module.scss';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
 import Marquee from 'react-fast-marquee';
-
+import Loop from './loop';
 import Star from "./star";
 const fillColor = '#c9171e';
+
+
 
 const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
   return (
@@ -44,22 +47,27 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
   );
 });
 
-const Projects = () => {
+const Projects = React.memo(() => {
   const { selectedValue } = useSelectedValue();
   const posts = useContext(ProjectsContext);
 
-
-
-
   const renderedPosts = useMemo(() => (
-    posts.map((post, postIndex) => (
-      <li key={post.uri} className={projectStyles.listItem}>
+    posts.map((post) => (
+      <li key={post.uri} className={`${projectStyles.listItem} machine__box`}>
         <article className={projectStyles.post} itemScope itemType="http://schema.org/Article">
           <Link to={post.uri} itemProp="url" className={`${projectStyles.link} play-sound`}>
             <header className={projectStyles.meta}>
               <div className={`${projectStyles.metaList} ${projectStyles.layout1}`}>
-                <div className={projectStyles.metaItem}><div className={projectStyles.metaItemChild}><h3 className={projectStyles.titleEn}>{post.projects.projectsTitleEn}</h3></div></div>
-                <div className={projectStyles.metaItem}><div className={projectStyles.metaItemChild}><div className={projectStyles.subTitleEn}>{post.projects.projectsSubtitleEn}</div></div></div>
+                <div className={projectStyles.metaItem}>
+                  <div className={projectStyles.metaItemChild}>
+                    <h3 className={projectStyles.titleEn}>{post.projects.projectsTitleEn}</h3>
+                  </div>
+                </div>
+                <div className={projectStyles.metaItem}>
+                  <div className={projectStyles.metaItemChild}>
+                    <div className={projectStyles.subTitleEn}>{post.projects.projectsSubtitleEn}</div>
+                  </div>
+                </div>
                 <div className={projectStyles.metaItem}>
                   {post.categories.nodes && (
                     <ul className={projectStyles.catList}>
@@ -78,13 +86,19 @@ const Projects = () => {
                     </ul>
                   )}
                 </div>
-                <div className={projectStyles.metaItem}><div className={projectStyles.date}>{post.date}</div></div>
+                <div className={projectStyles.metaItem}>
+                  <div className={projectStyles.date}>{post.date}</div>
+                </div>
               </div>
               <div className={`${projectStyles.metaList} ${projectStyles.layout2}`}>
                 <div className={projectStyles.metaListHeader}>
                   <div className={projectStyles.metaItem}>
-                    <div className={projectStyles.metaItemChild}><h2 className={projectStyles.titleJa}>{parse(post.title)}</h2></div>
-                    <div className={projectStyles.metaItemChild}><div className={projectStyles.subTitleJa}>{post.projects.projectsSubtitleJa}</div></div>
+                    <div className={projectStyles.metaItemChild}>
+                      <h2 className={projectStyles.titleJa}>{parse(post.title)}</h2>
+                    </div>
+                    <div className={projectStyles.metaItemChild}>
+                      <div className={projectStyles.subTitleJa}>{post.projects.projectsSubtitleJa}</div>
+                    </div>
                   </div>
                   <div className={projectStyles.metaItem}>
                     <div className={projectStyles.metaItemChild}>
@@ -98,19 +112,25 @@ const Projects = () => {
                     </div>
                   </div>
                   <div className={projectStyles.metaItem}>
-                    <div className={projectStyles.metaItemChild}><div className={projectStyles.date}>{post.date}</div></div>
+                    <div className={projectStyles.metaItemChild}>
+                      <div className={projectStyles.date}>{post.date}</div>
+                    </div>
                   </div>
+                  <div className={projectStyles.metaItem}></div>
                   <div className={projectStyles.metaItem}>
-                    <div className={projectStyles.metaItemChild}></div>
-                  </div>
-                  <div className={projectStyles.metaItem}>
-                    <div className={projectStyles.metaItemChild}><Star fill={fillColor} w={15} h={15} /></div>
+                    <div className={projectStyles.metaItemChild}>
+                      <Star fill={fillColor} w={15} h={15} />
+                    </div>
                   </div>
                 </div>
                 <div className={projectStyles.metaListFooter}>
                   <div className={projectStyles.metaItem}>
-                    <div className={projectStyles.metaItemChild}><h3 className={projectStyles.titleEn}>{post.projects.projectsTitleEn}</h3></div>
-                    <div className={projectStyles.metaItemChild}><div className={projectStyles.subTitleEn}>{post.projects.projectsSubtitleEn}</div></div>
+                    <div className={projectStyles.metaItemChild}>
+                      <h3 className={projectStyles.titleEn}>{post.projects.projectsTitleEn}</h3>
+                    </div>
+                    <div className={projectStyles.metaItemChild}>
+                      <div className={projectStyles.subTitleEn}>{post.projects.projectsSubtitleEn}</div>
+                    </div>
                   </div>
                   <div className={projectStyles.metaItem}>
                     <div className={projectStyles.metaItemChild}>
@@ -130,9 +150,7 @@ const Projects = () => {
                       )}
                     </div>
                   </div>
-                  <div className={projectStyles.metaItem}>
-                    <div className={projectStyles.metaItemChild}></div>
-                  </div>
+                  <div className={projectStyles.metaItem}></div>
                   <div className={projectStyles.metaItem}>
                     <div className={projectStyles.metaItemChild}>
                       {post.projects.projectsMediaPower && (
@@ -152,6 +170,10 @@ const Projects = () => {
     ))
   ), [posts]);
 
+
+
+
+
   useEffect(() => {
     const scrollSpeed = 30; // スクロール間隔（ミリ秒）
     const scrollDistance = 1; // 1回のスクロールで移動する距離（ピクセル）
@@ -169,12 +191,11 @@ const Projects = () => {
   }, []);
 
   return (
-    <section className="projects">
+    <section id="projects" className="projects">
       <ul data-view={selectedValue} className={projectStyles.list}>
         {renderedPosts}
       </ul>
     </section>
   );
-};
-
+});
 export default Projects;
