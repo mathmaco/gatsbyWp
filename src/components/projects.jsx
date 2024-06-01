@@ -171,7 +171,7 @@ const Projects = React.memo(() => {
   ), [posts]);
 
   useEffect(() => {
-    const scrollSpeed = 10; // スクロール間隔（ミリ秒）
+    const scrollSpeed = 50; // スクロール間隔（ミリ秒）
     const scrollDistance = 1; // 1回のスクロールで移動する距離（ピクセル）
 
     const intervalId = setInterval(() => {
