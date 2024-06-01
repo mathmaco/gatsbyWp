@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useEffect, useRef } from "react";
+import React, { useContext, useMemo, useEffect } from "react";
 
 
 import { ProjectsContext } from '../contexts/ProjectsContext';
@@ -50,7 +50,7 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
 const Projects = React.memo(() => {
   const { selectedValue } = useSelectedValue();
   const posts = useContext(ProjectsContext);
-  const workerRef = useRef(null);
+
   const renderedPosts = useMemo(() => (
     posts.map((post) => (
       <li key={post.uri} className={`${projectStyles.listItem} machine__box`}>
@@ -171,28 +171,19 @@ const Projects = React.memo(() => {
   ), [posts]);
 
   useEffect(() => {
-    if (window.Worker) {
-      const worker = new Worker(new URL('../utils/scrollWorker.js', import.meta.url));
-      workerRef.current = worker;
+    const scrollSpeed = 10; // スクロール間隔（ミリ秒）
+    const scrollDistance = 1; // 1回のスクロールで移動する距離（ピクセル）
 
-      worker.postMessage({ action: 'start', speed: 30, distance: 10 });
+    const intervalId = setInterval(() => {
+      const reachedBottom = window.outerHeight + window.scrollY >= document.body.offsetHeight;
+      if (reachedBottom) {
+        window.scrollTo(0, 0); // ページの最上部に戻る
+      } else {
+        window.scrollBy(0, scrollDistance);
+      }
+    }, scrollSpeed);
 
-      worker.onmessage = (event) => {
-        if (event.data === 'scroll') {
-          const reachedBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
-          if (reachedBottom) {
-            window.scrollTo(0, 0); // ページの最上部に戻る
-          } else {
-            window.scrollBy(0, 1); // スクロール距離を調整
-          }
-        }
-      };
-
-      return () => {
-        worker.postMessage({ action: 'start' });
-        worker.terminate();
-      };
-    }
+    return () => clearInterval(intervalId); // コンポーネントのアンマウント時にインターバルをクリア
   }, []);
 
   return (
