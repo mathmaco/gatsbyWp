@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useEffect } from "react";
+import React, { useContext, useMemo, useEffect, useRef } from "react";
 
 
 import { ProjectsContext } from '../contexts/ProjectsContext';
@@ -14,7 +14,7 @@ const fillColor = '#c9171e';
 
 
 
-const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
+const GalleryMarquee = React.memo(({ media, speed }) => {
   return (
     <Marquee speed={speed} autoFill={true}>
       {media.map((item, index) => (
@@ -50,7 +50,7 @@ const GalleryMarquee = React.memo(({ media, speed, postIndex }) => {
 const Projects = React.memo(() => {
   const { selectedValue } = useSelectedValue();
   const posts = useContext(ProjectsContext);
-
+  const workerRef = useRef(null);
   const renderedPosts = useMemo(() => (
     posts.map((post) => (
       <li key={post.uri} className={`${projectStyles.listItem} machine__box`}>
@@ -170,24 +170,29 @@ const Projects = React.memo(() => {
     ))
   ), [posts]);
 
-
-
-
-
   useEffect(() => {
-    const scrollSpeed = 30; // スクロール間隔（ミリ秒）
-    const scrollDistance = 1; // 1回のスクロールで移動する距離（ピクセル）
+    if (window.Worker) {
+      const worker = new Worker(new URL('../utils/scrollWorker.js', import.meta.url));
+      workerRef.current = worker;
 
-    const intervalId = setInterval(() => {
-      const reachedBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
-      if (reachedBottom) {
-        window.scrollTo(0, 0); // ページの最上部に戻る
-      } else {
-        window.scrollBy(0, scrollDistance);
-      }
-    }, scrollSpeed);
+      worker.postMessage({ action: 'start', speed: 30, distance: 10 });
 
-    return () => clearInterval(intervalId); // コンポーネントのアンマウント時にインターバルをクリア
+      worker.onmessage = (event) => {
+        if (event.data === 'scroll') {
+          const reachedBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
+          if (reachedBottom) {
+            window.scrollTo(0, 0); // ページの最上部に戻る
+          } else {
+            window.scrollBy(0, 1); // スクロール距離を調整
+          }
+        }
+      };
+
+      return () => {
+        worker.postMessage({ action: 'start' });
+        worker.terminate();
+      };
+    }
   }, []);
 
   return (
