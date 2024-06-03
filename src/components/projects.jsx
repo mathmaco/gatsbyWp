@@ -1,9 +1,9 @@
 import React, { useContext, useMemo, useEffect, useRef } from "react";
 
-import { Autoplay, FreeMode, Loop, Mousewheel, Scrollbar } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/scrollbar';
+//import { Autoplay, FreeMode, Loop, Mousewheel, Scrollbar } from 'swiper';
+//import { Swiper, SwiperSlide } from 'swiper/react';
+//import 'swiper/css';
+//import 'swiper/css/scrollbar';
 
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
@@ -55,17 +55,7 @@ const GalleryMarquee = React.memo(({ media, speed, key }) => {
 const Projects = React.memo(() => {
   const { selectedValue } = useSelectedValue();
   const posts = useContext(ProjectsContext);
-  const swiperRef = useRef(null);
-
-  useEffect(() => {
-    if (swiperRef.current) {
-      // 各スライドのheightをautoに変更
-      const slides = swiperRef.current.el.querySelectorAll('.swiper-slide');
-      slides.forEach(slide => {
-        slide.style.height = 'auto';
-      });
-    }
-  }, [posts]);
+  const slideRefs = useRef([]); // SwiperSlideのRefsを格納するための配列を作成
 
   const renderedPosts = useMemo(() => (
     posts.map((post) => (
@@ -189,7 +179,14 @@ const Projects = React.memo(() => {
     ))
   ), [posts]);
 
-
+  useEffect(() => {
+    // DOMがマウントされた後に各SwiperSlideのheightをautoに変更
+    slideRefs.current.forEach(slide => {
+      if (slide) {
+        slide.style.height = 'auto';
+      }
+    });
+  }, [posts]); // postsが更新されるたびに実行
 
   //  useEffect(() => {
   //    const scrollSpeed = 50; // スクロール間隔（ミリ秒）
@@ -209,35 +206,9 @@ const Projects = React.memo(() => {
 
   return (
     <section id="projects" className="projects">
-      <Swiper
-        direction="vertical"
-        modules={[Autoplay, FreeMode, Mousewheel, Scrollbar]}
-        spaceBetween={0}
-        freeMode={true}
-        speed={20000}
-        loop={true}
-        slidesPerView="auto"
-        loopedSlides={1}
-        mousewheel={true}
-        scrollbar={{ draggable: true }}
-        //loopedSlides={posts.length} // postsの長さに基づいて設定
-        autoplay={{
-          delay: 0.5,
-          disableOnInteraction: false,
-          pauseOnMouseEnter: true,
-        }}
-        onSwiper={(swiper) => { swiperRef.current = swiper; }}
-        onAutoplayResume={() => console.log('Autoplay resumed')}
-        onAutoplayPause={() => console.log('Autoplay paused')}
-        style={{ height: '100%' }}
-      >
-
-        <SwiperSlide style={{ height: '100%' }}>
-          <div data-view={selectedValue} className={projectStyles.list}>
-            {renderedPosts}
-          </div>
-        </SwiperSlide>
-      </Swiper>
+      <div data-view={selectedValue} className={projectStyles.list}>
+        {renderedPosts}
+      </div>
     </section>
   );
 });
