@@ -150,9 +150,41 @@ iframe {
  justify-content: center;
  align-items: center;
 }
-.rfm-marquee-container {
- overflow: hidden;
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+ //display: none;
 }
+.rfm-marquee-container {
+ //overflow: hidden;
+ //height: 100vh;
+}
+.swiper-scrollbar {
+ display: none;
+}
+.projects {
+ height: 100vh; /* ビューポート全体の高さから内容に合わせた高さに変更 */
+}
+
+.projectStyles.list {
+ height: auto; /* スライド内のコンテンツも自動調整 */
+}
+.swiper {
+ width: 100%;
+ height: auto; /* スライドの高さを自動調整 */
+ overflow: auto;
+ -webkit-transition-timing-function: linear !important;
+ -o-transition-timing-function: linear !important;
+ transition-timing-function: linear !important;
+ .swiper-wrapper {
+  transition-timing-function: linear;
+ }
+ .swiper-slide {
+  height: 100%; /* スライドの高さを自動調整 */
+  overflow-y: auto; /* スライド内のコンテンツをスクロール可能に */
+ }
+}
+
 button {
  background-color: transparent;
  border: none;
@@ -223,10 +255,7 @@ button {
   }
  }
 }
-html::-webkit-scrollbar,
-body::-webkit-scrollbar {
- display: none;
-}
+
 .scrollbar {
  overflow: scroll;
 }

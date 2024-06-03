@@ -1,5 +1,9 @@
-import React, { useContext, useMemo, useEffect } from "react";
+import React, { useContext, useMemo, useEffect, useRef } from "react";
 
+import { Autoplay, FreeMode, Loop, Mousewheel, Scrollbar } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/scrollbar';
 
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
@@ -8,41 +12,42 @@ import parse from 'html-react-parser';
 import * as projectStyles from '../css/components/project.module.scss';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
 import Marquee from 'react-fast-marquee';
-import Loop from './loop';
+//import Loop from './loop';
 import Star from "./star";
 const fillColor = '#c9171e';
 
 
 
-const GalleryMarquee = React.memo(({ media, speed }) => {
+const GalleryMarquee = React.memo(({ media, speed, key }) => {
   return (
     <Marquee speed={speed} autoFill={true}>
-      {media.map((item, index) => (
-
-        (item.viewCheck === 'view1' || item.viewCheck === 'view3') && (
-          <div className={projectStyles.item} key={index}>
-            {item.mediaCheck === 'photo' && item.photo && (
-              <div className={projectStyles.photo}>
-                <GatsbyImage
-                  image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-                  style={{ width: '100%', height: '100%' }}
-                  alt={item.photo.node.altText || 'デフォルトのサイト名'} />
-              </div>
-            )}
-            {item.mediaCheck === 'video' && item.shortVideo && (
-              <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
-                <iframe
-                  src={`https://player.vimeo.com/video/${item.shortVideo}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
-                  title="vimeo"
-                  loading="lazy"
-                  frameBorder="0"
-                  allow="autoplay;"
-                ></iframe>
-              </div>
-            )}
-          </div>
-        )
-      ))}
+      {
+        media.map((item, index) => (
+          (item.viewCheck === 'view1' || item.viewCheck === 'view3') && (
+            <div className={projectStyles.item} key={index}>
+              {item.mediaCheck === 'photo' && item.photo && (
+                <div className={projectStyles.photo}>
+                  <GatsbyImage
+                    image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
+                    style={{ width: '100%', height: '100%' }}
+                    alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                </div>
+              )}
+              {item.mediaCheck === 'video' && item.shortVideo && (
+                <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
+                  <iframe
+                    src={`https://player.vimeo.com/video/${item.shortVideo}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
+                    title="vimeo"
+                    loading="lazy"
+                    frameBorder="0"
+                    allow="autoplay;"
+                  ></iframe>
+                </div>
+              )}
+            </div>
+          )
+        ))
+      }
     </Marquee>
   );
 });
@@ -50,10 +55,22 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
 const Projects = React.memo(() => {
   const { selectedValue } = useSelectedValue();
   const posts = useContext(ProjectsContext);
+  const swiperRef = useRef(null);
+
+  useEffect(() => {
+    if (swiperRef.current) {
+      // 各スライドのheightをautoに変更
+      const slides = swiperRef.current.el.querySelectorAll('.swiper-slide');
+      slides.forEach(slide => {
+        slide.style.height = 'auto';
+      });
+    }
+  }, [posts]);
 
   const renderedPosts = useMemo(() => (
     posts.map((post) => (
-      <li key={post.uri} className={`${projectStyles.listItem} machine__box`}>
+
+      <div key={post.uri} className={`${projectStyles.listItem} machine__box`}>
         <article className={projectStyles.post} itemScope itemType="http://schema.org/Article">
           <Link to={post.uri} itemProp="url" className={`${projectStyles.link} play-sound`}>
             <header className={projectStyles.meta}>
@@ -166,31 +183,61 @@ const Projects = React.memo(() => {
             </div>
           </Link>
         </article>
-      </li>
+      </div>
+      //<Marquee direction="up"></Marquee>
+
     ))
   ), [posts]);
 
-  useEffect(() => {
-    const scrollSpeed = 50; // スクロール間隔（ミリ秒）
-    const scrollDistance = 1; // 1回のスクロールで移動する距離（ピクセル）
 
-    const intervalId = setInterval(() => {
-      const reachedBottom = window.outerHeight + window.scrollY >= document.body.offsetHeight;
-      if (reachedBottom) {
-        window.scrollTo(0, 0); // ページの最上部に戻る
-      } else {
-        window.scrollBy(0, scrollDistance);
-      }
-    }, scrollSpeed);
 
-    return () => clearInterval(intervalId); // コンポーネントのアンマウント時にインターバルをクリア
-  }, []);
+  //  useEffect(() => {
+  //    const scrollSpeed = 50; // スクロール間隔（ミリ秒）
+  //    const scrollDistance = 1; // 1回のスクロールで移動する距離（ピクセル）
+  //
+  //    const intervalId = setInterval(() => {
+  //      const reachedBottom = window.outerHeight + window.scrollY >= document.body.offsetHeight;
+  //      if (reachedBottom) {
+  //        window.scrollTo(0, 0); // ページの最上部に戻る
+  //      } else {
+  //        window.scrollBy(0, scrollDistance);
+  //      }
+  //    }, scrollSpeed);
+  //
+  //    return () => clearInterval(intervalId); // コンポーネントのアンマウント時にインターバルをクリア
+  //  }, []);
 
   return (
     <section id="projects" className="projects">
-      <ul data-view={selectedValue} className={projectStyles.list}>
-        {renderedPosts}
-      </ul>
+      <Swiper
+        direction="vertical"
+        modules={[Autoplay, FreeMode, Mousewheel, Scrollbar]}
+        spaceBetween={0}
+        freeMode={true}
+        speed={20000}
+        loop={true}
+        slidesPerView="auto"
+        loopedSlides={1}
+        mousewheel={true}
+        scrollbar={{ draggable: true }}
+        //loopedSlides={posts.length} // postsの長さに基づいて設定
+        autoplay={{
+          delay: 0.5,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        }}
+        onSwiper={(swiper) => { swiperRef.current = swiper; }}
+        onAutoplayResume={() => console.log('Autoplay resumed')}
+        onAutoplayPause={() => console.log('Autoplay paused')}
+        style={{ height: '100%' }}
+      >
+
+        <SwiperSlide style={{ height: '100%' }}>
+          <div data-view={selectedValue} className={projectStyles.list}>
+            {renderedPosts}
+          </div>
+        </SwiperSlide>
+      </Swiper>
     </section>
   );
 });
