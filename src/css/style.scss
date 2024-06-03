@@ -136,24 +136,9 @@ iframe {
  border: none;
 }
 
-.box {
- margin: 500px auto;
- background-color: $clr-main;
- width: 300px;
- height: 300px;
- border-radius: 50%;
- text-align: center;
- color: $clr-wht;
- @include en;
- font-size: 26px;
- display: flex;
- justify-content: center;
- align-items: center;
-}
-
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
- //display: none;
+ display: none;
 }
 .rfm-marquee-container {
  //overflow: hidden;
@@ -162,12 +147,13 @@ body::-webkit-scrollbar {
 .swiper-scrollbar {
  display: none;
 }
-.projects {
- height: 100vh; /* ビューポート全体の高さから内容に合わせた高さに変更 */
-}
 
-.projectStyles.list {
- height: auto; /* スライド内のコンテンツも自動調整 */
+//html,
+//body {
+// height: 100vh; /* ビューポート全体の高さから内容に合わせた高さに変更 */
+//}
+.projects {
+ min-height: 100vh;
 }
 .swiper {
  width: 100%;
@@ -180,7 +166,8 @@ body::-webkit-scrollbar {
   transition-timing-function: linear;
  }
  .swiper-slide {
-  height: 100%; /* スライドの高さを自動調整 */
+  width: auto;
+  height: auto; /* スライドの高さを自動調整 */
   overflow-y: auto; /* スライド内のコンテンツをスクロール可能に */
  }
 }

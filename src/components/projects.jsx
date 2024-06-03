@@ -1,9 +1,15 @@
-import React, { useContext, useMemo, useEffect, useRef } from "react";
+import React, { useContext, useMemo, useEffect, useRef, useState } from "react";
+import { Autoplay, FreeMode, Loop, Mousewheel, Scrollbar } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/scrollbar';
 
-//import { Autoplay, FreeMode, Loop, Mousewheel, Scrollbar } from 'swiper';
-//import { Swiper, SwiperSlide } from 'swiper/react';
-//import 'swiper/css';
-//import 'swiper/css/scrollbar';
+import { gsap } from 'gsap';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+
+
 
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
@@ -16,9 +22,10 @@ import Marquee from 'react-fast-marquee';
 import Star from "./star";
 const fillColor = '#c9171e';
 
-
+gsap.registerPlugin(ScrollToPlugin, ScrollTrigger);
 
 const GalleryMarquee = React.memo(({ media, speed, key }) => {
+
   return (
     <Marquee speed={speed} autoFill={true}>
       {
@@ -55,10 +62,33 @@ const GalleryMarquee = React.memo(({ media, speed, key }) => {
 const Projects = React.memo(() => {
   const { selectedValue } = useSelectedValue();
   const posts = useContext(ProjectsContext);
-  const slideRefs = useRef([]); // SwiperSlideのRefsを格納するための配列を作成
+  const swiperRef = useRef(null);
+
+  const projectsRef = useRef(null);
+  const [projectsHeight, setProjectsHeight] = useState(0);
+
+  const updateHeight = () => {
+    if (projectsRef.current) {
+      setProjectsHeight(projectsRef.current.clientHeight);
+    }
+  };
+
+  useEffect(() => {
+    // 要素がマウントされた後に高さを取得する
+    updateHeight();
+    window.addEventListener('resize', updateHeight);
+
+    // コンポーネントのアンマウント時にリスナーを削除する
+    return () => {
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, [posts, selectedValue]); // postsを依存配列に追加
+
+
 
   const renderedPosts = useMemo(() => (
     posts.map((post) => (
+
 
       <div key={post.uri} className={`${projectStyles.listItem} machine__box`}>
         <article className={projectStyles.post} itemScope itemType="http://schema.org/Article">
@@ -179,23 +209,17 @@ const Projects = React.memo(() => {
     ))
   ), [posts]);
 
-  useEffect(() => {
-    // DOMがマウントされた後に各SwiperSlideのheightをautoに変更
-    slideRefs.current.forEach(slide => {
-      if (slide) {
-        slide.style.height = 'auto';
-      }
-    });
-  }, [posts]); // postsが更新されるたびに実行
+
 
   //  useEffect(() => {
-  //    const scrollSpeed = 50; // スクロール間隔（ミリ秒）
+  //    const scrollSpeed = 1; // スクロール間隔（ミリ秒）
   //    const scrollDistance = 1; // 1回のスクロールで移動する距離（ピクセル）
   //
   //    const intervalId = setInterval(() => {
   //      const reachedBottom = window.outerHeight + window.scrollY >= document.body.offsetHeight;
   //      if (reachedBottom) {
-  //        window.scrollTo(0, 0); // ページの最上部に戻る
+  //        //window.scrollTo(0, 0);
+  //        //gsap.to(window, { scrollTo: 0, duration: 2, ease: "power2.inOut" });
   //      } else {
   //        window.scrollBy(0, scrollDistance);
   //      }
@@ -205,10 +229,37 @@ const Projects = React.memo(() => {
   //  }, []);
 
   return (
-    <section id="projects" className="projects">
-      <div data-view={selectedValue} className={projectStyles.list}>
-        {renderedPosts}
-      </div>
+    <section id="projects" className="projects" style={{ height: `${projectsHeight}px` }}>
+      <Swiper
+        direction="vertical"
+        modules={[Autoplay, FreeMode, Mousewheel, Scrollbar]}
+        spaceBetween={0}
+        freeMode={true}
+        speed={20000}
+        loop={true}
+        slidesPerView="auto"
+        loopedSlides={1}
+        mousewheel={true}
+        scrollbar={{ draggable: true }}
+        //loopedSlides={posts.length} // postsの長さに基づいて設定
+        autoplay={{
+          delay: 0.5,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        }}
+        onSwiper={(swiper) => { swiperRef.current = swiper; }}
+        onAutoplayResume={() => console.log('Autoplay resumed')}
+        onAutoplayPause={() => console.log('Autoplay paused')}
+        style={{ height: '100%' }}
+      >
+
+        <SwiperSlide ref={projectsRef}>
+          <div data-view={selectedValue} className={projectStyles.list}>
+            {renderedPosts}
+          </div>
+        </SwiperSlide>
+      </Swiper>
+      <div>プロジェクトの高さ: {projectsHeight}px</div>
     </section>
   );
 });
