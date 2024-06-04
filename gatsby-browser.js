@@ -10,8 +10,8 @@ import "./src/css/normalize.css";
 import "./src/css/style.scss";
 
 import React, { useEffect } from "react";
-//import { Howl } from 'howler';
-//import hoverSound from "./src/assets/se/synth1.mp3";
+import { Howl } from 'howler';
+import hoverSound from "./src/assets/se/synth1.mp3";
 
 import { MarqueeProvider } from './src/contexts/MarqueeContext';
 import { TimeProvider } from "./src/contexts/TimeContext";
@@ -51,7 +51,7 @@ import Header from "./src/components/header";
 //  return () => {
 //   removeListeners();
 //  };
-// });
+// }, []);
 //
 // return <>{children}</>;
 //};
