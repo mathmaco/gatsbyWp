@@ -51,7 +51,7 @@ const LoadSound = ({ children }) => {
   return () => {
    removeListeners();
   };
- }, []);
+ });
 
  return <>{children}</>;
 };

@@ -116,7 +116,7 @@ const Projects = React.memo(() => {
       $menu.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('resize', handleResize);
     };
-  }, [posts, selectedValue]);
+  });
 
   const renderedPosts = useMemo(() => (
     posts.map((post, index) => (
