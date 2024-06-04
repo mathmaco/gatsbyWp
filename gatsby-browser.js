@@ -33,17 +33,10 @@ const LoadSound = ({ children }) => {
    }
   };
 
-  const handleClick = (event) => {
-   if (event.target.classList.contains('play-sound')) {
-    sound.play();
-   }
-  };
 
-  document.body.addEventListener('click', handleClick, true);
   document.body.addEventListener('mouseenter', handleMouseOver, true);
 
   return () => {
-   document.body.removeEventListener('click', handleClick, true);
    document.body.removeEventListener('mouseenter', handleMouseOver, true);
   };
  }, []);
