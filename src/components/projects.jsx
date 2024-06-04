@@ -116,7 +116,7 @@ const Projects = React.memo(() => {
       $menu.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('resize', handleResize);
     };
-  }, [posts]);
+  }, [posts, selectedValue]);
 
   const renderedPosts = useMemo(() => (
     posts.map((post, index) => (
@@ -235,7 +235,7 @@ const Projects = React.memo(() => {
         </article>
       </div>
     ))
-  ), [posts]);
+  ), [posts, selectedValue]);
 
   return (
     <section id="projects" className="projects">
