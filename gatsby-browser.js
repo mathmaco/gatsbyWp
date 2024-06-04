@@ -10,9 +10,9 @@ import "./src/css/normalize.css";
 import "./src/css/style.scss";
 
 import React, { useEffect } from "react";
-import { Howl } from 'howler';
-import hoverSound from "./src/assets/se/blip.mp3";
-
+//import { Howl } from 'howler';
+//import hoverSound from "./src/assets/se/synth1.mp3";
+import Layout from "./src/components/layout";
 import { MarqueeProvider } from './src/contexts/MarqueeContext';
 import { TimeProvider } from "./src/contexts/TimeContext";
 import { ProjectsProvider } from './src/contexts/ProjectsContext';
@@ -20,29 +20,6 @@ import { SelectedValueProvider } from './src/contexts/SelectedValueContext';
 import Projects from './src/components/projects';
 import Header from "./src/components/header";
 
-const LoadSound = ({ children }) => {
- useEffect(() => {
-  const sound = new Howl({
-   src: [hoverSound],
-   preload: true,
-  });
-
-  const handleMouseOver = (event) => {
-   if (event.target.classList.contains('play-sound')) {
-    sound.play();
-   }
-  };
-
-
-  document.body.addEventListener('mouseenter', handleMouseOver, true);
-
-  return () => {
-   document.body.removeEventListener('mouseenter', handleMouseOver, true);
-  };
- }, []);
-
- return <>{children}</>;
-};
 
 
 const LoadFontScript = ({ children }) => {
@@ -77,10 +54,9 @@ export const wrapRootElement = ({ element }) => (
  </SelectedValueProvider>
 );
 
-export const wrapPageElement = ({ element }) => (
- <LoadSound>
-  <LoadFontScript>
-   {element}
-  </LoadFontScript>
- </LoadSound>
-);
+
+
+
+export const wrapPageElement = ({ element, props }) => {
+ return <Layout {...props}><LoadFontScript>{element}</LoadFontScript></Layout>;
+};
