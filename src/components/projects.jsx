@@ -258,7 +258,7 @@ const Projects = React.memo(() => {
           </div>
         </SwiperSlide>
       </Swiper>
-      <div>プロジェクトの高さ: {projectsHeight}px</div>
+
     </section>
   );
 });
