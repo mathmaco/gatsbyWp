@@ -24,7 +24,7 @@ const LoadSound = ({ children }) => {
  useEffect(() => {
   const sound = new Howl({
    src: [hoverSound],
-   preload: true
+   preload: true,
   });
 
   const handleMouseOver = (event) => {
@@ -36,12 +36,11 @@ const LoadSound = ({ children }) => {
   const handleClick = (event) => {
    if (event.target.classList.contains('play-sound')) {
     sound.play();
-    document.body.removeEventListener('click', handleClick, true);
-    document.body.addEventListener('mouseenter', handleMouseOver, true);
    }
   };
 
   document.body.addEventListener('click', handleClick, true);
+  document.body.addEventListener('mouseenter', handleMouseOver, true);
 
   return () => {
    document.body.removeEventListener('click', handleClick, true);
@@ -49,12 +48,9 @@ const LoadSound = ({ children }) => {
   };
  }, []);
 
- return (
-  <>
-   {children}
-  </>
- );
+ return <>{children}</>;
 };
+
 
 const LoadFontScript = ({ children }) => {
  useEffect(() => {
