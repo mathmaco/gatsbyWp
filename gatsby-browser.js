@@ -10,9 +10,9 @@ import "./src/css/normalize.css";
 import "./src/css/style.scss";
 
 import React, { useEffect } from "react";
-//import { Howl } from 'howler';
-//import hoverSound from "./src/assets/se/synth1.mp3";
-import Layout from "./src/components/layout";
+import { Howl } from 'howler';
+import hoverSound from "./src/assets/se/synth1.mp3";
+
 import { MarqueeProvider } from './src/contexts/MarqueeContext';
 import { TimeProvider } from "./src/contexts/TimeContext";
 import { ProjectsProvider } from './src/contexts/ProjectsContext';
@@ -20,7 +20,41 @@ import { SelectedValueProvider } from './src/contexts/SelectedValueContext';
 import Projects from './src/components/projects';
 import Header from "./src/components/header";
 
+const LoadSound = ({ children }) => {
+ useEffect(() => {
+  const sound = new Howl({
+   src: [hoverSound],
+   preload: true,
+  });
 
+  const handleMouseOver = (event) => {
+   if (event.target.classList.contains('play-sound')) {
+    sound.play();
+   }
+  };
+
+  const addListeners = () => {
+   document.querySelectorAll('.play-sound').forEach(element => {
+    element.addEventListener('mouseenter', handleMouseOver);
+   });
+  };
+
+  const removeListeners = () => {
+   document.querySelectorAll('.play-sound').forEach(element => {
+    element.removeEventListener('mouseenter', handleMouseOver);
+   });
+  };
+
+  // Add listeners on initial load
+  addListeners();
+
+  return () => {
+   removeListeners();
+  };
+ }, []);
+
+ return <>{children}</>;
+};
 
 const LoadFontScript = ({ children }) => {
  useEffect(() => {
@@ -46,17 +80,18 @@ export const wrapRootElement = ({ element }) => (
    <TimeProvider>
     <MarqueeProvider>
      <Header />
-     {element}
      <Projects />
+     {element}
     </MarqueeProvider>
    </TimeProvider>
   </ProjectsProvider>
  </SelectedValueProvider>
 );
 
-
-
-
-export const wrapPageElement = ({ element, props }) => {
- return <Layout {...props}><LoadFontScript>{element}</LoadFontScript></Layout>;
-};
+export const wrapPageElement = ({ element }) => (
+ <LoadSound>
+  <LoadFontScript>
+   {element}
+  </LoadFontScript>
+ </LoadSound>
+);

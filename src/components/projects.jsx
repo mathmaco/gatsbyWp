@@ -1,16 +1,7 @@
-import React, { useContext, useMemo, useEffect, useRef, useState } from "react";
-import { Autoplay, FreeMode, Loop, Mousewheel, Scrollbar } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/scrollbar';
-
+import React, { useContext, useMemo, useEffect, useRef } from "react";
 import { gsap } from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-
-
-
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
@@ -18,14 +9,13 @@ import parse from 'html-react-parser';
 import * as projectStyles from '../css/components/project.module.scss';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
 import Marquee from 'react-fast-marquee';
-//import Loop from './loop';
 import Star from "./star";
+
 const fillColor = '#c9171e';
 
 gsap.registerPlugin(ScrollToPlugin, ScrollTrigger);
 
-const GalleryMarquee = React.memo(({ media, speed, key }) => {
-
+const GalleryMarquee = React.memo(({ media, speed }) => {
   return (
     <Marquee speed={speed} autoFill={true}>
       {
@@ -62,34 +52,71 @@ const GalleryMarquee = React.memo(({ media, speed, key }) => {
 const Projects = React.memo(() => {
   const { selectedValue } = useSelectedValue();
   const posts = useContext(ProjectsContext);
-  const swiperRef = useRef(null);
 
-  const projectsRef = useRef(null);
-  const [projectsHeight, setProjectsHeight] = useState(0);
-
-  const updateHeight = () => {
-    if (projectsRef.current) {
-      setProjectsHeight(projectsRef.current.clientHeight);
-    }
-  };
+  const menuRef = useRef(null);
+  const itemsRef = useRef([]);
 
   useEffect(() => {
-    // 要素がマウントされた後に高さを取得する
-    updateHeight();
-    window.addEventListener('resize', updateHeight);
+    const $menu = menuRef.current;
+    if (!$menu || itemsRef.current.length === 0) return;
 
-    // コンポーネントのアンマウント時にリスナーを削除する
-    return () => {
-      window.removeEventListener('resize', updateHeight);
+    let itemHeight = itemsRef.current[0].clientHeight;
+    let wrapHeight = itemsRef.current.length * itemHeight;
+    let scrollY = 0;
+
+    const dispose = (scroll) => {
+      gsap.set(itemsRef.current, {
+        y: (i) => i * itemHeight + scroll,
+        modifiers: {
+          y: (y) => `${gsap.utils.wrap(-itemHeight, wrapHeight - itemHeight, parseInt(y))}px`,
+        },
+      });
     };
-  }, [posts, selectedValue]); // postsを依存配列に追加
+    dispose(0);
 
+    const handleMouseWheel = (e) => {
+      scrollY -= e.deltaY;
+      dispose(scrollY);
+    };
+
+    let touchStart = 0;
+    let touchY = 0;
+    const handleTouchStart = (e) => {
+      touchStart = e.clientY || e.touches[0].clientY;
+    };
+    const handleTouchMove = (e) => {
+      touchY = e.clientY || e.touches[0].clientY;
+      scrollY += (touchY - touchStart) * 2.5;
+      touchStart = touchY;
+      dispose(scrollY);
+    };
+
+    $menu.addEventListener('mousewheel', handleMouseWheel);
+    $menu.addEventListener('touchstart', handleTouchStart);
+    $menu.addEventListener('touchmove', handleTouchMove);
+
+    const handleResize = () => {
+      if (itemsRef.current.length === 0) return;
+      itemHeight = itemsRef.current[0].clientHeight;
+      wrapHeight = itemsRef.current.length * itemHeight;
+      dispose(scrollY); // リサイズ時にdisposeを呼び出す
+    };
+    window.addEventListener('resize', handleResize);
+
+    // 初回レンダリング後にイベントを発火させる
+    window.dispatchEvent(new Event('resize'));
+
+    return () => {
+      $menu.removeEventListener('mousewheel', handleMouseWheel);
+      $menu.removeEventListener('touchstart', handleTouchStart);
+      $menu.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [posts]);
 
   const renderedPosts = useMemo(() => (
-    posts.map((post) => (
-
-
-      <div key={post.uri} className={`${projectStyles.listItem} machine__box`}>
+    posts.map((post, index) => (
+      <div key={post.uri} className={`${projectStyles.listItem} projects-item`} ref={el => itemsRef.current[index] = el}>
         <article className={projectStyles.post} itemScope itemType="http://schema.org/Article">
           <Link to={post.uri} itemProp="url" className={`${projectStyles.link} play-sound`}>
             <header className={projectStyles.meta}>
@@ -203,63 +230,16 @@ const Projects = React.memo(() => {
           </Link>
         </article>
       </div>
-      //<Marquee direction="up"></Marquee>
-
     ))
   ), [posts]);
 
-
-
-  //  useEffect(() => {
-  //    const scrollSpeed = 1; // スクロール間隔（ミリ秒）
-  //    const scrollDistance = 1; // 1回のスクロールで移動する距離（ピクセル）
-  //
-  //    const intervalId = setInterval(() => {
-  //      const reachedBottom = window.outerHeight + window.scrollY >= document.body.offsetHeight;
-  //      if (reachedBottom) {
-  //        //window.scrollTo(0, 0);
-  //        //gsap.to(window, { scrollTo: 0, duration: 2, ease: "power2.inOut" });
-  //      } else {
-  //        window.scrollBy(0, scrollDistance);
-  //      }
-  //    }, scrollSpeed);
-  //
-  //    return () => clearInterval(intervalId); // コンポーネントのアンマウント時にインターバルをクリア
-  //  }, []);
-
   return (
-    <section id="projects" className="projects" style={{ height: `${projectsHeight}px` }}>
-      <Swiper
-        direction="vertical"
-        modules={[Autoplay, FreeMode, Mousewheel, Scrollbar]}
-        spaceBetween={0}
-        freeMode={true}
-        speed={20000}
-        loop={true}
-        slidesPerView="auto"
-        loopedSlides={1}
-        mousewheel={true}
-        scrollbar={{ draggable: true }}
-        //loopedSlides={posts.length} // postsの長さに基づいて設定
-        autoplay={{
-          delay: 0.5,
-          disableOnInteraction: false,
-          pauseOnMouseEnter: true,
-        }}
-        onSwiper={(swiper) => { swiperRef.current = swiper; }}
-        onAutoplayResume={() => console.log('Autoplay resumed')}
-        onAutoplayPause={() => console.log('Autoplay paused')}
-        style={{ height: '100%' }}
-      >
-
-        <SwiperSlide ref={projectsRef}>
-          <div data-view={selectedValue} className={projectStyles.list}>
-            {renderedPosts}
-          </div>
-        </SwiperSlide>
-      </Swiper>
-
+    <section id="projects" className="projects">
+      <div data-view={selectedValue} className={projectStyles.list} ref={menuRef}>
+        {renderedPosts}
+      </div>
     </section>
   );
 });
+
 export default Projects;

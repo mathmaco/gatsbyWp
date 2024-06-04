@@ -17,8 +17,8 @@ export const wrapRootElement = ({ element }) => {
     <TimeProvider>
      <MarqueeProvider>
       <Header />
-      {element}
       <Projects />
+      {element}
      </MarqueeProvider>
     </TimeProvider>
    </ProjectsProvider>

@@ -153,7 +153,16 @@ body::-webkit-scrollbar {
 // height: 100vh; /* ビューポート全体の高さから内容に合わせた高さに変更 */
 //}
 .projects {
- min-height: 100vh;
+ overflow: hidden;
+ height: 100vh;
+
+ .projects-item {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+ }
 }
 .swiper {
  width: 100%;
