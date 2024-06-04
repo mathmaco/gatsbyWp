@@ -104,7 +104,12 @@ const Projects = React.memo(() => {
     window.addEventListener('resize', handleResize);
 
     // 初回レンダリング後にイベントを発火させる
-    window.dispatchEvent(new Event('resize'));
+    //window.dispatchEvent(new Event('resize'));
+
+    if (itemsRef.current.length === 0) return;
+    itemHeight = itemsRef.current[0].clientHeight;
+    wrapHeight = itemsRef.current.length * itemHeight;
+    dispose(scrollY); // リサイズ時にdisposeを呼び出す
 
     return () => {
       $menu.removeEventListener('mousewheel', handleMouseWheel);
