@@ -101,8 +101,7 @@ const Projects = React.memo(() => {
       wrapHeight = itemsRef.current.length * itemHeight;
       dispose(scrollY); // リサイズ時にdisposeを呼び出す
     };
-    window.addEventListener('resize', handleResize);
-
+    window.addEventListener('load', handleResize);
     // 初回レンダリング後にイベントを発火させる
     //window.dispatchEvent(new Event('resize'));
 
