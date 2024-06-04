@@ -60,16 +60,24 @@ const Projects = React.memo(() => {
     const $menu = menuRef.current;
     if (!$menu || itemsRef.current.length === 0) return;
 
-    let itemHeight = itemsRef.current[0].clientHeight;
-    let wrapHeight = itemsRef.current.length * itemHeight;
+    const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
+    let wrapHeight = itemHeights.reduce((total, height) => total + height, 0);
     let scrollY = 0;
 
     const dispose = (scroll) => {
+      let cumulativeHeight = 0;
       gsap.set(itemsRef.current, {
-        y: (i) => i * itemHeight + scroll,
-        modifiers: {
-          y: (y) => `${gsap.utils.wrap(-itemHeight, wrapHeight - itemHeight, parseInt(y))}px`,
+        y: (i) => {
+          const position = cumulativeHeight + scroll;
+          cumulativeHeight += itemHeights[i];
+          return position;
         },
+        modifiers: {
+          y: (y) => {
+            const s = gsap.utils.wrap(-itemHeights[0], wrapHeight - itemHeights[itemHeights.length - 1], parseInt(y));
+            return `${s}px`;
+          }
+        }
       });
     };
     dispose(0);
@@ -97,18 +105,11 @@ const Projects = React.memo(() => {
 
     const handleResize = () => {
       if (itemsRef.current.length === 0) return;
-      itemHeight = itemsRef.current[0].clientHeight;
-      wrapHeight = itemsRef.current.length * itemHeight;
-      dispose(scrollY); // リサイズ時にdisposeを呼び出す
+      const newItemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
+      wrapHeight = newItemHeights.reduce((total, height) => total + height, 0);
+      dispose(scrollY);
     };
-    window.addEventListener('load', handleResize);
-    // 初回レンダリング後にイベントを発火させる
-    //window.dispatchEvent(new Event('resize'));
-
-    if (itemsRef.current.length === 0) return;
-    itemHeight = itemsRef.current[0].clientHeight;
-    wrapHeight = itemsRef.current.length * itemHeight;
-    dispose(scrollY); // リサイズ時にdisposeを呼び出す
+    window.addEventListener('resize', handleResize);
 
     return () => {
       $menu.removeEventListener('mousewheel', handleMouseWheel);
@@ -117,6 +118,8 @@ const Projects = React.memo(() => {
       window.removeEventListener('resize', handleResize);
     };
   }, [posts, selectedValue]);
+
+
 
   const renderedPosts = useMemo(() => (
     posts.map((post, index) => (
