@@ -52,8 +52,21 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
 
 
 const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
+
+  const isFirstRender = useRef(false)
+
+  useEffect(() => { // このeffectは初回レンダー時のみ呼ばれるeffect
+    isFirstRender.current = true
+  }, [])
+
+
   useEffect(() => {
-    console.log('useEffectが実行されました');
+    if (isFirstRender.current) { // 初回レンダー判定
+      isFirstRender.current = false // もう初回レンダーじゃないよ代入
+    } else {
+      console.log('useEffectが実行されました');
+    }
+
 
     const $menu = menuRef.current;
     if (!$menu || itemsRef.current.length === 0) return;
