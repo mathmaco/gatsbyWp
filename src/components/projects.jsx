@@ -113,7 +113,17 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     $menu.addEventListener('touchmove', handleTouchMove);
     window.addEventListener('resize', handleResize);
     window.addEventListener('load', handleResize);
+    window.addEventListener('scroll', handleResize);
     dispose(scrollY);
+
+    // 自動スクロールを設定
+    const scrollSpeed = 1; // スクロールする速度を調整
+    const autoScroll = () => {
+      scrollY -= scrollSpeed;
+      dispose(scrollY);
+      requestAnimationFrame(autoScroll);
+    };
+    autoScroll();
 
     return () => {
       console.log('クリーンアップが実行されました！');
@@ -122,6 +132,7 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
       $menu.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('load', handleResize);
+      window.removeEventListener('scroll', handleResize);
     };
   }, [posts, selectedValue, menuRef, itemsRef]);
 };
@@ -138,22 +149,6 @@ const Projects = React.memo(() => {
 
 
 
-
-  //  useEffect(() => {
-  //    const scrollSpeed = 50; // スクロール間隔（ミリ秒）
-  //    const scrollDistance = 1; // 1回のスクロールで移動する距離（ピクセル）
-  //
-  //    const intervalId = setInterval(() => {
-  //      const reachedBottom = window.outerHeight + window.scrollY >= document.body.offsetHeight;
-  //      if (reachedBottom) {
-  //        window.scrollTo(0, 0); // ページの最上部に戻る
-  //      } else {
-  //        window.scrollBy(0, scrollDistance);
-  //      }
-  //    }, scrollSpeed);
-  //
-  //    return () => clearInterval(intervalId); // コンポーネントのアンマウント時にインターバルをクリア
-  //  }, []);
 
 
   const renderedPosts = useMemo(() => (
