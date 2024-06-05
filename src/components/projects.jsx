@@ -51,7 +51,7 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
 
 
 
-const useScrollableMenu = (menuRef, itemsRef, selectedValue) => {
+const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
   useEffect(() => {
     console.log('useEffectが実行されました');
 
@@ -123,7 +123,7 @@ const useScrollableMenu = (menuRef, itemsRef, selectedValue) => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('load', handleResize);
     };
-  }, [selectedValue, menuRef, itemsRef]);
+  }, [posts, selectedValue, menuRef, itemsRef]);
 };
 const Projects = React.memo(() => {
   const { selectedValue } = useSelectedValue();
@@ -132,7 +132,7 @@ const Projects = React.memo(() => {
   const menuRef = useRef(null);
   const itemsRef = useRef([]);
 
-  useScrollableMenu(menuRef, itemsRef, selectedValue);
+  useScrollableMenu(posts, menuRef, itemsRef, selectedValue);
 
 
 
