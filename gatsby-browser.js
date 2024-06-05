@@ -56,6 +56,8 @@ import Header from "./src/components/header";
 // return <>{children}</>;
 //};
 
+
+
 const LoadFontScript = ({ children }) => {
  useEffect(() => {
   const script = document.createElement("script");

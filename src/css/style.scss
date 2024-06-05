@@ -153,8 +153,8 @@ body::-webkit-scrollbar {
 // height: 100vh; /* ビューポート全体の高さから内容に合わせた高さに変更 */
 //}
 .projects {
- overflow: hidden;
- height: 100vh;
+ //overflow: hidden;
+ //height: 100vh;
 
  .projects-item {
   position: absolute;

@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useEffect, useRef } from "react";
+import React, { useContext, useMemo, useEffect, useRef, useState } from "react";
 import { gsap } from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -49,23 +49,26 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
   );
 });
 
-const Projects = React.memo(() => {
-  const { selectedValue } = useSelectedValue();
-  const posts = useContext(ProjectsContext);
 
-  const menuRef = useRef(null);
-  const itemsRef = useRef([]);
 
+const useScrollableMenu = (menuRef, itemsRef, selectedValue) => {
   useEffect(() => {
+    console.log('useEffectが実行されました');
+
     const $menu = menuRef.current;
     if (!$menu || itemsRef.current.length === 0) return;
 
-    const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
-    let wrapHeight = itemHeights.reduce((total, height) => total + height, 0);
+    const calculateWrapHeight = () => {
+      const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
+      return itemHeights.reduce((total, height) => total + height, 0);
+    };
+
+    let wrapHeight = calculateWrapHeight();
     let scrollY = 0;
 
     const dispose = (scroll) => {
       let cumulativeHeight = 0;
+      const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
       gsap.set(itemsRef.current, {
         y: (i) => {
           const position = cumulativeHeight + scroll;
@@ -99,26 +102,58 @@ const Projects = React.memo(() => {
       dispose(scrollY);
     };
 
+    const handleResize = () => {
+      if (itemsRef.current.length === 0) return;
+      wrapHeight = calculateWrapHeight();
+      dispose(scrollY);
+    };
+
     $menu.addEventListener('mousewheel', handleMouseWheel);
     $menu.addEventListener('touchstart', handleTouchStart);
     $menu.addEventListener('touchmove', handleTouchMove);
-
-    const handleResize = () => {
-      if (itemsRef.current.length === 0) return;
-      const newItemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
-      wrapHeight = newItemHeights.reduce((total, height) => total + height, 0);
-      dispose(scrollY);
-    };
     window.addEventListener('resize', handleResize);
+    window.addEventListener('load', handleResize);
+    dispose(scrollY);
 
     return () => {
+      console.log('クリーンアップが実行されました！');
       $menu.removeEventListener('mousewheel', handleMouseWheel);
       $menu.removeEventListener('touchstart', handleTouchStart);
       $menu.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('load', handleResize);
     };
-  }, [posts, selectedValue]);
+  }, [selectedValue, menuRef, itemsRef]);
+};
+const Projects = React.memo(() => {
+  const { selectedValue } = useSelectedValue();
+  const posts = useContext(ProjectsContext);
 
+  const menuRef = useRef(null);
+  const itemsRef = useRef([]);
+
+  useScrollableMenu(menuRef, itemsRef, selectedValue);
+
+
+
+
+
+
+  //  useEffect(() => {
+  //    const scrollSpeed = 50; // スクロール間隔（ミリ秒）
+  //    const scrollDistance = 1; // 1回のスクロールで移動する距離（ピクセル）
+  //
+  //    const intervalId = setInterval(() => {
+  //      const reachedBottom = window.outerHeight + window.scrollY >= document.body.offsetHeight;
+  //      if (reachedBottom) {
+  //        window.scrollTo(0, 0); // ページの最上部に戻る
+  //      } else {
+  //        window.scrollBy(0, scrollDistance);
+  //      }
+  //    }, scrollSpeed);
+  //
+  //    return () => clearInterval(intervalId); // コンポーネントのアンマウント時にインターバルをクリア
+  //  }, []);
 
 
   const renderedPosts = useMemo(() => (
@@ -238,7 +273,7 @@ const Projects = React.memo(() => {
         </article>
       </div>
     ))
-  ), [posts, selectedValue]);
+  ), [posts]);
 
   return (
     <section id="projects" className="projects">
