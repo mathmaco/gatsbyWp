@@ -53,40 +53,48 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
 
 const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
   const isFirstRender = useRef(true);
+  const scrollY = useRef(0);
+  const wrapHeight = useRef(0);
+
+  const calculateWrapHeight = () => {
+    const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
+    return itemHeights.reduce((total, height) => total + height, 0);
+  };
+
+  const dispose = (scroll) => {
+    let cumulativeHeight = 0;
+    const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
+    gsap.set(itemsRef.current, {
+      y: (i) => {
+        const position = cumulativeHeight + scroll;
+        cumulativeHeight += itemHeights[i];
+        return position;
+      },
+      modifiers: {
+        y: (y) => {
+          const s = gsap.utils.wrap(-itemHeights[0], wrapHeight.current - itemHeights[itemHeights.length - 1], parseInt(y));
+          return `${s}px`;
+        }
+      }
+    });
+  };
+
+  const autoScroll = () => {
+    const scrollSpeed = 1; // スクロールする速度を調整
+    scrollY.current -= scrollSpeed;
+    dispose(scrollY.current);
+    requestAnimationFrame(autoScroll);
+  };
 
   useEffect(() => {
     const $menu = menuRef.current;
     if (!$menu || itemsRef.current.length === 0) return;
 
-    const calculateWrapHeight = () => {
-      const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
-      return itemHeights.reduce((total, height) => total + height, 0);
-    };
-
-    let wrapHeight = calculateWrapHeight();
-    let scrollY = 0;
-
-    const dispose = (scroll) => {
-      let cumulativeHeight = 0;
-      const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
-      gsap.set(itemsRef.current, {
-        y: (i) => {
-          const position = cumulativeHeight + scroll;
-          cumulativeHeight += itemHeights[i];
-          return position;
-        },
-        modifiers: {
-          y: (y) => {
-            const s = gsap.utils.wrap(-itemHeights[0], wrapHeight - itemHeights[itemHeights.length - 1], parseInt(y));
-            return `${s}px`;
-          }
-        }
-      });
-    };
+    wrapHeight.current = calculateWrapHeight();
 
     const handleMouseWheel = (e) => {
-      scrollY -= e.deltaY;
-      dispose(scrollY);
+      scrollY.current -= e.deltaY;
+      dispose(scrollY.current);
     };
 
     let touchStart = 0;
@@ -96,15 +104,15 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     };
     const handleTouchMove = (e) => {
       touchY = e.clientY || e.touches[0].clientY;
-      scrollY += (touchY - touchStart) * 2.5;
+      scrollY.current += (touchY - touchStart) * 2.5;
       touchStart = touchY;
-      dispose(scrollY);
+      dispose(scrollY.current);
     };
 
     const handleResize = () => {
       if (itemsRef.current.length === 0) return;
-      wrapHeight = calculateWrapHeight();
-      dispose(scrollY);
+      wrapHeight.current = calculateWrapHeight();
+      dispose(scrollY.current);
     };
 
     $menu.addEventListener('mousewheel', handleMouseWheel);
@@ -114,20 +122,14 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     window.addEventListener('load', handleResize);
     window.addEventListener('scroll', handleResize);
 
-    // 自動スクロールを設定
-    const scrollSpeed = 1; // スクロールする速度を調整
-    const autoScroll = () => {
-      scrollY -= scrollSpeed;
-      dispose(scrollY);
-      requestAnimationFrame(autoScroll);
-    };
-    autoScroll();
-
+    // 初回レンダー時のアニメーションを発火
     if (isFirstRender.current) {
       console.log('初回レンダー時の処理');
       dispose(0); // 初回レンダー時のアニメーションを発火
       isFirstRender.current = false;
     }
+
+    autoScroll(); // 自動スクロール開始
 
     return () => {
       $menu.removeEventListener('mousewheel', handleMouseWheel);
@@ -137,41 +139,16 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
       window.removeEventListener('load', handleResize);
       window.removeEventListener('scroll', handleResize);
     };
-  }, [posts, selectedValue, menuRef, itemsRef.current]); // itemsRef.current を依存関係に追加
+  }, [posts, selectedValue, menuRef, itemsRef.current]);
 
+  // 初回レンダーの処理
   useEffect(() => {
     if (isFirstRender.current && itemsRef.current.length > 0) {
-      const $menu = menuRef.current;
-      const calculateWrapHeight = () => {
-        const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
-        return itemHeights.reduce((total, height) => total + height, 0);
-      };
-
-      let wrapHeight = calculateWrapHeight();
-      let scrollY = 0;
-
-      const dispose = (scroll) => {
-        let cumulativeHeight = 0;
-        const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
-        gsap.set(itemsRef.current, {
-          y: (i) => {
-            const position = cumulativeHeight + scroll;
-            cumulativeHeight += itemHeights[i];
-            return position;
-          },
-          modifiers: {
-            y: (y) => {
-              const s = gsap.utils.wrap(-itemHeights[0], wrapHeight - itemHeights[itemHeights.length - 1], parseInt(y));
-              return `${s}px`;
-            }
-          }
-        });
-      };
-
+      wrapHeight.current = calculateWrapHeight();
       dispose(0);
-      isFirstRender.current = false; // 初回レンダー処理を実行後にフラグをリセット
+      isFirstRender.current = false;
     }
-  }, [itemsRef.current]); // 初回レンダー時にアニメーションを実行
+  }, [itemsRef.current]);
 };
 
 
