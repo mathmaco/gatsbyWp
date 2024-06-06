@@ -112,8 +112,16 @@ module.exports = {
         workboxConfig: {
           runtimeCaching: [
             {
-              urlPattern: /^https?:.*\/page-data\/.*\.json/,
-              handler: 'NetworkFirst',
+              urlPattern: /(\.js$|\.css$|\/$)/,
+              handler: `NetworkFirst`,
+            },
+            {
+              urlPattern: /^https?:.*\page-data\/.*\/.*\.json/,
+              handler: `NetworkFirst`,
+            },
+            {
+              urlPattern: /^https?:.*\.(json|csv|xml|yml|yaml)$/,
+              handler: `NetworkFirst`,
             },
           ],
         },
