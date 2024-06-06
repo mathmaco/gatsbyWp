@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useEffect, useRef, useCallback } from "react";
+import React, { useContext, useMemo, useEffect, useRef } from "react";
 import { gsap } from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -51,48 +51,46 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
 
 const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
   const isFirstRender = useRef(true);
-  const scrollY = useRef(0);
-  const wrapHeight = useRef(0);
-
-  const calculateWrapHeight = useCallback(() => {
-    const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
-    return itemHeights.reduce((total, height) => total + height, 0);
-  }, [itemsRef]);
-
-  const dispose = useCallback((scroll) => {
-    let cumulativeHeight = 0;
-    const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
-    gsap.set(itemsRef.current, {
-      y: (i) => {
-        const position = cumulativeHeight + scroll;
-        cumulativeHeight += itemHeights[i];
-        return position;
-      },
-      modifiers: {
-        y: (y) => {
-          const s = gsap.utils.wrap(-itemHeights[0], wrapHeight.current - itemHeights[itemHeights.length - 1], parseInt(y));
-          return `${s}px`;
-        }
-      }
-    });
-  }, [itemsRef]);
-
-  const autoScroll = useCallback(() => {
-    const scrollSpeed = 1; // スクロールする速度を調整
-    scrollY.current -= scrollSpeed;
-    dispose(scrollY.current);
-    requestAnimationFrame(autoScroll);
-  }, [dispose]);
 
   useEffect(() => {
+    console.log('useEffectが実行されました');
+
     const $menu = menuRef.current;
     if (!$menu || itemsRef.current.length === 0) return;
 
-    wrapHeight.current = calculateWrapHeight();
+    const calculateWrapHeight = () => {
+      const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
+      return itemHeights.reduce((total, height) => total + height, 0);
+    };
+
+    let wrapHeight = calculateWrapHeight();
+    let scrollY = 0;
+
+    const dispose = (scroll) => {
+      if (itemsRef.current.length === 0) return;
+
+      let cumulativeHeight = 0;
+      const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
+      gsap.set(itemsRef.current, {
+        y: (i) => {
+          const position = cumulativeHeight + scroll;
+          cumulativeHeight += itemHeights[i];
+          return position;
+        },
+        modifiers: {
+          y: (y) => {
+            const s = gsap.utils.wrap(-itemHeights[0], wrapHeight - itemHeights[itemHeights.length - 1], parseInt(y));
+            return `${s}px`;
+          }
+        }
+      });
+    };
+
+    dispose(0);
 
     const handleMouseWheel = (e) => {
-      scrollY.current -= e.deltaY;
-      dispose(scrollY.current);
+      scrollY -= e.deltaY;
+      dispose(scrollY);
     };
 
     let touchStart = 0;
@@ -102,15 +100,14 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     };
     const handleTouchMove = (e) => {
       touchY = e.clientY || e.touches[0].clientY;
-      scrollY.current += (touchY - touchStart) * 2.5;
+      scrollY += (touchY - touchStart) * 2.5;
       touchStart = touchY;
-      dispose(scrollY.current);
+      dispose(scrollY);
     };
 
     const handleResize = () => {
-      if (itemsRef.current.length === 0) return;
-      wrapHeight.current = calculateWrapHeight();
-      dispose(scrollY.current);
+      wrapHeight = calculateWrapHeight();
+      dispose(scrollY);
     };
 
     $menu.addEventListener('mousewheel', handleMouseWheel);
@@ -120,14 +117,24 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     window.addEventListener('load', handleResize);
     window.addEventListener('scroll', handleResize);
 
-    // 初回レンダー時のアニメーションを発火
+    // 自動スクロールを設定
+    const scrollSpeed = 1; // スクロールする速度を調整
+    const autoScroll = () => {
+      scrollY -= scrollSpeed;
+      dispose(scrollY);
+      requestAnimationFrame(autoScroll);
+    };
+    autoScroll();
+
     if (isFirstRender.current) {
-      autoScroll(); // 自動スクロール開始
-      dispose(0); // 初回レンダー時のアニメーションを発火
+      console.log('初回レンダー時の処理');
+      // 初回レンダー時の特定の処理が必要であればここに追加
       isFirstRender.current = false;
     }
 
     return () => {
+      console.log('クリーンアップが実行されました！');
+
       $menu.removeEventListener('mousewheel', handleMouseWheel);
       $menu.removeEventListener('touchstart', handleTouchStart);
       $menu.removeEventListener('touchmove', handleTouchMove);
@@ -135,16 +142,45 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
       window.removeEventListener('load', handleResize);
       window.removeEventListener('scroll', handleResize);
     };
-  }, [posts, selectedValue, menuRef, itemsRef, autoScroll, calculateWrapHeight, dispose]);
+  }, [posts, selectedValue]);
 
+  // 初回レンダー時に処理を実行するためのuseEffect
   useEffect(() => {
-    if (isFirstRender.current && itemsRef.current.length > 0) {
-      wrapHeight.current = calculateWrapHeight();
+    if (isFirstRender.current) {
+      const $menu = menuRef.current;
+      const calculateWrapHeight = () => {
+        const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
+        return itemHeights.reduce((total, height) => total + height, 0);
+      };
+
+      let wrapHeight = calculateWrapHeight();
+      let scrollY = 0;
+
+      const dispose = (scroll) => {
+        let cumulativeHeight = 0;
+        const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
+        gsap.set(itemsRef.current, {
+          y: (i) => {
+            const position = cumulativeHeight + scroll;
+            cumulativeHeight += itemHeights[i];
+            return position;
+          },
+          modifiers: {
+            y: (y) => {
+              const s = gsap.utils.wrap(-itemHeights[0], wrapHeight - itemHeights[itemHeights.length - 1], parseInt(y));
+              return `${s}px`;
+            }
+          }
+        });
+      };
+
       dispose(0);
-      autoScroll(); // 自動スクロール開始
+
+      // 初回レンダー時の特定の処理が必要であればここに追加
       isFirstRender.current = false;
     }
-  }, [itemsRef, autoScroll, calculateWrapHeight, dispose]);
+  }, []); // 初回レンダー時のみ実行
+
 };
 
 const Projects = React.memo(() => {
