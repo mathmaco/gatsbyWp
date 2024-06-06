@@ -55,8 +55,6 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
   const isFirstRender = useRef(true);
 
   useEffect(() => {
-    console.log('useEffectが実行されました');
-
     const $menu = menuRef.current;
     if (!$menu || itemsRef.current.length === 0) return;
 
@@ -106,7 +104,7 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     };
 
     const handleResize = () => {
-      //if (itemsRef.current.length === 0) return;
+      if (itemsRef.current.length === 0) return;
       wrapHeight = calculateWrapHeight();
       dispose(scrollY);
     };
@@ -129,13 +127,10 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
 
     if (isFirstRender.current) {
       console.log('初回レンダー時の処理');
-      // 初回レンダー時の特定の処理が必要であればここに追加
       isFirstRender.current = false;
     }
 
     return () => {
-      console.log('クリーンアップが実行されました！');
-
       $menu.removeEventListener('mousewheel', handleMouseWheel);
       $menu.removeEventListener('touchstart', handleTouchStart);
       $menu.removeEventListener('touchmove', handleTouchMove);
@@ -145,9 +140,8 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     };
   }, [posts, selectedValue]);
 
-  // 初回レンダー時に処理を実行するためのuseEffect
   useEffect(() => {
-    if (isFirstRender.current) {
+    if (isFirstRender.current && itemsRef.current.length > 0) {
       const $menu = menuRef.current;
       const calculateWrapHeight = () => {
         const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
@@ -180,8 +174,7 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
       // 初回レンダー時の特定の処理が必要であればここに追加
       isFirstRender.current = false;
     }
-  }, []); // 初回レンダー時のみ実行
-
+  }, [itemsRef.current]); // 初回レンダー時のみ実行
 };
 
 
