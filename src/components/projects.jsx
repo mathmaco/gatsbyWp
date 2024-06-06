@@ -84,8 +84,6 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
       });
     };
 
-    dispose(0);
-
     const handleMouseWheel = (e) => {
       scrollY -= e.deltaY;
       dispose(scrollY);
@@ -128,9 +126,6 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     if (isFirstRender.current) {
       console.log('初回レンダー時の処理');
       dispose(0); // 初回レンダー時のアニメーションを発火
-      autoScroll();
-      wrapHeight = calculateWrapHeight();
-      dispose(scrollY);
       isFirstRender.current = false;
     }
 
@@ -142,7 +137,7 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
       window.removeEventListener('load', handleResize);
       window.removeEventListener('scroll', handleResize);
     };
-  }, [posts, selectedValue]);
+  }, [posts, selectedValue, menuRef, itemsRef.current]); // itemsRef.current を依存関係に追加
 
   useEffect(() => {
     if (isFirstRender.current && itemsRef.current.length > 0) {
@@ -174,11 +169,9 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
       };
 
       dispose(0);
-
-      // 初回レンダー時の特定の処理が必要であればここに追加
-      isFirstRender.current = false;
+      isFirstRender.current = false; // 初回レンダー処理を実行後にフラグをリセット
     }
-  }, [itemsRef.current]); // 初回レンダー時のみ実行
+  }, [itemsRef.current]); // 初回レンダー時にアニメーションを実行
 };
 
 
