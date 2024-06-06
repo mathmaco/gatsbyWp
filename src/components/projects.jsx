@@ -106,7 +106,7 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     };
 
     const handleResize = () => {
-      if (itemsRef.current.length === 0) return;
+      //if (itemsRef.current.length === 0) return;
       wrapHeight = calculateWrapHeight();
       dispose(scrollY);
     };
