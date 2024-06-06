@@ -5,6 +5,9 @@
  * https://www.gatsbyjs.com/docs/gatsby-config/
  *
  */
+
+
+
 //console.log('WPGRAPHQL_URL:', process.env.WPGRAPHQL_URL);
 module.exports = {
   /**

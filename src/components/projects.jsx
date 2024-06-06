@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useEffect, useRef, useState } from "react";
+import React, { useContext, useMemo, useEffect, useRef, useCallback } from "react";
 import { gsap } from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -49,19 +49,17 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
   );
 });
 
-
-
 const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
   const isFirstRender = useRef(true);
   const scrollY = useRef(0);
   const wrapHeight = useRef(0);
 
-  const calculateWrapHeight = () => {
+  const calculateWrapHeight = useCallback(() => {
     const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
     return itemHeights.reduce((total, height) => total + height, 0);
-  };
+  }, [itemsRef]);
 
-  const dispose = (scroll) => {
+  const dispose = useCallback((scroll) => {
     let cumulativeHeight = 0;
     const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
     gsap.set(itemsRef.current, {
@@ -77,14 +75,14 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
         }
       }
     });
-  };
+  }, [itemsRef]);
 
-  const autoScroll = () => {
+  const autoScroll = useCallback(() => {
     const scrollSpeed = 1; // スクロールする速度を調整
     scrollY.current -= scrollSpeed;
     dispose(scrollY.current);
     requestAnimationFrame(autoScroll);
-  };
+  }, [dispose]);
 
   useEffect(() => {
     const $menu = menuRef.current;
@@ -124,13 +122,10 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
 
     // 初回レンダー時のアニメーションを発火
     if (isFirstRender.current) {
-      console.log('初回レンダー時の処理');
       autoScroll(); // 自動スクロール開始
       dispose(0); // 初回レンダー時のアニメーションを発火
       isFirstRender.current = false;
     }
-
-
 
     return () => {
       $menu.removeEventListener('mousewheel', handleMouseWheel);
@@ -140,9 +135,8 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
       window.removeEventListener('load', handleResize);
       window.removeEventListener('scroll', handleResize);
     };
-  }, [posts, selectedValue, menuRef, itemsRef.current]);
+  }, [posts, selectedValue, menuRef, itemsRef, autoScroll, calculateWrapHeight, dispose]);
 
-  // 初回レンダーの処理
   useEffect(() => {
     if (isFirstRender.current && itemsRef.current.length > 0) {
       wrapHeight.current = calculateWrapHeight();
@@ -150,9 +144,8 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
       autoScroll(); // 自動スクロール開始
       isFirstRender.current = false;
     }
-  }, [itemsRef.current]);
+  }, [itemsRef, autoScroll, calculateWrapHeight, dispose]);
 };
-
 
 const Projects = React.memo(() => {
   const { selectedValue } = useSelectedValue();
@@ -162,12 +155,6 @@ const Projects = React.memo(() => {
   const itemsRef = useRef([]);
 
   useScrollableMenu(posts, menuRef, itemsRef, selectedValue);
-
-
-
-
-
-
 
   const renderedPosts = useMemo(() => (
     posts.map((post, index) => (
