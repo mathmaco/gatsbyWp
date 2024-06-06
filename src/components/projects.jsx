@@ -125,11 +125,12 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     // 初回レンダー時のアニメーションを発火
     if (isFirstRender.current) {
       console.log('初回レンダー時の処理');
+      autoScroll(); // 自動スクロール開始
       dispose(0); // 初回レンダー時のアニメーションを発火
       isFirstRender.current = false;
     }
 
-    autoScroll(); // 自動スクロール開始
+
 
     return () => {
       $menu.removeEventListener('mousewheel', handleMouseWheel);
@@ -146,6 +147,7 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     if (isFirstRender.current && itemsRef.current.length > 0) {
       wrapHeight.current = calculateWrapHeight();
       dispose(0);
+      autoScroll(); // 自動スクロール開始
       isFirstRender.current = false;
     }
   }, [itemsRef.current]);
