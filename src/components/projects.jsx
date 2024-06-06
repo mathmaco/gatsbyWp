@@ -33,7 +33,7 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
               {item.mediaCheck === 'video' && item.shortVideo && (
                 <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
                   <iframe
-                    src={`https://player.vimeo.com/video/${item.shortVideo}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
+                    src={`https://player.vimeo.com/video/${item.shortVideo}?autoplay=0&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
                     title="vimeo"
                     loading="lazy"
                     frameBorder="0"
@@ -50,22 +50,21 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
 });
 
 
-
 const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
-
-  const isFirstRender = useRef(false)
-
-  useEffect(() => { // このeffectは初回レンダー時のみ呼ばれるeffect
-    isFirstRender.current = true
-  }, [])
-
-
+  const renderCount = useRef(0);
+  const effectExecutionCount = useRef(0);
   useEffect(() => {
-    if (isFirstRender.current) { // 初回レンダー判定
-      isFirstRender.current = false // もう初回レンダーじゃないよ代入
-    } else {
-      console.log('useEffectが実行されました');
-    }
+    console.log('useEffectが実行されました');
+    renderCount.current += 1;
+    effectExecutionCount.current += 1;
+    console.log(`useEffect called - Render count: ${renderCount.current}, Effect execution count: ${effectExecutionCount.current}`);
+
+
+    //if (isFirstRender.current) { // 初回レンダー判定
+    //  isFirstRender.current = false // もう初回レンダーじゃないよ代入
+    //} else {
+    //  console.log('useEffectが実行されました');
+    //}
 
 
     const $menu = menuRef.current;
@@ -139,7 +138,8 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     autoScroll();
 
     return () => {
-      console.log('クリーンアップが実行されました！');
+      console.log(`Cleanup - Render count: ${renderCount.current}, Effect execution count: ${effectExecutionCount.current}`); console.log('クリーンアップが実行されました！');
+
       $menu.removeEventListener('mousewheel', handleMouseWheel);
       $menu.removeEventListener('touchstart', handleTouchStart);
       $menu.removeEventListener('touchmove', handleTouchMove);
@@ -149,6 +149,7 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     };
   }, [posts, selectedValue, menuRef, itemsRef]);
 };
+
 const Projects = React.memo(() => {
   const { selectedValue } = useSelectedValue();
   const posts = useContext(ProjectsContext);
