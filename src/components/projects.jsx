@@ -1,5 +1,6 @@
 import React, { useContext, useMemo, useEffect, useRef } from "react";
 import { gsap } from 'gsap';
+
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ProjectsContext } from '../contexts/ProjectsContext';
@@ -51,8 +52,9 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
 
 const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
   const isFirstRender = useRef(true);
-
   useEffect(() => {
+
+
     console.log('useEffectが実行されました');
 
     const $menu = menuRef.current;
