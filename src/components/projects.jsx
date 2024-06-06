@@ -50,22 +50,12 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
 });
 
 
+
 const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
-  const renderCount = useRef(0);
-  const effectExecutionCount = useRef(0);
+  const isFirstRender = useRef(true);
+
   useEffect(() => {
     console.log('useEffectが実行されました');
-    renderCount.current += 1;
-    effectExecutionCount.current += 1;
-    console.log(`useEffect called - Render count: ${renderCount.current}, Effect execution count: ${effectExecutionCount.current}`);
-
-
-    //if (isFirstRender.current) { // 初回レンダー判定
-    //  isFirstRender.current = false // もう初回レンダーじゃないよ代入
-    //} else {
-    //  console.log('useEffectが実行されました');
-    //}
-
 
     const $menu = menuRef.current;
     if (!$menu || itemsRef.current.length === 0) return;
@@ -95,6 +85,7 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
         }
       });
     };
+
     dispose(0);
 
     const handleMouseWheel = (e) => {
@@ -126,7 +117,6 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     window.addEventListener('resize', handleResize);
     window.addEventListener('load', handleResize);
     window.addEventListener('scroll', handleResize);
-    dispose(scrollY);
 
     // 自動スクロールを設定
     const scrollSpeed = 1; // スクロールする速度を調整
@@ -137,8 +127,14 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     };
     autoScroll();
 
+    if (isFirstRender.current) {
+      console.log('初回レンダー時の処理');
+      // 初回レンダー時の特定の処理が必要であればここに追加
+      isFirstRender.current = false;
+    }
+
     return () => {
-      console.log(`Cleanup - Render count: ${renderCount.current}, Effect execution count: ${effectExecutionCount.current}`); console.log('クリーンアップが実行されました！');
+      console.log('クリーンアップが実行されました！');
 
       $menu.removeEventListener('mousewheel', handleMouseWheel);
       $menu.removeEventListener('touchstart', handleTouchStart);
@@ -147,8 +143,47 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
       window.removeEventListener('load', handleResize);
       window.removeEventListener('scroll', handleResize);
     };
-  }, [posts, selectedValue, menuRef, itemsRef]);
+  }, [posts, selectedValue]);
+
+  // 初回レンダー時に処理を実行するためのuseEffect
+  useEffect(() => {
+    if (isFirstRender.current) {
+      const $menu = menuRef.current;
+      const calculateWrapHeight = () => {
+        const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
+        return itemHeights.reduce((total, height) => total + height, 0);
+      };
+
+      let wrapHeight = calculateWrapHeight();
+      let scrollY = 0;
+
+      const dispose = (scroll) => {
+        let cumulativeHeight = 0;
+        const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
+        gsap.set(itemsRef.current, {
+          y: (i) => {
+            const position = cumulativeHeight + scroll;
+            cumulativeHeight += itemHeights[i];
+            return position;
+          },
+          modifiers: {
+            y: (y) => {
+              const s = gsap.utils.wrap(-itemHeights[0], wrapHeight - itemHeights[itemHeights.length - 1], parseInt(y));
+              return `${s}px`;
+            }
+          }
+        });
+      };
+
+      dispose(0);
+
+      // 初回レンダー時の特定の処理が必要であればここに追加
+      isFirstRender.current = false;
+    }
+  }, []); // 初回レンダー時のみ実行
+
 };
+
 
 const Projects = React.memo(() => {
   const { selectedValue } = useSelectedValue();
