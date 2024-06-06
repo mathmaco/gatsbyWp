@@ -128,6 +128,9 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     if (isFirstRender.current) {
       console.log('初回レンダー時の処理');
       dispose(0); // 初回レンダー時のアニメーションを発火
+      autoScroll();
+      wrapHeight = calculateWrapHeight();
+      dispose(scrollY);
       isFirstRender.current = false;
     }
 
