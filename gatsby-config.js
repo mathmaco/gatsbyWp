@@ -106,26 +106,6 @@ module.exports = {
      * this (optional) plugin enables Progressive Web App + Offline functionality
      * To learn more, visit: https://gatsby.dev/offline
      */
-    {
-      resolve: 'gatsby-plugin-offline',
-      options: {
-        workboxConfig: {
-          runtimeCaching: [
-            {
-              urlPattern: /(\.js$|\.css$|\/$)/,
-              handler: `NetworkFirst`,
-            },
-            {
-              urlPattern: /^https?:.*\page-data\/.*\/.*\.json/,
-              handler: `NetworkFirst`,
-            },
-            {
-              urlPattern: /^https?:.*\.(json|csv|xml|yml|yaml)$/,
-              handler: `NetworkFirst`,
-            },
-          ],
-        },
-      },
-    }
+    `gatsby-plugin-offline`,
   ],
 }
