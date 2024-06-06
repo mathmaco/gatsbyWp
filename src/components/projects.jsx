@@ -49,94 +49,7 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
   );
 });
 
-const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
 
-  useEffect(() => {
-    console.log('useEffectが実行されました');
-
-    const $menu = menuRef.current;
-    if (!$menu || itemsRef.current.length === 0) return;
-
-    const calculateWrapHeight = () => {
-      const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
-      return itemHeights.reduce((total, height) => total + height, 0);
-    };
-
-    let wrapHeight = calculateWrapHeight();
-    let scrollY = 0;
-
-    const dispose = (scroll) => {
-      if (itemsRef.current.length === 0) return;
-
-      let cumulativeHeight = 0;
-      const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
-      gsap.set(itemsRef.current, {
-        y: (i) => {
-          const position = cumulativeHeight + scroll;
-          cumulativeHeight += itemHeights[i];
-          return position;
-        },
-        modifiers: {
-          y: (y) => {
-            const s = gsap.utils.wrap(-itemHeights[0], wrapHeight - itemHeights[itemHeights.length - 1], parseInt(y));
-            return `${s}px`;
-          }
-        }
-      });
-    };
-
-    dispose(0);
-
-    const handleMouseWheel = (e) => {
-      scrollY -= e.deltaY;
-      dispose(scrollY);
-    };
-
-    let touchStart = 0;
-    let touchY = 0;
-    const handleTouchStart = (e) => {
-      touchStart = e.clientY || e.touches[0].clientY;
-    };
-    const handleTouchMove = (e) => {
-      touchY = e.clientY || e.touches[0].clientY;
-      scrollY += (touchY - touchStart) * 2.5;
-      touchStart = touchY;
-      dispose(scrollY);
-    };
-
-    const handleResize = () => {
-      wrapHeight = calculateWrapHeight();
-      dispose(scrollY);
-    };
-
-    $menu.addEventListener('mousewheel', handleMouseWheel);
-    $menu.addEventListener('touchstart', handleTouchStart);
-    $menu.addEventListener('touchmove', handleTouchMove);
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('load', handleResize);
-    window.addEventListener('scroll', handleResize);
-
-    // 自動スクロールを設定
-    const scrollSpeed = 1; // スクロールする速度を調整
-    const autoScroll = () => {
-      scrollY -= scrollSpeed;
-      dispose(scrollY);
-      requestAnimationFrame(autoScroll);
-    };
-    autoScroll();
-
-    return () => {
-      console.log('クリーンアップが実行されました！');
-
-      $menu.removeEventListener('mousewheel', handleMouseWheel);
-      $menu.removeEventListener('touchstart', handleTouchStart);
-      $menu.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('load', handleResize);
-      window.removeEventListener('scroll', handleResize);
-    };
-  }, [posts, menuRef, itemsRef, selectedValue]);
-};
 
 const Projects = React.memo(() => {
   const { selectedValue } = useSelectedValue();
@@ -144,6 +57,95 @@ const Projects = React.memo(() => {
 
   const menuRef = useRef(null);
   const itemsRef = useRef([]);
+
+  const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
+
+    useEffect(() => {
+      console.log('useEffectが実行されました');
+
+      const $menu = menuRef.current;
+      if (!$menu || itemsRef.current.length === 0) return;
+
+      const calculateWrapHeight = () => {
+        const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
+        return itemHeights.reduce((total, height) => total + height, 0);
+      };
+
+      let wrapHeight = calculateWrapHeight();
+      let scrollY = 0;
+
+      const dispose = (scroll) => {
+        if (itemsRef.current.length === 0) return;
+
+        let cumulativeHeight = 0;
+        const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
+        gsap.set(itemsRef.current, {
+          y: (i) => {
+            const position = cumulativeHeight + scroll;
+            cumulativeHeight += itemHeights[i];
+            return position;
+          },
+          modifiers: {
+            y: (y) => {
+              const s = gsap.utils.wrap(-itemHeights[0], wrapHeight - itemHeights[itemHeights.length - 1], parseInt(y));
+              return `${s}px`;
+            }
+          }
+        });
+      };
+
+      dispose(0);
+
+      const handleMouseWheel = (e) => {
+        scrollY -= e.deltaY;
+        dispose(scrollY);
+      };
+
+      let touchStart = 0;
+      let touchY = 0;
+      const handleTouchStart = (e) => {
+        touchStart = e.clientY || e.touches[0].clientY;
+      };
+      const handleTouchMove = (e) => {
+        touchY = e.clientY || e.touches[0].clientY;
+        scrollY += (touchY - touchStart) * 2.5;
+        touchStart = touchY;
+        dispose(scrollY);
+      };
+
+      const handleResize = () => {
+        wrapHeight = calculateWrapHeight();
+        dispose(scrollY);
+      };
+
+      $menu.addEventListener('mousewheel', handleMouseWheel);
+      $menu.addEventListener('touchstart', handleTouchStart);
+      $menu.addEventListener('touchmove', handleTouchMove);
+      window.addEventListener('resize', handleResize);
+      window.addEventListener('load', handleResize);
+      window.addEventListener('scroll', handleResize);
+
+      // 自動スクロールを設定
+      const scrollSpeed = 1; // スクロールする速度を調整
+      const autoScroll = () => {
+        scrollY -= scrollSpeed;
+        dispose(scrollY);
+        requestAnimationFrame(autoScroll);
+      };
+      autoScroll();
+
+      return () => {
+        console.log('クリーンアップが実行されました！');
+
+        $menu.removeEventListener('mousewheel', handleMouseWheel);
+        $menu.removeEventListener('touchstart', handleTouchStart);
+        $menu.removeEventListener('touchmove', handleTouchMove);
+        window.removeEventListener('resize', handleResize);
+        window.removeEventListener('load', handleResize);
+        window.removeEventListener('scroll', handleResize);
+      };
+    }, [posts, menuRef, itemsRef, selectedValue]);
+  };
 
   useScrollableMenu(posts, menuRef, itemsRef, selectedValue);
 
