@@ -126,11 +126,7 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     };
     autoScroll();
 
-    if (isFirstRender.current) {
-      console.log('初回レンダー時の処理');
-      // 初回レンダー時の特定の処理が必要であればここに追加
-      isFirstRender.current = false;
-    }
+
 
     return () => {
       console.log('クリーンアップが実行されました！');
@@ -144,42 +140,6 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     };
   }, [posts, selectedValue]);
 
-  // 初回レンダー時に処理を実行するためのuseEffect
-  useEffect(() => {
-    if (isFirstRender.current) {
-      const $menu = menuRef.current;
-      const calculateWrapHeight = () => {
-        const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
-        return itemHeights.reduce((total, height) => total + height, 0);
-      };
-
-      let wrapHeight = calculateWrapHeight();
-      let scrollY = 0;
-
-      const dispose = (scroll) => {
-        let cumulativeHeight = 0;
-        const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
-        gsap.set(itemsRef.current, {
-          y: (i) => {
-            const position = cumulativeHeight + scroll;
-            cumulativeHeight += itemHeights[i];
-            return position;
-          },
-          modifiers: {
-            y: (y) => {
-              const s = gsap.utils.wrap(-itemHeights[0], wrapHeight - itemHeights[itemHeights.length - 1], parseInt(y));
-              return `${s}px`;
-            }
-          }
-        });
-      };
-
-      dispose(0);
-
-      // 初回レンダー時の特定の処理が必要であればここに追加
-      isFirstRender.current = false;
-    }
-  }, []); // 初回レンダー時のみ実行
 
 };
 
