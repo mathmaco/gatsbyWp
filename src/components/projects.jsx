@@ -118,6 +118,10 @@ const Projects = React.memo(() => {
         dispose(scrollY);
       };
 
+      setTimeout(() => {
+        handleResize();
+      }, 0);
+
       $menu.addEventListener('mousewheel', handleMouseWheel);
       $menu.addEventListener('touchstart', handleTouchStart);
       $menu.addEventListener('touchmove', handleTouchMove);
