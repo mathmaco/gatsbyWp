@@ -122,7 +122,7 @@ const Projects = React.memo(() => {
         handleResize();
       }, 100);
 
-      $menu.addEventListener('mousewheel', handleMouseWheel);
+      $menu.addEventListener('wheel', handleMouseWheel);
       $menu.addEventListener('touchstart', handleTouchStart);
       $menu.addEventListener('touchmove', handleTouchMove);
       window.addEventListener('resize', handleResize);

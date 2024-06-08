@@ -28,7 +28,6 @@ const Layout = ({ isHomePage, children }) => {
 
   return (
     <>
-
       <main data-is-root-path={isHomePage}>{children}</main>
     </>
   )
