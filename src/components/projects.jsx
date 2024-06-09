@@ -49,8 +49,6 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
   );
 });
 
-
-
 const Projects = React.memo(() => {
   const { selectedValue } = useSelectedValue();
   const posts = useContext(ProjectsContext);
@@ -104,10 +102,10 @@ const Projects = React.memo(() => {
       let touchStart = 0;
       let touchY = 0;
       const handleTouchStart = (e) => {
-        touchStart = e.clientY || e.touches[0].clientY;
+        touchStart = e.touches[0].clientY;
       };
       const handleTouchMove = (e) => {
-        touchY = e.clientY || e.touches[0].clientY;
+        touchY = e.touches[0].clientY;
         scrollY += (touchY - touchStart) * 2.5;
         touchStart = touchY;
         dispose(scrollY);
@@ -122,9 +120,17 @@ const Projects = React.memo(() => {
         handleResize();
       }, 100);
 
-      $menu.addEventListener('wheel', handleMouseWheel);
-      $menu.addEventListener('touchstart', handleTouchStart);
-      $menu.addEventListener('touchmove', handleTouchMove);
+      function isTablet() {
+        return /iPad|Android|Tablet|PlayBook|Silk|Kindle|BlackBerry/.test(navigator.userAgent);
+      }
+
+      if (isTablet()) {
+        $menu.addEventListener('touchstart', handleTouchStart);
+        $menu.addEventListener('touchmove', handleTouchMove);
+      } else {
+        $menu.addEventListener('wheel', handleMouseWheel);
+      }
+
       window.addEventListener('resize', handleResize);
       window.addEventListener('load', handleResize);
       window.addEventListener('scroll', handleResize);
@@ -141,9 +147,13 @@ const Projects = React.memo(() => {
       return () => {
         console.log('クリーンアップが実行されました！');
 
-        $menu.removeEventListener('mousewheel', handleMouseWheel);
-        $menu.removeEventListener('touchstart', handleTouchStart);
-        $menu.removeEventListener('touchmove', handleTouchMove);
+        if (isTablet()) {
+          $menu.removeEventListener('touchstart', handleTouchStart);
+          $menu.removeEventListener('touchmove', handleTouchMove);
+        } else {
+          $menu.removeEventListener('wheel', handleMouseWheel);
+        }
+
         window.removeEventListener('resize', handleResize);
         window.removeEventListener('load', handleResize);
         window.removeEventListener('scroll', handleResize);
