@@ -5,6 +5,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
+//import PixelatedImage from './PixelatedImage';
+//import { Pixelify } from "react-pixelify";
 import parse from 'html-react-parser';
 import * as projectStyles from '../css/components/project.module.scss';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
@@ -16,6 +18,7 @@ const fillColor = '#c9171e';
 gsap.registerPlugin(ScrollToPlugin, ScrollTrigger);
 
 const GalleryMarquee = React.memo(({ media, speed }) => {
+
   return (
     <Marquee speed={speed} autoFill={true}>
       {
@@ -23,17 +26,26 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
           (item.viewCheck === 'view1' || item.viewCheck === 'view3') && (
             <div className={projectStyles.item} key={index}>
               {item.mediaCheck === 'photo' && item.photo && (
+
                 <div className={projectStyles.photo}>
                   <GatsbyImage
                     image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
                     style={{ width: '100%', height: '100%' }}
                     alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                  <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+                    {/*<Pixelify
+                      width={100}
+                      height={100}
+                      src={imageUrl}
+                      pixelSize={5}
+                    />*/}
+                  </div>
                 </div>
               )}
               {item.mediaCheck === 'video' && item.shortVideo && (
                 <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
                   <iframe
-                    src={`https://player.vimeo.com/video/${item.shortVideo}?autoplay=0&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
+                    src={`https://player.vimeo.com/video/${item.shortVideo}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
                     title="vimeo"
                     loading="lazy"
                     frameBorder="0"

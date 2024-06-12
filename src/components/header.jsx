@@ -104,9 +104,9 @@ const Header = () => {
             <div className={header.layout}>
               <div className={header.layoutNav}>
                 <ul className={header.layoutNavList}>
-                  <li className="play-sound"><button type="button" data-value="list1" onClick={() => handleClick("list1")} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { handleClick("list1"); } }} className={selectedValue === "list1" ? "selected" : ""}><List1 /><span style={{ visibility: 'hidden', display: 'none' }}>レイアウト</span></button></li>
-                  <li className="play-sound"><button type="button" data-value="list2" onClick={() => handleClick("list2")} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { handleClick("list2"); } }} className={selectedValue === "list2" ? "selected" : ""}><List2 /><span style={{ visibility: 'hidden', display: 'none' }}>レイアウト</span></button></li>
-                  <li className="play-sound"><button type="button" data-value="list3" onClick={() => handleClick("list3")} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { handleClick("list3"); } }} className={selectedValue === "list3" ? "selected" : ""}><List3 /><span style={{ visibility: 'hidden', display: 'none' }}>レイアウト</span></button></li>
+                  <li className="play-sound nav-item"><div data-value="list1" onClick={() => handleClick("list1")} className={`${selectedValue === "list1" ? "selected" : ""} ${header.layoutItem}`}><List1 /></div></li>
+                  <li className="play-sound nav-item"><div data-value="list2" onClick={() => handleClick("list2")} className={`${selectedValue === "list2" ? "selected" : ""}  ${header.layoutItem}`}><List2 /></div></li>
+                  <li className="play-sound nav-item"><div data-value="list3" onClick={() => handleClick("list3")} className={`${selectedValue === "list3" ? "selected" : ""}  ${header.layoutItem}`}><List3 /></div></li>
                 </ul>
                 <div className={`${header.layoutNavPaa} play-sound js-Tooltip`} id="icon-paa" onClick={handleMessageClick}><Paa /></div>
                 <div className={`${header.PaaMessage} ${PaaMessage ? 'visible' : ''}`}>

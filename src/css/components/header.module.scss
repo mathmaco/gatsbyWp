@@ -139,15 +139,21 @@
   display: flex;
   .layoutNavList {
    display: flex;
+   flex-wrap: wrap;
+   height: 22px;
    margin-right: 10px;
 
    li {
+    position: relative;
+    display: block;
+
     &:not(:last-child) {
      margin-right: 7px;
     }
-    button {
+    .layoutItem {
      position: relative;
      font-size: 0;
+     cursor: pointer;
      &::before {
       content: '';
       position: absolute;
@@ -156,8 +162,12 @@
       right: 0;
       bottom: 0;
       margin: auto;
-      width: 47px;
-      height: 22px;
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+     }
+     svg {
+      width: 43px;
+      height: 17px;
      }
     }
    }
