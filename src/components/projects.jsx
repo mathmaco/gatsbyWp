@@ -1,18 +1,12 @@
-import React, { useContext, useMemo, useEffect, useRef, useState } from "react";
+import React, { useContext, useMemo, useEffect, useRef } from "react";
 import { gsap } from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
-import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+import { GatsbyImage } from 'gatsby-plugin-image';
 //import PixelatedImage from './PixelatedImage';
 //import { Pixelify } from "react-pixelify";
-
-
-/* pixelate処理*/
-import { pixelateImage } from '../utils/pixelateImage';
-import { getVimeoThumbnail } from '../utils/getVimeoThumbnail';
-
 import parse from 'html-react-parser';
 import * as projectStyles from '../css/components/project.module.scss';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
@@ -24,83 +18,46 @@ const fillColor = '#c9171e';
 gsap.registerPlugin(ScrollToPlugin, ScrollTrigger);
 
 const GalleryMarquee = React.memo(({ media, speed }) => {
-  const [pixelatedImages, setPixelatedImages] = useState([]);
-  useEffect(() => {
-    const pixelateMedia = async () => {
-      const pixelated = await Promise.all(media.map(async (item) => {
-        if (item.mediaCheck === 'photo' && item.photo) {
-          const gatsbyImageData = getImage(item.photo.node.localFile.childImageSharp.gatsbyImageData);
-          const originalSrc = gatsbyImageData.images.fallback.src;
-          return new Promise((resolve) => {
-            pixelateImage(originalSrc, 150, (pixelatedSrc) => {
-              resolve({
-                ...item,
-                photo: {
-                  ...item.photo,
-                  pixelatedSrc,
-                },
-              });
-            });
-          });
-        } else if (item.mediaCheck === 'video' && item.shortVideo) {
-          const thumbnailUrl = await getVimeoThumbnail(item.shortVideo);
-          return new Promise((resolve) => {
-            pixelateImage(thumbnailUrl, 150, (pixelatedSrc) => {
-              resolve({
-                ...item,
-                shortVideo: {
-                  ...item.shortVideo,
-                  pixelatedSrc,
-                },
-              });
-            });
-          });
-        }
-        return item;
-      }));
-      setPixelatedImages(pixelated);
-    };
 
-    pixelateMedia();
-  }, [media]);
   return (
     <Marquee speed={speed} autoFill={true}>
       {
-        pixelatedImages.map((item, index) => (
+        media.map((item, index) => (
           (item.viewCheck === 'view1' || item.viewCheck === 'view3') && (
             <div className={projectStyles.item} key={index}>
               {item.mediaCheck === 'photo' && item.photo && (
 
                 <div className={projectStyles.photo}>
-                  {/*<GatsbyImage
+                  <GatsbyImage
                     image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
                     style={{ width: '100%', height: '100%' }}
-                    alt={item.photo.node.altText || 'デフォルトのサイト名'} />*/}
-                  <img
-                    src={item.photo.pixelatedSrc}
                     alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                  <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+                    {/*<Pixelify
+                      width={100}
+                      height={100}
+                      src={imageUrl}
+                      pixelSize={5}
+                    />*/}
+                  </div>
                 </div>
               )}
               {item.mediaCheck === 'video' && item.shortVideo && (
                 <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
-                  {/*<iframe
-                    src={`https://player.vimeo.com/video/${item.shortVideo}?autoplay=0&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
+                  <iframe
+                    src={`https://player.vimeo.com/video/${item.shortVideo}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
                     title="vimeo"
                     loading="lazy"
                     frameBorder="0"
                     allow="autoplay;"
-                  ></iframe>*/}
-                  <img
-                    src={item.shortVideo.pixelatedSrc}
-                    style={{ width: '100%', height: '100%' }}
-                    alt="ピクセル化されたビデオサムネイル" />
+                  ></iframe>
                 </div>
               )}
             </div>
           )
         ))
       }
-    </Marquee >
+    </Marquee>
   );
 });
 
