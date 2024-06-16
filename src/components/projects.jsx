@@ -21,29 +21,16 @@ const getVimeoThumbnail = async (videoId) => {
 };
 const PixelPhoto = ({ src, onRemove }) => {
   const [pixelSize, setPixelSize] = useState(50);
-  const [isPageLoaded, setIsPageLoaded] = useState(false);
   const intersectionRef = useRef(null);
   const hasAnimated = useRef(false);
   const intersection = useIntersection(intersectionRef, {
     root: null,
     rootMargin: '0px',
-    threshold: 0
+    threshold: 1
   });
 
   useEffect(() => {
-    const handlePageLoad = () => {
-      setIsPageLoaded(true);
-    };
-
-    window.addEventListener('load', handlePageLoad);
-
-    return () => {
-      window.removeEventListener('load', handlePageLoad);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isPageLoaded && intersection && intersection.isIntersecting && !hasAnimated.current) {
+    if (intersection && intersection.isIntersecting && !hasAnimated.current) {
       hasAnimated.current = true; // アニメーションが一度だけ実行されるようにする
       const pixelationSequence = [
         { size: 50, delay: 250 },
@@ -51,20 +38,18 @@ const PixelPhoto = ({ src, onRemove }) => {
         { size: 0, delay: 450 },
       ];
 
-      let totalDelay = 0;
       pixelationSequence.forEach(({ size, delay }) => {
-        totalDelay += delay;
         setTimeout(() => {
           setPixelSize(size);
-        }, totalDelay);
+        }, delay);
       });
 
-      // 最後のアニメーションの後にPixelPhotoを削除する
-      setTimeout(() => {
-        onRemove();
-      }, totalDelay + 50); // 全体の遅延時間 + 少しの余裕時間
+      // If you want to remove the PixelPhoto after the animation
+      // setTimeout(() => {
+      //   onRemove();
+      // }, 500);
     }
-  }, [isPageLoaded, intersection, src, onRemove]);
+  }, [intersection, src, onRemove]);
 
   return (
     <div ref={intersectionRef} className={projectStyles.pixel}>
@@ -78,8 +63,6 @@ const PixelPhoto = ({ src, onRemove }) => {
     </div>
   );
 };
-
-
 
 
 const GalleryMarquee = React.memo(({ media, speed }) => {
