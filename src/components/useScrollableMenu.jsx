@@ -72,8 +72,7 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
    $menu.addEventListener('touchstart', handleTouchStart);
    $menu.addEventListener('touchmove', handleTouchMove);
   } else {
-   $menu.addEventListener('wheel', handleMouseWheel, { passive: true });
-   $menu.addEventListener('scroll', handleMouseWheel, { passive: true });
+   $menu.addEventListener('wheel', handleMouseWheel);
 
   }
 
@@ -97,7 +96,6 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     $menu.removeEventListener('touchmove', handleTouchMove);
    } else {
     $menu.removeEventListener('wheel', handleMouseWheel);
-    $menu.removeEventListener('scroll', handleMouseWheel);
    }
 
    window.removeEventListener('resize', handleResize);

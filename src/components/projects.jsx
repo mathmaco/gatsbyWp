@@ -41,6 +41,7 @@ const PixelPhoto = ({ src, onRemove }) => {
       pixelationSequence.forEach(({ size, delay }) => {
         setTimeout(() => {
           setPixelSize(size);
+
         }, delay);
       });
 
