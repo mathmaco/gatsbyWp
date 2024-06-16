@@ -3,9 +3,9 @@ import "./src/css/normalize.css";
 // custom CSS styles
 import "./src/css/style.scss";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import useSound from 'use-sound';
-import sound from './src/assets/se/blip.mp3';
+import soundUrl from './src/assets/se/blip.mp3';
 
 import { MarqueeProvider } from './src/contexts/MarqueeContext';
 import { TimeProvider } from "./src/contexts/TimeContext";
@@ -15,29 +15,34 @@ import Projects from './src/components/projects';
 import Header from "./src/components/header";
 
 const LoadSound = ({ children }) => {
- //const [play] = useSound(require('./src/assets/se/synth1.mp3'));
- const [play] = useSound(sound);
+
+ const [play, { stop }] = useSound(
+  soundUrl,
+  { volume: 0.5 }
+ );
+
+ const handleMouseEnter = useCallback(() => {
+  play();
+ }, [play]);
+
+ const handleMouseLeave = useCallback(() => {
+  stop();
+ }, [stop]);
+
  useEffect(() => {
-  // ホバーしたときに音を再生する関数
-  const handleMouseEnter = () => {
-   play();
-  };
-
-  // .play-soundクラスを持つすべての要素を取得
   const elements = document.querySelectorAll('.play-sound');
-
-  // 各要素にホバーイベントリスナーを追加
   elements.forEach(element => {
    element.addEventListener('mouseenter', handleMouseEnter);
+   element.addEventListener('mouseleave', handleMouseLeave);
   });
 
-  // クリーンアップ関数でイベントリスナーを削除
   return () => {
    elements.forEach(element => {
     element.removeEventListener('mouseenter', handleMouseEnter);
+    element.removeEventListener('mouseleave', handleMouseLeave);
    });
   };
- }, [play]);
+ }, [handleMouseEnter, handleMouseLeave]);
 
  return <>{children}</>;
 };
