@@ -11,7 +11,7 @@ const VimeoPlayer = ({ url }) => {
      vimeo: {
       playerOptions: {
        controls: false,
-       autoplay: true,
+       autoplay: false,
        background: true,
        byline: false,
        loop: true,

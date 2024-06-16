@@ -60,48 +60,45 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
    dispose(scrollY);
   };
 
-  setTimeout(() => {
-   handleResize();
-  }, 100);
-
-  function isTablet() {
-   return /iPad|Android|Tablet|PlayBook|Silk|Kindle|BlackBerry/.test(navigator.userAgent);
-  }
-
-  if (isTablet()) {
-   $menu.addEventListener('touchstart', handleTouchStart);
-   $menu.addEventListener('touchmove', handleTouchMove);
-  } else {
-   $menu.addEventListener('wheel', handleMouseWheel);
-
-  }
-
-  window.addEventListener('resize', handleResize);
-  //window.addEventListener('load', handleResize);
-
-  // 自動スクロールを設定
-  const scrollSpeed = 1; // スクロールする速度を調整
-  const autoScroll = () => {
-   scrollY -= scrollSpeed;
-   dispose(scrollY);
-   requestAnimationFrame(autoScroll);
+  const addEventListeners = () => {
+   if (isTablet()) {
+    $menu.addEventListener('touchstart', handleTouchStart);
+    $menu.addEventListener('touchmove', handleTouchMove);
+   } else {
+    $menu.addEventListener('wheel', handleMouseWheel);
+   }
+   window.addEventListener('resize', handleResize);
+   window.addEventListener('load', handleResize);
   };
-  //autoScroll();
 
-  return () => {
-   console.log('クリーンアップが実行されました！');
-
+  const removeEventListeners = () => {
    if (isTablet()) {
     $menu.removeEventListener('touchstart', handleTouchStart);
     $menu.removeEventListener('touchmove', handleTouchMove);
    } else {
     $menu.removeEventListener('wheel', handleMouseWheel);
    }
-
    window.removeEventListener('resize', handleResize);
-   //window.removeEventListener('load', handleResize);
+   window.removeEventListener('load', handleResize);
   };
- }, [posts, selectedValue]);
+
+  const isTablet = () => /iPad|Android|Tablet|PlayBook|Silk|Kindle|BlackBerry/.test(navigator.userAgent);
+
+  addEventListeners();
+
+  const scrollSpeed = 1;
+  const autoScroll = () => {
+   scrollY -= scrollSpeed;
+   dispose(scrollY);
+   requestAnimationFrame(autoScroll);
+  };
+  autoScroll();
+
+  return () => {
+   console.log('クリーンアップが実行されました！');
+   removeEventListeners();
+  };
+ }, [posts, menuRef, itemsRef, selectedValue]);
 };
 
 export default useScrollableMenu;
