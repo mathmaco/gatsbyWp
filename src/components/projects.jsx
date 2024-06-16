@@ -1,23 +1,76 @@
-import React, { useContext, useMemo, useEffect, useRef } from "react";
-import { gsap } from 'gsap';
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React, { useContext, useMemo, useRef, useState, useEffect } from "react";
+import { useIntersection } from "react-use";
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
 //import PixelatedImage from './PixelatedImage';
-//import { Pixelify } from "react-pixelify";
+import { Pixelify } from "react-pixelify";
 import parse from 'html-react-parser';
 import * as projectStyles from '../css/components/project.module.scss';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
 import Marquee from 'react-fast-marquee';
 import Star from "./star";
-
+import useScrollableMenu from './useScrollableMenu';
 const fillColor = '#c9171e';
 
-gsap.registerPlugin(ScrollToPlugin, ScrollTrigger);
+
+const getVimeoThumbnail = async (videoId) => {
+  const response = await fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId}`);
+  const data = await response.json();
+  return data.thumbnail_url; // サムネイルのURLを返す
+};
+
+const PixelPhoto = ({ src }) => {
+  const [pixelSize, setPixelSize] = useState(50);
+  const intersectionRef = useRef(null);
+  const intersection = useIntersection(intersectionRef, {
+    root: null,
+    rootMargin: '0px',
+    threshold: 1
+  });
+
+  useEffect(() => {
+    setPixelSize(50);
+    if (intersection) {
+      setTimeout(() => {
+        setPixelSize(25);
+      }, 250);
+      setTimeout(() => {
+        setPixelSize(0);
+      }, 275);
+    }
+  }, [intersection, src]);
+
+  return (
+    <div ref={intersectionRef} className={projectStyles.pixel}>
+      <Pixelify
+        src={src}
+        width={250}
+        height={250}
+        centered={true}
+        pixelSize={pixelSize}
+      />
+    </div>
+  )
+}
 
 const GalleryMarquee = React.memo(({ media, speed }) => {
+  const [thumbnails, setThumbnails] = useState({});
+
+  useEffect(() => {
+    const fetchThumbnails = async () => {
+      const newThumbnails = {};
+      for (const item of media) {
+        if (item.mediaCheck === 'video' && item.shortVideo) {
+          const thumbnail = await getVimeoThumbnail(item.shortVideo);
+          newThumbnails[item.shortVideo] = thumbnail;
+        }
+      }
+      setThumbnails(newThumbnails);
+    };
+
+    fetchThumbnails();
+  }, [media]);
 
   return (
     <Marquee speed={speed} autoFill={true}>
@@ -26,38 +79,35 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
           (item.viewCheck === 'view1' || item.viewCheck === 'view3') && (
             <div className={projectStyles.item} key={index}>
               {item.mediaCheck === 'photo' && item.photo && (
-
-                <div className={projectStyles.photo}>
-                  <GatsbyImage
-                    image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-                    style={{ width: '100%', height: '100%' }}
-                    alt={item.photo.node.altText || 'デフォルトのサイト名'} />
-                  <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-                    {/*<Pixelify
-                      width={100}
-                      height={100}
-                      src={imageUrl}
-                      pixelSize={5}
-                    />*/}
+                <div style={{ width: '100%', height: '100%', position: 'relative' }} className={projectStyles.media}>
+                  <div className={projectStyles.photo}>
+                    <GatsbyImage
+                      image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
+                      style={{ width: '100%', height: '100%' }}
+                      alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                    <PixelPhoto src={item.photo.node.localFile.childImageSharp.original.src} />
                   </div>
                 </div>
               )}
               {item.mediaCheck === 'video' && item.shortVideo && (
-                <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
-                  <iframe
-                    src={`https://player.vimeo.com/video/${item.shortVideo}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
-                    title="vimeo"
-                    loading="lazy"
-                    frameBorder="0"
-                    allow="autoplay;"
-                  ></iframe>
+                <div style={{ width: '100%', height: '100%', position: 'relative' }} className={projectStyles.media}>
+                  <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
+                    <iframe
+                      src={`https://player.vimeo.com/video/${item.shortVideo}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
+                      title="vimeo"
+                      loading="lazy"
+                      frameBorder="0"
+                      allow="autoplay;"
+                    ></iframe>
+                    <PixelPhoto src={thumbnails[item.shortVideo]} />
+                  </div>
                 </div>
               )}
             </div>
           )
         ))
       }
-    </Marquee>
+    </Marquee >
   );
 });
 
@@ -67,112 +117,6 @@ const Projects = React.memo(() => {
 
   const menuRef = useRef(null);
   const itemsRef = useRef([]);
-
-  const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
-
-    useEffect(() => {
-      console.log('useEffectが実行されました');
-
-      const $menu = menuRef.current;
-      if (!$menu || itemsRef.current.length === 0) return;
-
-      const calculateWrapHeight = () => {
-        const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
-        return itemHeights.reduce((total, height) => total + height, 0);
-      };
-
-      let wrapHeight = calculateWrapHeight();
-      let scrollY = 0;
-
-      const dispose = (scroll) => {
-        if (itemsRef.current.length === 0) return;
-
-        let cumulativeHeight = 0;
-        const itemHeights = itemsRef.current.map(item => item ? item.clientHeight : 0);
-        gsap.set(itemsRef.current, {
-          y: (i) => {
-            const position = cumulativeHeight + scroll;
-            cumulativeHeight += itemHeights[i];
-            return position;
-          },
-          modifiers: {
-            y: (y) => {
-              const s = gsap.utils.wrap(-itemHeights[0], wrapHeight - itemHeights[itemHeights.length - 1], parseInt(y));
-              return `${s}px`;
-            }
-          }
-        });
-      };
-
-      dispose(0);
-
-      const handleMouseWheel = (e) => {
-        scrollY -= e.deltaY;
-        dispose(scrollY);
-      };
-
-      let touchStart = 0;
-      let touchY = 0;
-      const handleTouchStart = (e) => {
-        touchStart = e.touches[0].clientY;
-      };
-      const handleTouchMove = (e) => {
-        touchY = e.touches[0].clientY;
-        scrollY += (touchY - touchStart) * 2.5;
-        touchStart = touchY;
-        dispose(scrollY);
-      };
-
-      const handleResize = () => {
-        wrapHeight = calculateWrapHeight();
-        dispose(scrollY);
-      };
-
-      setTimeout(() => {
-        handleResize();
-      }, 100);
-
-      function isTablet() {
-        return /iPad|Android|Tablet|PlayBook|Silk|Kindle|BlackBerry/.test(navigator.userAgent);
-      }
-
-      if (isTablet()) {
-        $menu.addEventListener('touchstart', handleTouchStart);
-        $menu.addEventListener('touchmove', handleTouchMove);
-      } else {
-        $menu.addEventListener('wheel', handleMouseWheel);
-      }
-
-      window.addEventListener('resize', handleResize);
-      window.addEventListener('load', handleResize);
-      window.addEventListener('scroll', handleResize);
-
-      // 自動スクロールを設定
-      const scrollSpeed = 1; // スクロールする速度を調整
-      const autoScroll = () => {
-        scrollY -= scrollSpeed;
-        dispose(scrollY);
-        requestAnimationFrame(autoScroll);
-      };
-      autoScroll();
-
-      return () => {
-        console.log('クリーンアップが実行されました！');
-
-        if (isTablet()) {
-          $menu.removeEventListener('touchstart', handleTouchStart);
-          $menu.removeEventListener('touchmove', handleTouchMove);
-        } else {
-          $menu.removeEventListener('wheel', handleMouseWheel);
-        }
-
-        window.removeEventListener('resize', handleResize);
-        window.removeEventListener('load', handleResize);
-        window.removeEventListener('scroll', handleResize);
-      };
-    }, [posts, menuRef, itemsRef, selectedValue]);
-  };
-
   useScrollableMenu(posts, menuRef, itemsRef, selectedValue);
 
   const renderedPosts = useMemo(() => (

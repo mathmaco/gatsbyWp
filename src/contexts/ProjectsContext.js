@@ -48,6 +48,11 @@ export const ProjectsProvider = ({ children }) => {
                                     localFile {
                                         childImageSharp {
                                             gatsbyImageData(placeholder: DOMINANT_COLOR, quality: 100, layout: CONSTRAINED,outputPixelDensities: [1, 1.5, 2, 3,20])
+                                            original {
+                                                src
+                                                width
+                                                height
+                                            }
                                         }
                                     }
                                 }
