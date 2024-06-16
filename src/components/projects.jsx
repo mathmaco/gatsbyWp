@@ -3,7 +3,7 @@ import { useIntersection } from "react-use";
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
-//import PixelatedImage from './PixelatedImage';
+
 import { Pixelify } from "react-pixelify";
 import parse from 'html-react-parser';
 import * as projectStyles from '../css/components/project.module.scss';
@@ -20,7 +20,7 @@ const getVimeoThumbnail = async (videoId) => {
   return data.thumbnail_url; // サムネイルのURLを返す
 };
 
-const PixelPhoto = ({ src }) => {
+const PixelPhoto = ({ src, onRemove }) => {
   const [pixelSize, setPixelSize] = useState(50);
   const intersectionRef = useRef(null);
   const intersection = useIntersection(intersectionRef, {
@@ -30,16 +30,22 @@ const PixelPhoto = ({ src }) => {
   });
 
   useEffect(() => {
-    setPixelSize(50);
     if (intersection) {
       setTimeout(() => {
-        setPixelSize(25);
+        setPixelSize(50);
       }, 250);
       setTimeout(() => {
+        setPixelSize(25);
+      }, 350);
+      setTimeout(() => {
         setPixelSize(0);
-      }, 275);
+      }, 450);
+      setTimeout(() => {
+        //onRemove();
+      }, 500);
+
     }
-  }, [intersection, src]);
+  }, [intersection, src, onRemove]);
 
   return (
     <div ref={intersectionRef} className={projectStyles.pixel}>
@@ -56,6 +62,11 @@ const PixelPhoto = ({ src }) => {
 
 const GalleryMarquee = React.memo(({ media, speed }) => {
   const [thumbnails, setThumbnails] = useState({});
+  const [showPixelPhoto, setShowPixelPhoto] = useState(true);
+
+  const handleRemovePixelPhoto = () => {
+    setShowPixelPhoto(false);
+  };
 
   useEffect(() => {
     const fetchThumbnails = async () => {
@@ -85,7 +96,7 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
                       image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
                       style={{ width: '100%', height: '100%' }}
                       alt={item.photo.node.altText || 'デフォルトのサイト名'} />
-                    <PixelPhoto src={item.photo.node.localFile.childImageSharp.original.src} />
+                    {showPixelPhoto && <PixelPhoto src={item.photo.node.localFile.childImageSharp.original.src} onRemove={handleRemovePixelPhoto} />}
                   </div>
                 </div>
               )}
@@ -99,7 +110,7 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
                       frameBorder="0"
                       allow="autoplay;"
                     ></iframe>
-                    <PixelPhoto src={thumbnails[item.shortVideo]} />
+                    {showPixelPhoto && <PixelPhoto src={thumbnails[item.shortVideo]} onRemove={handleRemovePixelPhoto} />}
                   </div>
                 </div>
               )}
