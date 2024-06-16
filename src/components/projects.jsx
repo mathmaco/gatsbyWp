@@ -1,9 +1,9 @@
-import React, { useContext, useMemo, useRef, useState, useEffect, useCallback } from "react";
+import React, { useContext, useMemo, useRef, useState, useEffect } from "react";
 import { useIntersection } from "react-use";
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
-import VimeoPlayer from './VimeoPlayer';
+
 import { Pixelify } from "react-pixelify";
 import parse from 'html-react-parser';
 import * as projectStyles from '../css/components/project.module.scss';
@@ -11,8 +11,8 @@ import { useSelectedValue } from '../contexts/SelectedValueContext';
 import Marquee from 'react-fast-marquee';
 import Star from "./star";
 import useScrollableMenu from './useScrollableMenu';
-
 const fillColor = '#c9171e';
+
 
 const getVimeoThumbnail = async (videoId) => {
   const response = await fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId}`);
@@ -23,31 +23,32 @@ const getVimeoThumbnail = async (videoId) => {
 const PixelPhoto = ({ src, onRemove }) => {
   const [pixelSize, setPixelSize] = useState(50);
   const intersectionRef = useRef(null);
-  const hasAnimated = useRef(false);
   const intersection = useIntersection(intersectionRef, {
     root: null,
     rootMargin: '0px',
-    threshold: 0
+    threshold: 1
   });
 
-  if (intersection && intersection.isIntersecting && !hasAnimated.current) {
-    hasAnimated.current = true; // アニメーションが一度だけ実行されるようにする
-    const pixelationSequence = [
-      { size: 50, delay: 250 },
-      { size: 25, delay: 350 },
-      { size: 0, delay: 450 },
-    ];
+  useEffect(() => {
+    if (intersection && intersection.isIntersecting) {
+      const pixelationSequence = [
+        { size: 40, delay: 250 },
+        { size: 30, delay: 350 },
+        { size: 0, delay: 450 },
+      ];
 
-    pixelationSequence.forEach(({ size, delay }) => {
-      setTimeout(() => {
-        setPixelSize(size);
-        if (size === 0) {
-          //onRemove();
-        }
-      }, delay);
-    });
-  }
+      pixelationSequence.forEach(({ size, delay }) => {
+        setTimeout(() => {
+          setPixelSize(size);
+        }, delay);
+      });
 
+      // If you want to remove the PixelPhoto after the animation
+      // setTimeout(() => {
+      //   onRemove();
+      // }, 500);
+    }
+  }, [intersection, src, onRemove]);
 
   return (
     <div ref={intersectionRef} className={projectStyles.pixel}>
@@ -66,15 +67,16 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
   const [thumbnails, setThumbnails] = useState({});
   const [showPixelPhoto, setShowPixelPhoto] = useState(true);
 
-  const handleRemovePixelPhoto = useCallback(() => {
+  const handleRemovePixelPhoto = () => {
     setShowPixelPhoto(false);
-  }, []);
+  };
 
   useEffect(() => {
     const fetchThumbnails = async () => {
       const newThumbnails = {};
       for (const item of media) {
         if (item.mediaCheck === 'video' && item.shortVideo) {
+
           const thumbnail = await getVimeoThumbnail(item.shortVideo);
           newThumbnails[item.shortVideo] = thumbnail;
         }
@@ -85,49 +87,42 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
     fetchThumbnails();
   }, [media]);
 
-  const renderedMedia = useMemo(() => (
-    media.map((item, index) => (
-      (item.viewCheck === 'view1' || item.viewCheck === 'view3') && (
-        <div className={projectStyles.item} key={index}>
-          {item.mediaCheck === 'photo' && item.photo && (
-            <div style={{ width: '100%', height: '100%', position: 'relative' }} className={projectStyles.media}>
-              <div className={projectStyles.photo}>
-                {/*{showPixelPhoto ? (
-                  <PixelPhoto src={item.photo.node.localFile.childImageSharp.original.src} onRemove={handleRemovePixelPhoto} />
-                ) : (
-                  <GatsbyImage
-                    image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-                    style={{ width: '100%', height: '100%' }}
-                    alt={item.photo.node.altText || 'デフォルトのサイト名'} />
-                )}*/}
-                <GatsbyImage
-                  image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-                  style={{ width: '100%', height: '100%' }}
-                  alt={item.photo.node.altText || 'デフォルトのサイト名'} />
-              </div>
-            </div>
-          )}
-          {item.mediaCheck === 'video' && item.shortVideo && (
-            <div style={{ width: '100%', height: '100%', position: 'relative' }} className={projectStyles.media}>
-              <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
-                {/*{showPixelPhoto ? (
-                  <PixelPhoto src={thumbnails[item.shortVideo]} onRemove={handleRemovePixelPhoto} />
-                ) : (
-                  <VimeoPlayer url={`https://vimeo.com/${item.shortVideo}`} />
-                )}*/}
-                <PixelPhoto src={thumbnails[item.shortVideo]} onRemove={handleRemovePixelPhoto} />
-              </div>
-            </div>
-          )}
-        </div>
-      )
-    ))
-  ), [media, showPixelPhoto, thumbnails, handleRemovePixelPhoto]);
-
   return (
     <Marquee speed={speed} autoFill={true}>
-      {renderedMedia}
-    </Marquee>
+      {
+        media.map((item, index) => (
+          (item.viewCheck === 'view1' || item.viewCheck === 'view3') && (
+            <div className={projectStyles.item} key={index}>
+              {item.mediaCheck === 'photo' && item.photo && (
+                <div style={{ width: '100%', height: '100%', position: 'relative' }} className={projectStyles.media}>
+                  <div className={projectStyles.photo}>
+                    <GatsbyImage
+                      image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
+                      style={{ width: '100%', height: '100%' }}
+                      alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                    {showPixelPhoto && <PixelPhoto src={item.photo.node.localFile.childImageSharp.original.src} onRemove={handleRemovePixelPhoto} />}
+                  </div>
+                </div>
+              )}
+              {item.mediaCheck === 'video' && item.shortVideo && (
+                <div style={{ width: '100%', height: '100%', position: 'relative' }} className={projectStyles.media}>
+                  <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
+                    <iframe
+                      src={`https://player.vimeo.com/video/${item.shortVideo}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
+                      title="vimeo"
+                      loading="lazy"
+                      frameBorder="0"
+                      allow="autoplay;"
+                    ></iframe>
+                    {showPixelPhoto && <PixelPhoto src={thumbnails[item.shortVideo]} onRemove={handleRemovePixelPhoto} />}
+                  </div>
+                </div>
+              )}
+            </div>
+          )
+        ))
+      }
+    </Marquee >
   );
 });
 
