@@ -19,10 +19,10 @@ const getVimeoThumbnail = async (videoId) => {
   const data = await response.json();
   return data.thumbnail_url; // サムネイルのURLを返す
 };
-
 const PixelPhoto = ({ src, onRemove }) => {
   const [pixelSize, setPixelSize] = useState(50);
   const intersectionRef = useRef(null);
+  const hasAnimated = useRef(false);
   const intersection = useIntersection(intersectionRef, {
     root: null,
     rootMargin: '0px',
@@ -30,10 +30,11 @@ const PixelPhoto = ({ src, onRemove }) => {
   });
 
   useEffect(() => {
-    if (intersection && intersection.isIntersecting) {
+    if (intersection && intersection.isIntersecting && !hasAnimated.current) {
+      hasAnimated.current = true; // アニメーションが一度だけ実行されるようにする
       const pixelationSequence = [
-        { size: 40, delay: 250 },
-        { size: 30, delay: 350 },
+        { size: 50, delay: 250 },
+        { size: 25, delay: 350 },
         { size: 0, delay: 450 },
       ];
 
@@ -62,6 +63,49 @@ const PixelPhoto = ({ src, onRemove }) => {
     </div>
   );
 };
+
+//const PixelPhoto = ({ src, onRemove }) => {
+//  const [pixelSize, setPixelSize] = useState(50);
+//  const intersectionRef = useRef(null);
+//  const intersection = useIntersection(intersectionRef, {
+//    root: null,
+//    rootMargin: '0px',
+//    threshold: 1
+//  });
+//
+//  useEffect(() => {
+//    if (intersection && intersection.isIntersecting) {
+//      const pixelationSequence = [
+//        { size: 40, delay: 250 },
+//        { size: 30, delay: 350 },
+//        { size: 0, delay: 450 },
+//      ];
+//
+//      pixelationSequence.forEach(({ size, delay }) => {
+//        setTimeout(() => {
+//          setPixelSize(size);
+//        }, delay);
+//      });
+//
+//      // If you want to remove the PixelPhoto after the animation
+//      // setTimeout(() => {
+//      //   onRemove();
+//      // }, 500);
+//    }
+//  }, [intersection, src, onRemove]);
+//
+//  return (
+//    <div ref={intersectionRef} className={projectStyles.pixel}>
+//      <Pixelify
+//        src={src}
+//        width={250}
+//        height={250}
+//        centered={true}
+//        pixelSize={pixelSize}
+//      />
+//    </div>
+//  );
+//};
 
 const GalleryMarquee = React.memo(({ media, speed }) => {
   const [thumbnails, setThumbnails] = useState({});
