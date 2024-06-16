@@ -60,6 +60,10 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
    dispose(scrollY);
   };
 
+  setTimeout(() => {
+   handleResize();
+  }, 100);
+
   const addEventListeners = () => {
    if (isTablet()) {
     $menu.addEventListener('touchstart', handleTouchStart);
@@ -68,7 +72,7 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     $menu.addEventListener('wheel', handleMouseWheel);
    }
    window.addEventListener('resize', handleResize);
-   window.addEventListener('load', handleResize);
+   //window.addEventListener('load', handleResize);
   };
 
   const removeEventListeners = () => {
@@ -79,7 +83,7 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     $menu.removeEventListener('wheel', handleMouseWheel);
    }
    window.removeEventListener('resize', handleResize);
-   window.removeEventListener('load', handleResize);
+   //window.removeEventListener('load', handleResize);
   };
 
   const isTablet = () => /iPad|Android|Tablet|PlayBook|Silk|Kindle|BlackBerry/.test(navigator.userAgent);

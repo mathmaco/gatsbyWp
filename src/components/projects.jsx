@@ -21,20 +21,21 @@ const getVimeoThumbnail = async (videoId) => {
 };
 
 const PixelPhoto = ({ src, onRemove }) => {
-  const [pixelSize, setPixelSize] = useState(50);
+  const [pixelSize, setPixelSize] = useState(50); // 初期状態を50に設定
   const intersectionRef = useRef(null);
   const intersection = useIntersection(intersectionRef, {
     root: null,
     rootMargin: '0px',
-    threshold: 1
+    threshold: 0.35 // 要素が完全にビューポートに入る前にアニメーションを開始
   });
 
   useEffect(() => {
     if (intersection && intersection.isIntersecting) {
       const pixelationSequence = [
-        { size: 40, delay: 250 },
-        { size: 30, delay: 350 },
-        { size: 0, delay: 450 },
+        { size: 50, delay: 250 },
+        { size: 40, delay: 350 },
+        { size: 30, delay: 500 },
+        { size: 0, delay: 550 },
       ];
 
       pixelationSequence.forEach(({ size, delay }) => {
@@ -43,12 +44,15 @@ const PixelPhoto = ({ src, onRemove }) => {
         }, delay);
       });
 
-      // If you want to remove the PixelPhoto after the animation
+      // アニメーション後にPixelPhotoを削除する場合
       // setTimeout(() => {
       //   onRemove();
       // }, 500);
+    } else {
+      // ビューポートに入る前に初期状態にリセット
+      setPixelSize(50);
     }
-  }, [intersection, src, onRemove]);
+  }, [intersection]);
 
   return (
     <div ref={intersectionRef} className={projectStyles.pixel}>
@@ -62,6 +66,7 @@ const PixelPhoto = ({ src, onRemove }) => {
     </div>
   );
 };
+
 
 const GalleryMarquee = React.memo(({ media, speed }) => {
   const [thumbnails, setThumbnails] = useState({});
