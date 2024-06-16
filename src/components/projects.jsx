@@ -34,8 +34,8 @@ const PixelPhoto = React.memo(({ src, onRemove }) => {
       const pixelationSequence = [
         { size: 50, delay: 250 },
         { size: 40, delay: 350 },
-        { size: 30, delay: 500 },
-        { size: 0, delay: 550 },
+        { size: 30, delay: 400 },
+        { size: 0, delay: 450 },
       ];
 
       pixelationSequence.forEach(({ size, delay }) => {
