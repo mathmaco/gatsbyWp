@@ -30,20 +30,23 @@ const PixelPhoto = ({ src, onRemove }) => {
   });
 
   useEffect(() => {
-    if (intersection) {
-      setTimeout(() => {
-        setPixelSize(50);
-      }, 250);
-      setTimeout(() => {
-        setPixelSize(25);
-      }, 350);
-      setTimeout(() => {
-        setPixelSize(0);
-      }, 450);
-      setTimeout(() => {
-        //onRemove();
-      }, 500);
+    if (intersection && intersection.isIntersecting) {
+      const pixelationSequence = [
+        { size: 40, delay: 250 },
+        { size: 30, delay: 350 },
+        { size: 0, delay: 450 },
+      ];
 
+      pixelationSequence.forEach(({ size, delay }) => {
+        setTimeout(() => {
+          setPixelSize(size);
+        }, delay);
+      });
+
+      // If you want to remove the PixelPhoto after the animation
+      // setTimeout(() => {
+      //   onRemove();
+      // }, 500);
     }
   }, [intersection, src, onRemove]);
 
@@ -57,8 +60,8 @@ const PixelPhoto = ({ src, onRemove }) => {
         pixelSize={pixelSize}
       />
     </div>
-  )
-}
+  );
+};
 
 const GalleryMarquee = React.memo(({ media, speed }) => {
   const [thumbnails, setThumbnails] = useState({});
