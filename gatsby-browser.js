@@ -3,7 +3,7 @@ import "./src/css/normalize.css";
 // custom CSS styles
 import "./src/css/style.scss";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import useSound from 'use-sound';
 import soundUrl from './src/assets/se/blip.mp3';
 
@@ -15,11 +15,7 @@ import Projects from './src/components/projects';
 import Header from "./src/components/header";
 
 const LoadSound = ({ children }) => {
-
- const [play, { stop }] = useSound(
-  soundUrl,
-  { volume: 0.5 }
- );
+ const [play, { stop }] = useSound(soundUrl, { volume: 0.5 });
 
  const handleMouseEnter = useCallback(() => {
   play();
@@ -28,25 +24,21 @@ const LoadSound = ({ children }) => {
  const handleMouseLeave = useCallback(() => {
   stop();
  }, [stop]);
- const elements = document.querySelectorAll('.play-sound');
- elements.forEach(element => {
-  element.addEventListener('mouseenter', handleMouseEnter);
-  element.addEventListener('mouseleave', handleMouseLeave);
- });
+
  useEffect(() => {
   const elements = document.querySelectorAll('.play-sound');
-  elements.forEach(element => {
-   element.addEventListener('mouseenter', handleMouseEnter);
-   element.addEventListener('mouseleave', handleMouseLeave);
+  elements.forEach(elm => {
+   elm.addEventListener('mouseenter', handleMouseEnter);
+   elm.addEventListener('mouseleave', handleMouseLeave);
   });
 
   return () => {
-   elements.forEach(element => {
-    element.removeEventListener('mouseenter', handleMouseEnter);
-    element.removeEventListener('mouseleave', handleMouseLeave);
+   elements.forEach(elm => {
+    elm.removeEventListener('mouseenter', handleMouseEnter);
+    elm.removeEventListener('mouseleave', handleMouseLeave);
    });
   };
- }, [handleMouseEnter, handleMouseLeave]);
+ }, [handleMouseEnter]);
 
  return <>{children}</>;
 };
