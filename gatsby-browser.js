@@ -28,7 +28,11 @@ const LoadSound = ({ children }) => {
  const handleMouseLeave = useCallback(() => {
   stop();
  }, [stop]);
-
+ const elements = document.querySelectorAll('.play-sound');
+ elements.forEach(element => {
+  element.addEventListener('mouseenter', handleMouseEnter);
+  element.addEventListener('mouseleave', handleMouseLeave);
+ });
  useEffect(() => {
   const elements = document.querySelectorAll('.play-sound');
   elements.forEach(element => {
