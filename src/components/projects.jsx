@@ -20,7 +20,7 @@ const getVimeoThumbnail = async (videoId) => {
   return data.thumbnail_url; // サムネイルのURLを返す
 };
 
-const PixelPhoto = ({ src, onRemove }) => {
+const PixelPhoto = React.memo(({ src, onRemove }) => {
   const [pixelSize, setPixelSize] = useState(50); // 初期状態を50に設定
   const intersectionRef = useRef(null);
   const intersection = useIntersection(intersectionRef, {
@@ -65,7 +65,11 @@ const PixelPhoto = ({ src, onRemove }) => {
       />
     </div>
   );
-};
+}, (prevProps, nextProps) => {
+  return prevProps.src === nextProps.src && prevProps.onRemove === nextProps.onRemove;
+});
+
+
 
 
 const GalleryMarquee = React.memo(({ media, speed }) => {
@@ -81,7 +85,6 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
       const newThumbnails = {};
       for (const item of media) {
         if (item.mediaCheck === 'video' && item.shortVideo) {
-
           const thumbnail = await getVimeoThumbnail(item.shortVideo);
           newThumbnails[item.shortVideo] = thumbnail;
         }
@@ -127,9 +130,11 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
           )
         ))
       }
-    </Marquee >
+    </Marquee>
   );
 });
+
+
 
 const Projects = React.memo(() => {
   const { selectedValue } = useSelectedValue();
