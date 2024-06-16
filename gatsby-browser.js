@@ -5,7 +5,7 @@ import "./src/css/style.scss";
 
 import React, { useEffect } from "react";
 import useSound from 'use-sound';
-import sound from './src/assets/se/chi.mp3';
+import sound from './src/assets/se/blip.mp3';
 
 import { MarqueeProvider } from './src/contexts/MarqueeContext';
 import { TimeProvider } from "./src/contexts/TimeContext";
