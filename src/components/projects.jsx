@@ -73,6 +73,7 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
       const newThumbnails = {};
       for (const item of media) {
         if (item.mediaCheck === 'video' && item.shortVideo) {
+
           const thumbnail = await getVimeoThumbnail(item.shortVideo);
           newThumbnails[item.shortVideo] = thumbnail;
         }

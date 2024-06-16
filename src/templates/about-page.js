@@ -55,9 +55,9 @@ const Page = ({ data: { node }, location }) => {
                   <div className="inner">
                     <div className="about-box">
                       <ul className="sns-list">
-                        <li><a href="" target="_blank">Instagram</a></li>
-                        <li><a href="" target="_blank">Vimeo</a></li>
-                        <li><a href="" target="_blank">X</a></li>
+                        <li><a href="#" target="_blank">Instagram</a></li>
+                        <li><a href="#" target="_blank">Vimeo</a></li>
+                        <li><a href="#" target="_blank">X</a></li>
                       </ul>
                       <div className="about-time">
                         <div className="current-time">{currentTime}<i className="icon-star"><Star fill={fillColor} w={10} h={10} /></i></div>

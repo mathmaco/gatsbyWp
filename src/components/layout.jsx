@@ -1,15 +1,10 @@
-//layout.jsx
-import React from "react"
-import { useStaticQuery, graphql } from "gatsby"
+import React, { useEffect } from "react";
 
-//import parse from "html-react-parser"
-//import { Helmet } from "react-helmet"
-
-//import Projects from './projects';
-
-
+import { useStaticQuery, graphql } from "gatsby";
 
 const Layout = ({ isHomePage, children }) => {
+
+
 
   const {
     wp: {
@@ -24,12 +19,13 @@ const Layout = ({ isHomePage, children }) => {
         }
       }
     }
-  `)
+  `);
 
   return (
     <>
       <main data-is-root-path={isHomePage}>{children}</main>
     </>
-  )
-}
-export default Layout
+  );
+};
+
+export default Layout;
