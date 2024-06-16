@@ -3,7 +3,7 @@ import { useIntersection } from "react-use";
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
-
+import VimeoPlayer from './VimeoPlayer';
 import { Pixelify } from "react-pixelify";
 import parse from 'html-react-parser';
 import * as projectStyles from '../css/components/project.module.scss';
@@ -29,28 +29,25 @@ const PixelPhoto = ({ src, onRemove }) => {
     threshold: 1
   });
 
-  useEffect(() => {
-    if (intersection && intersection.isIntersecting && !hasAnimated.current) {
-      hasAnimated.current = true; // アニメーションが一度だけ実行されるようにする
-      const pixelationSequence = [
-        { size: 50, delay: 250 },
-        { size: 25, delay: 350 },
-        { size: 0, delay: 450 },
-      ];
 
-      pixelationSequence.forEach(({ size, delay }) => {
-        setTimeout(() => {
-          setPixelSize(size);
+  if (intersection && intersection.isIntersecting && !hasAnimated.current) {
+    hasAnimated.current = true; // アニメーションが一度だけ実行されるようにする
+    const pixelationSequence = [
+      { size: 50, delay: 250 },
+      { size: 25, delay: 350 },
+      { size: 0, delay: 450 },
+    ];
 
-        }, delay);
-      });
+    pixelationSequence.forEach(({ size, delay }) => {
+      setTimeout(() => {
+        setPixelSize(size);
+        if (size === 0) {
+          onRemove();
+        }
+      }, delay);
+    });
+  }
 
-      // If you want to remove the PixelPhoto after the animation
-      // setTimeout(() => {
-      //   onRemove();
-      // }, 500);
-    }
-  }, [intersection, src, onRemove]);
 
   return (
     <div ref={intersectionRef} className={projectStyles.pixel}>
@@ -99,25 +96,28 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
               {item.mediaCheck === 'photo' && item.photo && (
                 <div style={{ width: '100%', height: '100%', position: 'relative' }} className={projectStyles.media}>
                   <div className={projectStyles.photo}>
-                    <GatsbyImage
-                      image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-                      style={{ width: '100%', height: '100%' }}
-                      alt={item.photo.node.altText || 'デフォルトのサイト名'} />
-                    {showPixelPhoto && <PixelPhoto src={item.photo.node.localFile.childImageSharp.original.src} onRemove={handleRemovePixelPhoto} />}
+                    {showPixelPhoto ? (
+                      <PixelPhoto src={item.photo.node.localFile.childImageSharp.original.src} onRemove={handleRemovePixelPhoto} />
+                    ) : (
+                      <GatsbyImage
+                        image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
+                        style={{ width: '100%', height: '100%' }}
+                        alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                    )}
+
+
                   </div>
                 </div>
               )}
               {item.mediaCheck === 'video' && item.shortVideo && (
                 <div style={{ width: '100%', height: '100%', position: 'relative' }} className={projectStyles.media}>
                   <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
-                    <iframe
-                      src={`https://player.vimeo.com/video/${item.shortVideo}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
-                      title="vimeo"
-                      loading="lazy"
-                      frameBorder="0"
-                      allow="autoplay;"
-                    ></iframe>
-                    {showPixelPhoto && <PixelPhoto src={thumbnails[item.shortVideo]} onRemove={handleRemovePixelPhoto} />}
+                    {showPixelPhoto ? (
+                      <PixelPhoto src={thumbnails[item.shortVideo]} onRemove={handleRemovePixelPhoto} />
+                    ) : (
+                      <VimeoPlayer url={`https://vimeo.com/${item.shortVideo}`} />
+                    )}
+
                   </div>
                 </div>
               )}

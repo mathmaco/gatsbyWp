@@ -54,8 +54,11 @@
     "react-intersection-observer": "^9.10.2",
     "react-lazyload": "^3.2.1",
     "react-pixelify": "^0.2.2",
+    "react-player": "^2.16.0",
     "react-router-dom": "^6.22.3",
     "react-use": "^17.5.0",
+    "react-vimeo": "^2.0.0",
+    "react-vimeo-player": "^1.0.2",
     "sass": "^1.72.0",
     "styled-components": "^6.1.8",
     "use-sound": "^4.0.1"

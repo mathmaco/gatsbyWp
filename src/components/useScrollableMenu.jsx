@@ -77,7 +77,7 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
   }
 
   window.addEventListener('resize', handleResize);
-  window.addEventListener('load', handleResize);
+  //window.addEventListener('load', handleResize);
 
   // 自動スクロールを設定
   const scrollSpeed = 1; // スクロールする速度を調整
@@ -86,7 +86,7 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
    dispose(scrollY);
    requestAnimationFrame(autoScroll);
   };
-  autoScroll();
+  //autoScroll();
 
   return () => {
    console.log('クリーンアップが実行されました！');
@@ -99,9 +99,9 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
    }
 
    window.removeEventListener('resize', handleResize);
-   window.removeEventListener('load', handleResize);
+   //window.removeEventListener('load', handleResize);
   };
- }, [posts, menuRef, itemsRef, selectedValue]);
+ }, [posts, selectedValue]);
 };
 
 export default useScrollableMenu;
