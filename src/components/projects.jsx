@@ -33,8 +33,8 @@ const PixelPhoto = React.memo(({ src, onRemove }) => {
     if (intersection && intersection.isIntersecting) {
       const pixelationSequence = [
         { size: 50, delay: 250 },
-        { size: 40, delay: 350 },
-        { size: 30, delay: 400 },
+        { size: 30, delay: 350 },
+        { size: 15, delay: 400 },
         { size: 0, delay: 450 },
       ];
 
