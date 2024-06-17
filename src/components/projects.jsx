@@ -27,7 +27,7 @@ const PixelPhoto = React.memo(({ src, onRemove }) => {
   const intersection = useIntersection(intersectionRef, {
     root: null,
     rootMargin: '0px',
-    threshold: .35 // 要素が完全にビューポートに入る前にアニメーションを開始
+    threshold: .95 // 要素が完全にビューポートに入る前にアニメーションを開始
   });
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const PixelPhoto = React.memo(({ src, onRemove }) => {
         setTimeout(() => {
           setPixelSize(size);
           if (size === 0) {
-            onRemove();
+            //onRemove();
           }
         }, delay);
       });
