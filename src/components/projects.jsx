@@ -22,37 +22,37 @@ const getVimeoThumbnail = async (videoId) => {
 
 const PixelPhoto = React.memo(({ src, onRemove }) => {
   const [pixelSize, setPixelSize] = useState(50); // 初期状態を50に設定
+  const [hasIntersected, setHasIntersected] = useState(false);
   const intersectionRef = useRef(null);
   const intersection = useIntersection(intersectionRef, {
     root: null,
     rootMargin: '0px',
-    threshold: 0.35 // 要素が完全にビューポートに入る前にアニメーションを開始
+    threshold: .35 // 要素が完全にビューポートに入る前にアニメーションを開始
   });
 
   useEffect(() => {
     if (intersection && intersection.isIntersecting) {
+      setHasIntersected(true); // 交差したことを記録
       const pixelationSequence = [
-        { size: 50, delay: 250 },
-        { size: 30, delay: 350 },
-        { size: 15, delay: 400 },
-        { size: 0, delay: 450 },
+        { size: 30, delay: 100 },
+        { size: 15, delay: 150 },
+        { size: 0, delay: 200 },
       ];
 
       pixelationSequence.forEach(({ size, delay }) => {
         setTimeout(() => {
           setPixelSize(size);
+          if (size === 0) {
+            onRemove();
+          }
         }, delay);
       });
 
-      // アニメーション後にPixelPhotoを削除する場合
-      // setTimeout(() => {
-      //   onRemove();
-      // }, 500);
     } else {
       // ビューポートに入る前に初期状態にリセット
       setPixelSize(50);
     }
-  }, [intersection]);
+  }, [intersection, hasIntersected, onRemove]);
 
   return (
     <div ref={intersectionRef} className={projectStyles.pixel}>
@@ -68,6 +68,7 @@ const PixelPhoto = React.memo(({ src, onRemove }) => {
 }, (prevProps, nextProps) => {
   return prevProps.src === nextProps.src && prevProps.onRemove === nextProps.onRemove;
 });
+
 
 
 
@@ -104,6 +105,7 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
               {item.mediaCheck === 'photo' && item.photo && (
                 <div style={{ width: '100%', height: '100%', position: 'relative' }} className={projectStyles.media}>
                   <div className={projectStyles.photo}>
+
                     <GatsbyImage
                       image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
                       style={{ width: '100%', height: '100%' }}
@@ -117,8 +119,8 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
                   <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
                     <iframe
                       src={`https://player.vimeo.com/video/${item.shortVideo}?autoplay=1&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
-                      title="vimeo"
-                      loading="lazy"
+                      title=""
+                      //loading="lazy"
                       frameBorder="0"
                       allow="autoplay;"
                     ></iframe>
