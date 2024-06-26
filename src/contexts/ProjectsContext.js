@@ -40,6 +40,12 @@ export const ProjectsProvider = ({ children }) => {
                             viewCheck
                             mediaCheck
                             shortVideo
+                            shortVideoMp4 {
+                                node {
+                                mediaItemUrl
+                                publicUrl
+                                }
+                            }
                             fullVideo
                             aspectRatio
                             photo {

@@ -13,10 +13,10 @@ import useScrollableMenu from './useScrollableMenu';
 
 const fillColor = '#c9171e';
 
-const LazyVimeo = ({ videoId, aspectRatio, thumbnailUrl }) => {
+const LazyVideo = ({ videoUrl, aspectRatio }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const iframeRef = useRef();
-  const intersection = useIntersection(iframeRef, {
+  const videoRef = useRef();
+  const intersection = useIntersection(videoRef, {
     root: null,
     rootMargin: '0px',
     threshold: 0.1
@@ -25,27 +25,24 @@ const LazyVimeo = ({ videoId, aspectRatio, thumbnailUrl }) => {
   useEffect(() => {
     if (intersection && intersection.isIntersecting) {
       setIsVisible(true);
+    } else {
+      setIsVisible(false);
     }
   }, [intersection]);
 
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }} className={projectStyles.media}>
-      <div className={projectStyles.video} style={{ aspectRatio }}>
-        {isVisible ? (
+      <div className={projectStyles.video} style={{ aspectRatio }} ref={videoRef}>
+        {isVisible && (
           <ReactPlayer
-            url={`https://vimeo.com/${videoId}`}
-            playing={false}
+            url={videoUrl}
+            playing={true}
             loop={true}
-            controls={true}
+            controls={false}
             muted={true}
             width="100%"
             height="100%"
-            config={{ vimeo: { playerOptions: { background: true } } }}
           />
-        ) : (
-          <div ref={iframeRef} style={{ width: '100%', height: '100%' }}>
-            <img src={thumbnailUrl} alt="Video thumbnail" style={{ width: '100%', height: '100%' }} />
-          </div>
         )}
       </div>
     </div>
@@ -69,8 +66,8 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
                   </div>
                 </div>
               )}
-              {item.mediaCheck === 'video' && item.shortVideo && (
-                <LazyVimeo videoId={item.shortVideo} aspectRatio={item.aspectRatio} thumbnailUrl={item.thumbnailUrl} />
+              {item.mediaCheck === 'video' && item.shortVideoMp4 && (
+                <LazyVideo videoUrl={item.shortVideoMp4.node.publicUrl} aspectRatio={item.aspectRatio} />
               )}
             </div>
           )
