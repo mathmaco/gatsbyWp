@@ -13,7 +13,7 @@ import useScrollableMenu from './useScrollableMenu';
 
 const fillColor = '#c9171e';
 
-const LazyVimeo = ({ videoId, aspectRatio }) => {
+const LazyVimeo = ({ videoId, aspectRatio, thumbnailUrl }) => {
   const [isVisible, setIsVisible] = useState(false);
   const iframeRef = useRef();
   const intersection = useIntersection(iframeRef, {
@@ -34,15 +34,18 @@ const LazyVimeo = ({ videoId, aspectRatio }) => {
         {isVisible ? (
           <ReactPlayer
             url={`https://vimeo.com/${videoId}`}
-            playing={true}
+            playing={false}
             loop={true}
-            controls={false}
+            controls={true}
             muted={true}
             width="100%"
             height="100%"
+            config={{ vimeo: { playerOptions: { background: true } } }}
           />
         ) : (
-          <div ref={iframeRef} style={{ width: '100%', height: '100%' }}></div>
+          <div ref={iframeRef} style={{ width: '100%', height: '100%' }}>
+            <img src={thumbnailUrl} alt="Video thumbnail" style={{ width: '100%', height: '100%' }} />
+          </div>
         )}
       </div>
     </div>
@@ -67,7 +70,7 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
                 </div>
               )}
               {item.mediaCheck === 'video' && item.shortVideo && (
-                <LazyVimeo videoId={item.shortVideo} aspectRatio={item.aspectRatio} />
+                <LazyVimeo videoId={item.shortVideo} aspectRatio={item.aspectRatio} thumbnailUrl={item.thumbnailUrl} />
               )}
             </div>
           )
