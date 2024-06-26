@@ -3,99 +3,53 @@ import { useIntersection } from "react-use";
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
-
-//import { Pixelify } from "react-pixelify";
 import parse from 'html-react-parser';
 import * as projectStyles from '../css/components/project.module.scss';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
 import Marquee from 'react-fast-marquee';
+import ReactPlayer from 'react-player';
 import Star from "./star";
 import useScrollableMenu from './useScrollableMenu';
+
 const fillColor = '#c9171e';
 
+const LazyVimeo = ({ videoId, aspectRatio }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const iframeRef = useRef();
+  const intersection = useIntersection(iframeRef, {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1
+  });
 
-const getVimeoThumbnail = async (videoId) => {
-  const response = await fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId}`);
-  const data = await response.json();
-  return data.thumbnail_url; // サムネイルのURLを返す
+  useEffect(() => {
+    if (intersection && intersection.isIntersecting) {
+      setIsVisible(true);
+    }
+  }, [intersection]);
+
+  return (
+    <div style={{ width: '100%', height: '100%', position: 'relative' }} className={projectStyles.media}>
+      <div className={projectStyles.video} style={{ aspectRatio }}>
+        {isVisible ? (
+          <ReactPlayer
+            url={`https://vimeo.com/${videoId}`}
+            playing={true}
+            loop={true}
+            controls={false}
+            muted={true}
+            width="100%"
+            height="100%"
+          />
+        ) : (
+          <div ref={iframeRef} style={{ width: '100%', height: '100%' }}></div>
+        )}
+      </div>
+    </div>
+  );
 };
-//
-//const PixelPhoto = React.memo(({ src, onRemove }) => {
-//  const [pixelSize, setPixelSize] = useState(50); // 初期状態を50に設定
-//  const [hasIntersected, setHasIntersected] = useState(false);
-//  const intersectionRef = useRef(null);
-//  const intersection = useIntersection(intersectionRef, {
-//    root: null,
-//    rootMargin: '0px',
-//    threshold: .95 // 要素が完全にビューポートに入る前にアニメーションを開始
-//  });
-//
-//  useEffect(() => {
-//    if (intersection && intersection.isIntersecting) {
-//      setHasIntersected(true); // 交差したことを記録
-//      const pixelationSequence = [
-//        { size: 30, delay: 100 },
-//        { size: 15, delay: 150 },
-//        { size: 0, delay: 200 },
-//      ];
-//
-//      pixelationSequence.forEach(({ size, delay }) => {
-//        setTimeout(() => {
-//          setPixelSize(size);
-//          if (size === 0) {
-//            //onRemove();
-//          }
-//        }, delay);
-//      });
-//
-//    } else {
-//      // ビューポートに入る前に初期状態にリセット
-//      setPixelSize(50);
-//    }
-//  }, [intersection, hasIntersected, onRemove]);
-//
-//  return (
-//    <div ref={intersectionRef} className={projectStyles.pixel}>
-//      <Pixelify
-//        src={src}
-//        width={250}
-//        height={250}
-//        centered={true}
-//        pixelSize={pixelSize}
-//      />
-//    </div>
-//  );
-//}, (prevProps, nextProps) => {
-//  return prevProps.src === nextProps.src && prevProps.onRemove === nextProps.onRemove;
-//});
-
-
-
-
 
 const GalleryMarquee = React.memo(({ media, speed }) => {
-  //  const [thumbnails, setThumbnails] = useState({});
-  //  const [showPixelPhoto, setShowPixelPhoto] = useState(true);
-  //
-  //  const handleRemovePixelPhoto = () => {
-  //    setShowPixelPhoto(false);
-  //  };
-  //
-  //  useEffect(() => {
-  //    const fetchThumbnails = async () => {
-  //      const newThumbnails = {};
-  //      for (const item of media) {
-  //        if (item.mediaCheck === 'video' && item.shortVideo) {
-  //          const thumbnail = await getVimeoThumbnail(item.shortVideo);
-  //          newThumbnails[item.shortVideo] = thumbnail;
-  //        }
-  //      }
-  //      setThumbnails(newThumbnails);
-  //    };
-  //
-  //    fetchThumbnails();
-  //  }, [media]);
-
   return (
     <Marquee speed={speed} autoFill={true}>
       {
@@ -105,28 +59,15 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
               {item.mediaCheck === 'photo' && item.photo && (
                 <div style={{ width: '100%', height: '100%', position: 'relative' }} className={projectStyles.media}>
                   <div className={projectStyles.photo}>
-
                     <GatsbyImage
                       image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
                       style={{ width: '100%', height: '100%' }}
                       alt={item.photo.node.altText || 'デフォルトのサイト名'} />
-                    {/*{showPixelPhoto && <PixelPhoto src={item.photo.node.localFile.childImageSharp.original.src} onRemove={handleRemovePixelPhoto} />}*/}
                   </div>
                 </div>
               )}
               {item.mediaCheck === 'video' && item.shortVideo && (
-                <div style={{ width: '100%', height: '100%', position: 'relative' }} className={projectStyles.media}>
-                  <div className={projectStyles.video} style={{ aspectRatio: item.aspectRatio }}>
-                    <iframe
-                      src={`https://player.vimeo.com/video/${item.shortVideo}?autoplay=0&loop=1&title=0&byline=0&portrait=0&controls=0&muted=1&autopause=0`}
-                      title=""
-                      //loading="lazy"
-                      frameBorder="0"
-                      allow="autoplay;"
-                    ></iframe>
-                    {/*{showPixelPhoto && <PixelPhoto src={thumbnails[item.shortVideo]} onRemove={handleRemovePixelPhoto} />}*/}
-                  </div>
-                </div>
+                <LazyVimeo videoId={item.shortVideo} aspectRatio={item.aspectRatio} />
               )}
             </div>
           )
@@ -135,8 +76,6 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
     </Marquee>
   );
 });
-
-
 
 const Projects = React.memo(() => {
   const { selectedValue } = useSelectedValue();

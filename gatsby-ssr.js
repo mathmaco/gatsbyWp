@@ -1,8 +1,6 @@
 // gatsby-ssr.js
 
 import React from "react";
-import { Helmet } from 'react-helmet';
-
 import { MarqueeProvider } from './src/contexts/MarqueeContext';
 import { TimeProvider } from "./src/contexts/TimeContext";
 import { ProjectsProvider } from './src/contexts/ProjectsContext';
@@ -25,3 +23,13 @@ export const wrapRootElement = ({ element }) => {
   </SelectedValueProvider>
  );
 };
+//
+//export const onRenderBody = ({ setHeadComponents }) => {
+// setHeadComponents([
+//  <meta
+//   key="csp"
+//   httpEquiv="Content-Security-Policy"
+//   content="default-src 'self'; connect-src 'self' https://*.vimeocdn.com https://player.vimeo.com https://vimeo.com;"
+//  />,
+// ]);
+//};
