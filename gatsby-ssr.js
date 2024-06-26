@@ -23,13 +23,3 @@ export const wrapRootElement = ({ element }) => {
   </SelectedValueProvider>
  );
 };
-//
-//export const onRenderBody = ({ setHeadComponents }) => {
-// setHeadComponents([
-//  <meta
-//   key="csp"
-//   httpEquiv="Content-Security-Policy"
-//   content="default-src 'self'; connect-src 'self' https://*.vimeocdn.com https://player.vimeo.com https://vimeo.com;"
-//  />,
-// ]);
-//};

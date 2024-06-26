@@ -82,7 +82,7 @@ const Header = () => {
       <header id="mashhead" className={header.header}>
         <div className={`inner ${header.inner}`}>
           <div className={header.content}>
-            <div className={header.logo}><Link to="/" className="play-sound"><Logo /></Link></div>
+            <div className={header.logo}><Link to="/" className="play-sound" id="site-logo"><Logo /></Link></div>
             <nav id="js-nav" className={header.nav}>
               <ul className={header.menu}>
                 <li>

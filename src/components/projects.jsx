@@ -22,6 +22,7 @@ const LazyVideo = ({ videoUrl, aspectRatio }) => {
     threshold: 0.1
   });
 
+
   useEffect(() => {
     if (intersection && intersection.isIntersecting) {
       setIsVisible(true);
@@ -84,6 +85,26 @@ const Projects = React.memo(() => {
   const menuRef = useRef(null);
   const itemsRef = useRef([]);
   useScrollableMenu(posts, menuRef, itemsRef, selectedValue);
+
+  useEffect(() => {
+    const handleClickload = () => {
+      console.log('Document clicked');
+    };
+
+    document.addEventListener('click', handleClickload);
+
+    const clickEvent = new MouseEvent('click', {
+      view: window,
+      bubbles: true,
+      cancelable: true
+    });
+    document.dispatchEvent(clickEvent);
+    console.log('Click event dispatched to document');
+
+    return () => {
+      document.removeEventListener('click', handleClickload);
+    };
+  }, []);
 
   const renderedPosts = useMemo(() => (
     posts.map((post, index) => (
