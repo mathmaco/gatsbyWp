@@ -19,55 +19,55 @@ const getVimeoThumbnail = async (videoId) => {
  const data = await response.json();
  return data.thumbnail_url; // サムネイルのURLを返す
 };
-//
-//const PixelPhoto = React.memo(({ src, onRemove }) => {
-//  const [pixelSize, setPixelSize] = useState(50); // 初期状態を50に設定
-//  const [hasIntersected, setHasIntersected] = useState(false);
-//  const intersectionRef = useRef(null);
-//  const intersection = useIntersection(intersectionRef, {
-//    root: null,
-//    rootMargin: '0px',
-//    threshold: .95 // 要素が完全にビューポートに入る前にアニメーションを開始
-//  });
-//
-//  useEffect(() => {
-//    if (intersection && intersection.isIntersecting) {
-//      setHasIntersected(true); // 交差したことを記録
-//      const pixelationSequence = [
-//        { size: 30, delay: 100 },
-//        { size: 15, delay: 150 },
-//        { size: 0, delay: 200 },
-//      ];
-//
-//      pixelationSequence.forEach(({ size, delay }) => {
-//        setTimeout(() => {
-//          setPixelSize(size);
-//          if (size === 0) {
-//            //onRemove();
-//          }
-//        }, delay);
-//      });
-//
-//    } else {
-//      // ビューポートに入る前に初期状態にリセット
-//      setPixelSize(50);
-//    }
-//  }, [intersection, hasIntersected, onRemove]);
-//
-//  return (
-//    <div ref={intersectionRef} className={projectStyles.pixel}>
-//      <Pixelify
-//        src={src}
-//        width={250}
-//        height={250}
-//        centered={true}
-//        pixelSize={pixelSize}
-//      />
-//    </div>
-//  );
-//}, (prevProps, nextProps) => {
-//  return prevProps.src === nextProps.src && prevProps.onRemove === nextProps.onRemove;
-//});
+
+const PixelPhoto = React.memo(({ src, onRemove }) => {
+ const [pixelSize, setPixelSize] = useState(50); // 初期状態を50に設定
+ const [hasIntersected, setHasIntersected] = useState(false);
+ const intersectionRef = useRef(null);
+ const intersection = useIntersection(intersectionRef, {
+  root: null,
+  rootMargin: '0px',
+  threshold: .95 // 要素が完全にビューポートに入る前にアニメーションを開始
+ });
+
+ useEffect(() => {
+  if (intersection && intersection.isIntersecting) {
+   setHasIntersected(true); // 交差したことを記録
+   const pixelationSequence = [
+    { size: 30, delay: 100 },
+    { size: 15, delay: 150 },
+    { size: 0, delay: 200 },
+   ];
+
+   pixelationSequence.forEach(({ size, delay }) => {
+    setTimeout(() => {
+     setPixelSize(size);
+     if (size === 0) {
+      //onRemove();
+     }
+    }, delay);
+   });
+
+  } else {
+   // ビューポートに入る前に初期状態にリセット
+   setPixelSize(50);
+  }
+ }, [intersection, hasIntersected, onRemove]);
+
+ return (
+  <div ref={intersectionRef} className={projectStyles.pixel}>
+   <Pixelify
+    src={src}
+    width={250}
+    height={250}
+    centered={true}
+    pixelSize={pixelSize}
+   />
+  </div>
+ );
+}, (prevProps, nextProps) => {
+ return prevProps.src === nextProps.src && prevProps.onRemove === nextProps.onRemove;
+});
 
 
 
