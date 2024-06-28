@@ -5,7 +5,7 @@ import useIntersectionObserver from './useIntersectionObserver';
 import PixelPhoto from './PixelPhoto';
 
 const LazyVideo = ({ videoUrl, thumbnailUrl, width, height, aspectRatio }) => {
- const [intersectionRef, isVisible] = useIntersectionObserver(0);
+ const [intersectionRef, isVisible] = useIntersectionObserver(0.3);
  const [hasLoaded, setHasLoaded] = useState(false);
 
  useEffect(() => {
