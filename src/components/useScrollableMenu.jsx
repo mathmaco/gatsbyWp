@@ -48,6 +48,7 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
   const handleTouchStart = (e) => {
    touchStart = e.touches[0].clientY;
   };
+
   const handleTouchMove = (e) => {
    touchY = e.touches[0].clientY;
    scrollY += (touchY - touchStart) * 2.5;
@@ -67,12 +68,11 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
   const addEventListeners = () => {
    if (isTablet()) {
     $menu.addEventListener('touchstart', handleTouchStart);
-    $menu.addEventListener('touchmove', handleTouchMove);
+    $menu.addEventListener('touchmove', debounce(handleTouchMove, 10));
    } else {
     $menu.addEventListener('wheel', handleMouseWheel);
    }
    window.addEventListener('resize', handleResize);
-   //window.addEventListener('load', handleResize);
   };
 
   const removeEventListeners = () => {
@@ -83,7 +83,6 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
     $menu.removeEventListener('wheel', handleMouseWheel);
    }
    window.removeEventListener('resize', handleResize);
-   //window.removeEventListener('load', handleResize);
   };
 
   const isTablet = () => /iPad|Android|Tablet|PlayBook|Silk|Kindle|BlackBerry/.test(navigator.userAgent);
@@ -91,18 +90,30 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
   addEventListeners();
 
   const scrollSpeed = 1;
+  let scrollAnimationFrame;
   const autoScroll = () => {
-   scrollY -= scrollSpeed;
-   dispose(scrollY);
-   requestAnimationFrame(autoScroll);
+   scrollAnimationFrame = requestAnimationFrame(() => {
+    scrollY -= scrollSpeed;
+    dispose(scrollY);
+    autoScroll();
+   });
   };
   autoScroll();
 
   return () => {
    console.log('クリーンアップが実行されました！');
    removeEventListeners();
+   cancelAnimationFrame(scrollAnimationFrame);
   };
  }, [posts, menuRef, itemsRef, selectedValue]);
+
+ const debounce = (func, wait) => {
+  let timeout;
+  return (...args) => {
+   clearTimeout(timeout);
+   timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+ };
 };
 
 export default useScrollableMenu;
