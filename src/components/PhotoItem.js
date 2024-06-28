@@ -5,7 +5,7 @@ import PixelPhoto from './PixelPhoto';
 import * as projectStyles from '../css/components/project.module.scss';
 
 const PhotoItem = ({ photo, width, height }) => {
- const [intersectionRef, isVisible] = useIntersectionObserver(.3);
+ const [intersectionRef, isVisible] = useIntersectionObserver(0.5);
  //const [hasLoaded, setHasLoaded] = useState(false);
 
  useEffect(() => {
