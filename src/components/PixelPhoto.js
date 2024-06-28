@@ -5,7 +5,7 @@ import useIntersectionObserver from './useIntersectionObserver';
 
 const PixelPhoto = React.memo(({ src, width, height, onLoad }) => {
  const [pixelSize, setPixelSize] = useState(50);
- const [intersectionRef, isVisible] = useIntersectionObserver(0.3);
+ const [intersectionRef, isVisible] = useIntersectionObserver(0);
 
  useEffect(() => {
   if (isVisible) {
