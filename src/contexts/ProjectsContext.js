@@ -40,6 +40,19 @@ export const ProjectsProvider = ({ children }) => {
                             viewCheck
                             mediaCheck
                             shortVideo
+                            shortVideoMp4Pic {
+                            node {
+                            localFile {
+                                childImageSharp {
+                                original {
+                                    src
+                                    width
+                                    height
+                                }
+                                }
+                            }
+                            }
+                        }
                             shortVideoMp4 {
                                 node {
                                 mediaItemUrl

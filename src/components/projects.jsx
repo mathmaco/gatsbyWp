@@ -1,5 +1,4 @@
-import React, { useContext, useMemo, useRef, useState, useEffect } from "react";
-import { useIntersection } from "react-use";
+import React, { useContext, useMemo, useRef } from "react";
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
 import { GatsbyImage } from 'gatsby-plugin-image';
@@ -7,48 +6,12 @@ import parse from 'html-react-parser';
 import * as projectStyles from '../css/components/project.module.scss';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
 import Marquee from 'react-fast-marquee';
-import ReactPlayer from 'react-player';
-import Star from "./star";
 import useScrollableMenu from './useScrollableMenu';
+import LazyVideo from './LazyVideo';
+import PixelPhoto from './PixelPhoto';
+import Star from "./star";
 
 const fillColor = '#c9171e';
-
-const LazyVideo = ({ videoUrl, aspectRatio }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const videoRef = useRef();
-  const intersection = useIntersection(videoRef, {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.1
-  });
-
-
-  useEffect(() => {
-    if (intersection && intersection.isIntersecting) {
-      setIsVisible(true);
-    } else {
-      setIsVisible(false);
-    }
-  }, [intersection]);
-
-  return (
-    <div style={{ width: '100%', height: '100%', position: 'relative' }} className={projectStyles.media}>
-      <div className={projectStyles.video} style={{ aspectRatio }} ref={videoRef}>
-        {isVisible && (
-          <ReactPlayer
-            url={videoUrl}
-            playing={true}
-            loop={true}
-            controls={false}
-            muted={true}
-            width="100%"
-            height="100%"
-          />
-        )}
-      </div>
-    </div>
-  );
-};
 
 const GalleryMarquee = React.memo(({ media, speed }) => {
   return (
@@ -64,11 +27,18 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
                       image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
                       style={{ width: '100%', height: '100%' }}
                       alt={item.photo.node.altText || 'デフォルトのサイト名'} />
+                    <PixelPhoto src={item.photo.node.localFile.childImageSharp.original.src} />
                   </div>
                 </div>
               )}
               {item.mediaCheck === 'video' && item.shortVideoMp4 && (
-                <LazyVideo videoUrl={item.shortVideoMp4.node.publicUrl} aspectRatio={item.aspectRatio} />
+                <LazyVideo
+                  videoUrl={item.shortVideoMp4.node.publicUrl}
+                  thumbnailUrl={item.shortVideoMp4Pic.node.localFile.childImageSharp.original.src}
+                  width={item.shortVideoMp4Pic.node.localFile.childImageSharp.original.width}
+                  height={item.shortVideoMp4Pic.node.localFile.childImageSharp.original.height}
+                  aspectRatio={item.aspectRatio}
+                />
               )}
             </div>
           )
@@ -85,26 +55,6 @@ const Projects = React.memo(() => {
   const menuRef = useRef(null);
   const itemsRef = useRef([]);
   useScrollableMenu(posts, menuRef, itemsRef, selectedValue);
-
-  useEffect(() => {
-    const handleClickload = () => {
-      console.log('Document clicked');
-    };
-
-    document.addEventListener('click', handleClickload);
-
-    const clickEvent = new MouseEvent('click', {
-      view: window,
-      bubbles: true,
-      cancelable: true
-    });
-    document.dispatchEvent(clickEvent);
-    console.log('Click event dispatched to document');
-
-    return () => {
-      document.removeEventListener('click', handleClickload);
-    };
-  }, []);
 
   const renderedPosts = useMemo(() => (
     posts.map((post, index) => (
