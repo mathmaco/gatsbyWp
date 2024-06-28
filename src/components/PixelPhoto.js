@@ -3,9 +3,9 @@ import { Pixelify } from "react-pixelify";
 import * as projectStyles from '../css/components/project.module.scss';
 import useIntersectionObserver from './useIntersectionObserver';
 
-const PixelPhoto = React.memo(({ src, width, height }) => {
+const PixelPhoto = React.memo(({ src, width, height, onLoad }) => {
  const [pixelSize, setPixelSize] = useState(50);
- const [intersectionRef, isVisible] = useIntersectionObserver(0.1);
+ const [intersectionRef, isVisible] = useIntersectionObserver(0.3);
 
  useEffect(() => {
   if (isVisible) {
@@ -18,12 +18,15 @@ const PixelPhoto = React.memo(({ src, width, height }) => {
    pixelationSequence.forEach(({ size, delay }) => {
     setTimeout(() => {
      setPixelSize(size);
+     if (size === 0 && onLoad) {
+      onLoad();
+     }
     }, delay);
    });
   } else {
    setPixelSize(50);
   }
- }, [isVisible]);
+ }, [isVisible, onLoad]);
 
  return (
   <div ref={intersectionRef} className={projectStyles.pixel}>

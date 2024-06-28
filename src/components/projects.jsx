@@ -1,14 +1,13 @@
 import React, { useContext, useMemo, useRef } from "react";
 import { ProjectsContext } from '../contexts/ProjectsContext';
 import { Link } from 'gatsby';
-import { GatsbyImage } from 'gatsby-plugin-image';
 import parse from 'html-react-parser';
 import * as projectStyles from '../css/components/project.module.scss';
 import { useSelectedValue } from '../contexts/SelectedValueContext';
 import Marquee from 'react-fast-marquee';
 import useScrollableMenu from './useScrollableMenu';
+import PhotoItem from './PhotoItem';
 import LazyVideo from './LazyVideo';
-import PixelPhoto from './PixelPhoto';
 import Star from "./star";
 
 const fillColor = '#c9171e';
@@ -16,38 +15,28 @@ const fillColor = '#c9171e';
 const GalleryMarquee = React.memo(({ media, speed }) => {
   return (
     <Marquee speed={speed} autoFill={true}>
-      {
-        media.map((item, index) => (
-          (item.viewCheck === 'view1' || item.viewCheck === 'view3') && (
-            <div className={projectStyles.item} key={index}>
-              {item.mediaCheck === 'photo' && item.photo && (
-                <div style={{ width: '100%', height: '100%', position: 'relative' }} className={projectStyles.media}>
-                  <div className={projectStyles.photo}>
-                    <GatsbyImage
-                      image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
-                      style={{ width: '100%', height: '100%' }}
-                      alt={item.photo.node.altText || 'デフォルトのサイト名'} />
-                    <PixelPhoto
-                      src={item.photo.node.localFile.childImageSharp.original.src}
-                      width={item.photo.node.localFile.childImageSharp.original.width / 10}
-                      height={item.photo.node.localFile.childImageSharp.original.height / 10}
-                    />
-                  </div>
-                </div>
-              )}
-              {item.mediaCheck === 'video' && item.shortVideoMp4 && (
-                <LazyVideo
-                  videoUrl={item.shortVideoMp4.node.publicUrl}
-                  thumbnailUrl={item.shortVideoMp4Pic.node.localFile.childImageSharp.original.src}
-                  width={item.shortVideoMp4Pic.node.localFile.childImageSharp.original.width / 10}
-                  height={item.shortVideoMp4Pic.node.localFile.childImageSharp.original.height / 10}
-                  aspectRatio={item.aspectRatio}
-                />
-              )}
-            </div>
-          )
-        ))
-      }
+      {media.map((item, index) => (
+        (item.viewCheck === 'view1' || item.viewCheck === 'view3') && (
+          <div className={projectStyles.item} key={index}>
+            {item.mediaCheck === 'photo' && item.photo && (
+              <PhotoItem
+                photo={item.photo.node}
+                width={item.photo.node.localFile.childImageSharp.original.width}
+                height={item.photo.node.localFile.childImageSharp.original.height}
+              />
+            )}
+            {item.mediaCheck === 'video' && item.shortVideoMp4 && (
+              <LazyVideo
+                videoUrl={item.shortVideoMp4.node.publicUrl}
+                thumbnailUrl={item.shortVideoMp4Pic.node.localFile.childImageSharp.original.src}
+                width={item.shortVideoMp4Pic.node.localFile.childImageSharp.original.width / 10}
+                height={item.shortVideoMp4Pic.node.localFile.childImageSharp.original.height / 10}
+                aspectRatio={item.aspectRatio}
+              />
+            )}
+          </div>
+        )
+      ))}
     </Marquee>
   );
 });

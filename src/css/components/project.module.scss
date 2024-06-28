@@ -2,9 +2,31 @@
 
 .media {
  position: relative;
- overflow: hidden;
- .original {
+
+ .gatsbyImage {
+  opacity: 0;
+ }
+ .pixelPhoto {
+  opacity: 1;
+ }
+
+ &.visible {
+  .gatsbyImage {
+   opacity: 1;
+  }
+  .pixelPhoto {
+   opacity: 0;
+  }
+ }
+ .pixelPhotoWrap {
   position: relative;
+  .pixelPhoto {
+   position: relative;
+  }
+  .lowResImage {
+   position: relative;
+   z-index: -2;
+  }
  }
  .pixel {
   position: absolute;
@@ -12,13 +34,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-
   canvas {
    width: 100%;
    height: 100%;
+   object-fit: cover;
   }
  }
 }
