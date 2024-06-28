@@ -96,7 +96,7 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
    dispose(scrollY);
    requestAnimationFrame(autoScroll);
   };
-  //autoScroll();
+  autoScroll();
 
   return () => {
    console.log('クリーンアップが実行されました！');
