@@ -27,7 +27,11 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
                       image={item.photo.node.localFile.childImageSharp.gatsbyImageData}
                       style={{ width: '100%', height: '100%' }}
                       alt={item.photo.node.altText || 'デフォルトのサイト名'} />
-                    <PixelPhoto src={item.photo.node.localFile.childImageSharp.original.src} />
+                    <PixelPhoto
+                      src={item.photo.node.localFile.childImageSharp.original.src}
+                      width={item.photo.node.localFile.childImageSharp.original.width / 10}
+                      height={item.photo.node.localFile.childImageSharp.original.height / 10}
+                    />
                   </div>
                 </div>
               )}
@@ -35,8 +39,8 @@ const GalleryMarquee = React.memo(({ media, speed }) => {
                 <LazyVideo
                   videoUrl={item.shortVideoMp4.node.publicUrl}
                   thumbnailUrl={item.shortVideoMp4Pic.node.localFile.childImageSharp.original.src}
-                  width={item.shortVideoMp4Pic.node.localFile.childImageSharp.original.width}
-                  height={item.shortVideoMp4Pic.node.localFile.childImageSharp.original.height}
+                  width={item.shortVideoMp4Pic.node.localFile.childImageSharp.original.width / 10}
+                  height={item.shortVideoMp4Pic.node.localFile.childImageSharp.original.height / 10}
                   aspectRatio={item.aspectRatio}
                 />
               )}

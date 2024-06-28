@@ -10,9 +10,9 @@ const PixelPhoto = React.memo(({ src, width, height }) => {
  useEffect(() => {
   if (isVisible) {
    const pixelationSequence = [
-    { size: 30, delay: 100 },
-    { size: 15, delay: 150 },
-    { size: 0, delay: 200 },
+    { size: 50, delay: 200 },
+    { size: 15, delay: 50 },
+    { size: 0, delay: 25 },
    ];
 
    pixelationSequence.forEach(({ size, delay }) => {
