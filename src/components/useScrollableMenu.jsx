@@ -89,7 +89,7 @@ const useScrollableMenu = (posts, menuRef, itemsRef, selectedValue) => {
 
   addEventListeners();
 
-  const scrollSpeed = 1;
+  const scrollSpeed = .5;
   let scrollAnimationFrame;
   const autoScroll = () => {
    scrollAnimationFrame = requestAnimationFrame(() => {
