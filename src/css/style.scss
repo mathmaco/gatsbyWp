@@ -140,18 +140,11 @@ html::-webkit-scrollbar,
 body::-webkit-scrollbar {
  display: none;
 }
-.rfm-marquee-container {
- //overflow: hidden;
- //height: 100vh;
-}
-.swiper-scrollbar {
- display: none;
-}
 
+.react-player__shadow {
+ display: none !important;
+}
 .projects {
- //overflow: hidden;
- //height: 100vh;
-
  .projects-item {
   position: absolute;
   z-index: 1;

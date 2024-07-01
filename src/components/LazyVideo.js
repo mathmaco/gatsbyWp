@@ -8,27 +8,18 @@ const LazyVideo = ({ videoUrl, thumbnailUrl, width, height, aspectRatio }) => {
  const [intersectionRef, isVisible] = useIntersectionObserver(0);
  const [hasLoaded, setHasLoaded] = useState(false);
  const [hasPixelated, setHasPixelated] = useState(false); // ピクセル処理が実行されたかどうかを追跡
+ const [showLight, setShowLight] = useState(true); // サムネイルの表示制御
  const playerRef = useRef(null);
 
  useEffect(() => {
-  if (isVisible && !hasLoaded) {
-   setHasLoaded(true);
+  if (isVisible && !hasPixelated) {
+   setHasPixelated(true);
   }
- }, [isVisible, hasLoaded]);
-
- useEffect(() => {
-  if (playerRef.current) {
-   if (isVisible) {
-    playerRef.current.getInternalPlayer().play();
-   } else {
-    playerRef.current.getInternalPlayer().pause();
-   }
-  }
- }, [isVisible]);
+ }, [isVisible, hasPixelated]);
 
  const handleVideoReady = () => {
   setHasLoaded(true);
-  setHasPixelated(true); // ピクセル処理が実行されたことを記録
+  setShowLight(false); // ビデオがロードされた後にサムネイルを非表示にする
  };
 
  return (
@@ -41,17 +32,7 @@ const LazyVideo = ({ videoUrl, thumbnailUrl, width, height, aspectRatio }) => {
       height={height}
      />
     )}
-    {hasLoaded && !isVisible && (
-     <img
-      src={thumbnailUrl}
-      width="100%"
-      height="100%"
-      alt="Thumbnail"
-      style={{ position: 'absolute', top: 0, left: 0 }}
-      className={projectStyles.thumbnail}
-     />
-    )}
-    {hasLoaded && (
+    {hasPixelated && (
      <ReactPlayer
       ref={playerRef}
       url={videoUrl}
@@ -62,7 +43,7 @@ const LazyVideo = ({ videoUrl, thumbnailUrl, width, height, aspectRatio }) => {
       width="100%"
       height="100%"
       onReady={handleVideoReady}
-      style={isVisible ? {} : { display: 'none' }}
+      light={showLight ? thumbnailUrl : false} // サムネイル画像をプレースホルダーとして使用
      />
     )}
    </div>

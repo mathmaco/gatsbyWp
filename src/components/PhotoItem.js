@@ -11,10 +11,8 @@ const PhotoItem = ({ photo, width, height }) => {
  useEffect(() => {
   if (isVisible && !hasBeenVisible) {
    setHasBeenVisible(true);
-   const img = new Image();
-   img.src = photo.localFile.childImageSharp.original.src;
   }
- }, [isVisible, hasBeenVisible, photo.localFile.childImageSharp.original.src]);
+ }, [isVisible, hasBeenVisible]);
 
  const lowResImage = getImage(photo.localFile.childImageSharp.gatsbyImageData);
 
@@ -35,22 +33,20 @@ const PhotoItem = ({ photo, width, height }) => {
       />
      </div>
     ) : (
-     <>
-      <div className={projectStyles.pixelPhotoWrap}>
-       <PixelPhoto
-        src={photo.localFile.childImageSharp.original.src}
-        width={width / 10}
-        height={height / 10}
-        className={projectStyles.pixelPhoto}
-       />
-       <GatsbyImage
-        image={lowResImage}
-        style={{ width: '100%', height: '100%' }}
-        alt={photo.altText || 'デフォルトのサイト名'}
-        className={projectStyles.lowResImage}
-       />
-      </div>
-     </>
+     <div className={projectStyles.pixelPhotoWrap}>
+      <PixelPhoto
+       src={photo.localFile.childImageSharp.original.src}
+       width={width / 10}
+       height={height / 10}
+       className={projectStyles.pixelPhoto}
+      />
+      <GatsbyImage
+       image={lowResImage}
+       style={{ width: '100%', height: '100%' }}
+       alt={photo.altText || 'デフォルトのサイト名'}
+       className={projectStyles.lowResImage}
+      />
+     </div>
     )}
    </div>
   </div>
