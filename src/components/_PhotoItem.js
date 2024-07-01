@@ -6,16 +6,17 @@ import * as projectStyles from '../css/components/project.module.scss';
 
 const PhotoItem = ({ photo, width, height }) => {
  const [intersectionRef, isVisible] = useIntersectionObserver(0.5);
- const [hasBeenVisible, setHasBeenVisible] = useState(false);
+ //const [hasLoaded, setHasLoaded] = useState(false);
 
  useEffect(() => {
-  if (isVisible && !hasBeenVisible) {
-   setHasBeenVisible(true);
+  //if (isVisible && !hasLoaded) {
+  if (isVisible) {
    const img = new Image();
    img.src = photo.localFile.childImageSharp.original.src;
+   //img.onload = () => setHasLoaded(true);
   }
- }, [isVisible, hasBeenVisible, photo.localFile.childImageSharp.original.src]);
-
+ }, [isVisible, photo.localFile.childImageSharp.original.src]);
+ //[isVisible, hasLoaded, photo.localFile.childImageSharp.original.src]
  const lowResImage = getImage(photo.localFile.childImageSharp.gatsbyImageData);
 
  return (
@@ -25,7 +26,8 @@ const PhotoItem = ({ photo, width, height }) => {
    ref={intersectionRef}
   >
    <div className={projectStyles.photo}>
-    {hasBeenVisible ? (
+    {/*{isVisible && hasLoaded ? (*/}
+    {isVisible ? (
      <div className={projectStyles.gatsbyImage}>
       <GatsbyImage
        image={lowResImage}

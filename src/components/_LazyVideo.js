@@ -1,19 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import ReactPlayer from 'react-player';
 import * as projectStyles from '../css/components/project.module.scss';
 import useIntersectionObserver from './useIntersectionObserver';
 import PixelPhoto from './PixelPhoto';
 
 const LazyVideo = ({ videoUrl, thumbnailUrl, width, height, aspectRatio }) => {
- const [intersectionRef, isVisible] = useIntersectionObserver(0);
+ const [intersectionRef, isVisible] = useIntersectionObserver(0.5);
  const [hasLoaded, setHasLoaded] = useState(false);
- const playerRef = useRef(null);
 
  useEffect(() => {
-  if (isVisible && !hasLoaded) {
-   setHasLoaded(true);
+  if (isVisible) {
+   setHasLoaded(false); // ビデオがビューポート内に入ったら再度読み込み待機状態にする
   }
- }, [isVisible, hasLoaded]);
+ }, [isVisible]);
 
  return (
   <div style={{ width: '100%', height: '100%', position: 'relative' }} className={projectStyles.media}>
@@ -25,17 +24,17 @@ const LazyVideo = ({ videoUrl, thumbnailUrl, width, height, aspectRatio }) => {
       height={height}
      />
     )}
-    {hasLoaded && (
+    {isVisible && (
      <ReactPlayer
-      ref={playerRef}
       url={videoUrl}
-      playing={isVisible}
+      playing={true}
       loop={true}
       controls={false}
       muted={true}
       width="100%"
       height="100%"
-      style={!isVisible ? { display: 'none' } : {}}
+      onReady={() => setHasLoaded(true)}
+      style={!hasLoaded ? { display: 'none' } : {}}
      />
     )}
    </div>

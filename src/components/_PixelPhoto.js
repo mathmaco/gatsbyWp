@@ -5,12 +5,10 @@ import useIntersectionObserver from './useIntersectionObserver';
 
 const PixelPhoto = React.memo(({ src, width, height, onLoad }) => {
  const [pixelSize, setPixelSize] = useState(50);
- const [hasBeenVisible, setHasBeenVisible] = useState(false);
- const [intersectionRef, isVisible] = useIntersectionObserver(0);
+ const [intersectionRef, isVisible] = useIntersectionObserver(0.5);
 
  useEffect(() => {
-  if (isVisible && !hasBeenVisible) {
-   setHasBeenVisible(true);
+  if (isVisible) {
    const pixelationSequence = [
     { size: 50, delay: 200 },
     { size: 15, delay: 50 },
@@ -25,8 +23,10 @@ const PixelPhoto = React.memo(({ src, width, height, onLoad }) => {
      }
     }, delay);
    });
+  } else {
+   setPixelSize(50);
   }
- }, [isVisible, hasBeenVisible, onLoad]);
+ }, [isVisible, onLoad]);
 
  return (
   <div ref={intersectionRef} className={projectStyles.pixel}>
