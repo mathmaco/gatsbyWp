@@ -9,10 +9,10 @@ const LazyVideo = ({ videoUrl, thumbnailUrl, width, height, aspectRatio }) => {
  const [hasLoaded, setHasLoaded] = useState(false);
 
  useEffect(() => {
-  if (isVisible && !hasLoaded) {
-   setHasLoaded(false); // ビデオがビューポート内に入ったら再度読み込み待機状態にする
+  if (isVisible) {
+   setHasLoaded(true); // ビデオがビューポート内に入ったら再度読み込み待機状態にする
   }
- }, [isVisible, hasLoaded]);
+ }, [isVisible]);
 
  return (
   <div style={{ width: '100%', height: '100%', position: 'relative' }} className={projectStyles.media}>
